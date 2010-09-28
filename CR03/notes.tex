@@ -1,0 +1,331 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{proof}
+\usepackage{amsthm}
+\usepackage{cmll}
+\usepackage{todonotes}
+\usepackage{multicol}
+
+
+
+\author{Olivier Laurent \and Daniel Hirschkoff \\ \and (transcribed by the students)}
+
+\title{Linear logic and concurrency.} 
+
+\newcommand{\ie}{\textit{i.e.}\ }
+\newcommand{\cf}{\textit{c.f.}\ }
+\newcommand{\eg}{\textit{e.g.}\ }
+
+\newtheorem{definition}{Definition}
+\newtheorem{prop}{Property}
+\newtheorem{theo}{Theorem}
+\newtheorem{ex}{Example}
+\newtheorem{exo}{Exercise}
+\newtheorem{rmk}{Remark}
+
+\begin{document}
+
+\maketitle
+\part{Linear Logic}
+\section{Multiplicative Linear Logic (MLL)}
+
+$A ::= X | X ^ \perp | A \otimes A | A \parr A$
+
+\begin{definition}
+	\begin{itemize}
+		\item $(X)^\perp := X \perp$
+		\item $(X^\perp)^\perp := X$
+		\item $(A \otimes B) ^\perp := A^\perp \parr B^\perp$ 
+		\item $(A \parr B)^\perp := A ^\perp \parr B ^\perp$
+	\end{itemize}	
+\end{definition}
+
+\begin{prop}
+	$\forall A, (A ^\perp)^\perp = A$
+\end{prop}
+
+\textbf{Notation:} $A\multimap B :=  A ^\perp \parr B$
+
+\textbf{Rules:}
+\begin{center}
+$	\infer[ax]{\vdash A^\perp A}{} \quad
+	\infer[cut]{\vdash \Gamma, \Delta}{\vdash A, \Gamma & \vdash A^\perp, \Delta} \quad
+	\infer[\otimes]{\vdash A \otimes B, \Gamma, \Delta}{\vdash A, \Gamma & \vdash B, \Delta} \quad
+	\infer[\parr]{\vdash A \parr B, \Gamma}{\vdash A, B, \Gamma} \quad
+	\infer[ex]{\vdash \Gamma \sigma}{\vdash \Gamma} 
+$
+\end{center}
+	
+\begin{ex} \label{ex:comm_par} $\vdash (A\otimes B)^\perp, (B\otimes A)$
+\todo[inline]{TODO}
+\end{ex}
+
+\textbf{Difference with linear logic:}
+There is no duplication. Formulas are used once.
+
+\begin{ex}
+	$A \vdash A \land A$, is provable in classical logic,but $\vdash A\otimes A, A ^\perp$ is not provable in MLL.
+\end{ex}
+
+
+\begin{exo}
+	Which of these sequents are provable?
+	
+	\begin{multicols}{2}
+	\begin{itemize}
+		\item $A \otimes A\vdash A$
+		\item $A\vdash A\parr A$
+		\item $A \parr B\vdash A$
+		\item $A\otimes B\vdash A$
+		\item $A \parr B\vdash B \parr A$
+		\item $A \otimes (B\parr C)\vdash (A\otimes B)\parr C$
+		\item $A \parr (B\otimes C)\vdash (A\parr B)\otimes C$
+		\item $(A\otimes B)\parr C \vdash A \otimes (B \parr C)$
+		\item $(A\otimes B)\otimes C \vdash A \otimes (B \otimes C)$
+	\end{itemize}	
+	\end{multicols}
+\end{exo}
+
+\section{Proof-nets}
+
+\subsection{Proof-structures:}
+
+\begin{figure}[h]
+\begin{center}
+	\includegraphics{figures/parr.pdf} \ 
+	\includegraphics{figures/tens.pdf} \ 
+	\includegraphics{figures/ax.pdf} \ 
+	\includegraphics{figures/cut.pdf} \ 
+\end{center}
+\end{figure}
+
+\begin{ex}
+	\begin{figure}[h]
+	\begin{center}
+		\includegraphics{figures/pn_ex1.pdf}
+		\caption{Example of translation from proof (of example~\ref{ex:comm_par}) to proof-structure.}
+	\end{center}
+	\end{figure}
+\end{ex}
+
+\begin{definition}{Proof-net}
+	A proof net is a proof structure obtained from a proof.
+\end{definition}
+
+The following proof structure is not a proof-net:
+\begin{ex}
+	\begin{figure}[h]
+	\begin{center}
+		\includegraphics{figures/pn_ax_tens.pdf}
+		\caption{Example of a proof-structure which is not a proof-net}
+	\end{center}
+	\end{figure}	
+\end{ex}
+
+The transformation from proof to proof-structure is then not surjective. One reason is that in proof structures, there is no difference between $\otimes$ and $\parr$.
+
+\subsection{Correctness criterion}
+
+\begin{definition}{Correction graph}
+	A correction graph of a proof structure is obtained by removing one of the two upper edges of each $\parr$-node.
+\end{definition}
+
+\begin{prop}{Correctnesss criterion (Danos-Regnier)}
+	A proof structure is a proof-net if and only if all its correction graphs are connected and acyclic.
+\end{prop}
+\begin{proof}
+\todo[inline]{TODO}
+\end{proof}
+
+\subsection{Cut elimination}
+	\begin{figure}[h]
+	\begin{center}
+		\includegraphics{figures/ce_ax.pdf}
+		\caption{$ax$ reduction rule.}
+		\includegraphics{figures/ce_par_tens.pdf}
+		\caption{$\parr - \otimes$ reduction rule.}
+		
+	\end{center}
+	\end{figure}	
+	
+	Note that the reduced proof-structure is still a proof-net.
+	
+	\begin{prop}
+	Strong normalization, confluence.
+	\end{prop}	
+	
+	\begin{prop}{Sub-formula property}
+\todo[inline]{TODO}
+	\end{prop}	
+	
+	\subsection{Exponential connectives}
+	
+	MLL is not sufficient, computationally speaking, for intuitionistic logic.
+	
+	\begin{ex}
+		$A \rightarrow B \rightarrow A$ is provable in intuitionistic logic, but $A \multimap B \multimap A$ is not provable in MLL.
+	\end{ex}	
+	
+	\begin{definition}{MELL rules:} MLL rules +
+	
+	$\infer[?_c]{\vdash \Gamma, ?A}{\vdash \Gamma, ?A, ?A}$ (contraction) 
+	$\infer[?_w]{\vdash \Gamma, ?A}{\vdash \Gamma}$ (weakening)
+	
+	$\infer[?_d]{\vdash \Gamma, ?A}{\vdash \Gamma, A}$ (dereliction)
+	$\infer[!]{\vdash ?\Gamma, !A}{\vdash ?\Gamma, A}$(promotion)
+	\end{definition}
+	
+	\begin{exo}
+		$$\begin{array}{l l l l l}
+			LK & \overset{\lnot\lnot}{\longrightarrow} &  LJ & \longrightarrow & MELL \\
+			& & \Gamma \vdash A & & !\Gamma ^* \vdash A^* \equiv\ \vdash ?(\Gamma ^ *)^\perp, A^*
+		\end{array}$$
+		where $(A \rightarrow B)* = ! A^* \multimap B$		
+	\end{exo}	
+
+	\begin{figure}[h]
+	\begin{center}
+		\includegraphics{figures/mell_c.pdf} \quad
+		\includegraphics{figures/mell_w.pdf} \quad
+		\includegraphics{figures/mell_d.pdf}	\quad
+		\includegraphics{figures/mell_p.pdf}	\quad
+		\caption{The nodes corresponding to the contraction, weakening, dereliction and promotion rules.}
+	\end{center}	
+	\end{figure}	
+	
+	Note that the promotion node is not sufficient in itself to express the promotion rule (\ie the context must be of the form $?\Gamma$).
+	The solution is to add boxes (one box per $!$-node):
+	\begin{figure}[h]
+	\begin{center}
+		\includegraphics{figures/box.pdf}
+		\caption{Re presentation of a $!$-box.}
+	\end{center}	
+	\end{figure}
+	
+	Connectedness of correction graphs is not true anymore. In fact we have:
+	
+	\begin{prop}
+		For any correction graph of a proof-net, we have: \\ $\sharp$ connected components $=1+ \sharp ?-$nodes.
+	\end{prop}	
+	
+	This condition is not sufficient, as shown by the following example:
+	
+	\begin{ex}
+		The correctness graphs of the following example verify the previous property ($2$ connected components), but is not a proof-net.
+		\begin{figure}
+		\begin{center}
+			\includegraphics{figures/connected.pdf}
+		\end{center}		
+		\end{figure}		
+	\end{ex}	
+	
+	
+	\begin{rmk}
+		There is no non-trivial overlapping of boxes.
+	\end{rmk}	
+	
+	This allows us to define the depth of a $!$-box by the number of box containing it.
+	
+	\begin{prop}{Acyclicity criterion}
+		In a proof-net, correction graphs are acyclic (where correction graphs are now obtained by removing one of the upper edges of each $\parr$-node and each $?_c$-node.
+	\end{prop}	
+	
+	These properties can be summed up in the following theorem:
+	
+	\begin{theo}
+		$\Pi \vdash_{MELL} \Gamma \Rightarrow$ $\Pi^*$ (and recursively all its boxes) has acyclic correction graphs, and $\sharp cc = \sharp ?_w +1$.
+	\end{theo}	
+	
+	As stated before, the converse is false.
+	
+	\begin{prop}{Sequentialization}
+		If $\mathcal R$ is $?_w$-free with acyclic connected correction graphs, then $\exists \Pi, \Pi* = \mathcal R$.
+	\end{prop}	
+	
+	\begin{exo}
+		\begin{multicols}{2}
+		\begin{itemize}
+			\item $!(A\otimes B)\overset{\dashv}{\vdash} !A \otimes !B$
+			\item $!!A \overset{\dashv}{\vdash} !A$
+			\item $??A \overset{\dashv}{\vdash} ?A$
+			\item $!A \otimes !A\overset{\dashv}{\vdash} !A$
+			\item $!A \otimes !B\overset{\dashv}{\vdash} !A$
+			\item $?A \otimes ?A\overset{\dashv}{\vdash}?A$
+			\item $?A \parr ?A\overset{\dashv}{\vdash}?A$
+			\item $!A\overset{\dashv}{\vdash}?A$
+			\item $!A\overset{\dashv}{\vdash}A$
+		\end{itemize}	
+		\end{multicols}
+	\end{exo}	
+	
+	\begin{definition}{Modality}
+		Only arity-1 connectives: $\underset{\mu}{\underbrace{!\dots ?\dots ! \dots}}A$
+		
+		$\mu \sim \nu \Leftrightarrow \forall A, \mu A \overset{\dashv}{\vdash} \nu A$
+		
+		$\mu \le \nu \Leftrightarrow \forall A, \mu A \vdash \nu A$
+	\end{definition}	
+	
+	\begin{exo}
+		Determine $\le$ and $\sim$.
+	\end{exo}
+	
+	\subsection{Cut elimination}
+	\begin{rmk}
+		A cut from a $!$-node to a $?$-node of the corresponding box is impossible (since the graph of the corresponding box is connected, it would introduce a cycle).
+		\end{rmk}		
+	The only additional cuts are of the form, and can be reduced as described by the figures~\ref{fig:ce_d}, \ref{fig:ce_w}, \ref{fig:ce_c} and \ref{fig:ce_box}
+	
+	\begin{figure}[!h]
+	\begin{center}	
+		\includegraphics[scale=0.6]{figures/ce_d.pdf}
+		\caption{Dereliction cut: open the box.}
+		\label{fig:ce_d}
+	\end{center}	
+	\end{figure}	
+	
+	\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[scale=0.6]{figures/ce_c.pdf}
+		\caption{Contraction cut: duplicate the box.}
+		\label{fig:ce_c}
+		\end{center}	
+	\end{figure}	
+	\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[scale=0.6]{figures/ce_w.pdf}
+		\caption{Weakening cut: remove the box.}
+		\label{fig:ce_w}
+		\end{center}	
+	\end{figure}	
+	\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[scale=0.6]{figures/ce_box.pdf}
+		\caption{Box-box cut: merge the boxes.}
+		\label{fig:ce_box}
+	\end{center}	
+	\end{figure}	
+	
+	\begin{exo}
+		Check that the correction criterion is preserved through cut reduction.
+	\end{exo}	
+	
+	\begin{prop}{Local confluence}
+	\includegraphics[scale=0.5]{figures/confluence.pdf}
+	\end{prop}	
+
+		\begin{prop}{Termination}
+		\begin{description}
+			\item[Weak normalization:] $\forall {\mathcal R}, \exists {\mathcal R_0}$ cut-free  such that ${\mathcal R} \rightarrow^* {\mathcal R_0}$.
+			\item[Strong normalization] $\forall {\mathcal R}$, each reduction chain begining by ${\mathcal R}$ is finite.
+		\end{description}		
+		\end{prop}
+		\begin{proof}{(of weak normalization)}
+		\todo[inline]{TODO}
+		\end{proof}				
+\end{document}
+
+	

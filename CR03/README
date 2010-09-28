@@ -1,0 +1,6 @@
+Requires (among others) cmll (see the texlive-fonts-extra package for example) and ipe (for the figures)
+Compile using make (or with pdflatex once all the figures are compiled).
+
+Put figures in ipe format in figures/
+Do not put any .pdf figure in figures/
+If you want to use other (lightweight, of course) kind of figures, put them elsewhere, and adapt the Makefile if necessary
