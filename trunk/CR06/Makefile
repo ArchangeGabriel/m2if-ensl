@@ -2,4 +2,4 @@ all:
 	pdflatex notes.tex
 
 clean:
-	rm *.aux *.toc *.log
+	rm *.aux  *.log notes.pdf
