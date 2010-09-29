@@ -5,14 +5,611 @@
 \usepackage{proof}
 \usepackage{amsthm}
 
-\author{Guillaume Hanrot \and Damien Stehlé \\ \and (transcripted by the students)}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Property}
+\newtheorem{lemm}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{ex}{Example}
+\newtheorem{exo}{Exercise}
+\newtheorem{rmk}{Remark}
+
+
+
+\author{Guillaume Hanrot \and Damien Stehlé \\ \and (transcribed by the students)}
 
 \title{Cryptology} 
 
-\begin{document}
+\begin{document} 
 
 \maketitle
 
-\end{document}
+C. Hermite and H. Minkowski initiated the field.
 
-	
+\section{Euclidean Lattices}
+\subsection{Definitions}
+
+\begin{definition}
+Let $b_1$, $b_2$,...,$b_d$ be linear independent vectors in $\mathbb{R}^n$ ($d \leq n$). The lattice they span is $L(b_1,b_2,...,b_d)= \sum_{i \leq d} x_i b_i$, where $x_i \in \mathbb{Z} \}$
+\end{definition}
+
+For example:
+\begin{itemize}
+\item Trivial lattice $\{0\}$
+\item $\mathbb{Z}^2$ is a lattice (for example with $d=2$, $b_1=(0,1)$, $b_2=(1,0)$)
+\item $\mathbb{Z}^n$ for any $n$
+\end{itemize}
+
+\begin{definition}
+A lattice is a discrete additive subgroup of $\mathbb{R}^n$ for some $n$. (Discrete means that there is no accumulation point).
+\end{definition}
+
+\begin{theorem}
+The two definitions are equivalent.
+\end{theorem}
+
+\begin{proof}
+\textbf{Exercise}
+\end{proof}
+
+For example:
+\begin{itemize}
+\item Any additivesubgroup of $\mathbb{Z}^n$ is a lattice
+\item Let $a_1, a_2 \in \mathbb{Z}$, let $q \neq 0$. $\{ (x_1,x_2) \in \mathbb{Z}^2 \ | \ x_1 a_1+x_2 a_2 = 0 \ [q]  \}$ is a lattice
+\item More generally, let $A \in \mathbb{Z}^{m*n}$. $\{ x \in \mathbb{Z}^m \ | \ xA (\in \mathbb{Z}^n)=0 \ [q]$ \textit{(component wise)}$\}$ is a lattice
+\item $\mathbb{Z}+\sqrt{2} \mathbb{Z}$ is \textit{not} a lattice. (Not discrete)
+\end{itemize}
+
+\begin{definition}
+If a lattice $L$ is contained in some $\mathbb{Z}^n$, we call $L$ \textbf{integral}.
+\end{definition}
+
+\subsection{Dimension and bases}
+
+\begin{definition}
+If $L=L(b_1,b_2,..,b_d)$ with $b_1,....,b_d$ linearly independent, then $(b_1,b_2,...,b_d)$ is called a basis of $L$.
+\end{definition}
+
+\begin{proposition}
+If $b_1,b_2,...b_d$ and $c_1,...,c_{d'}$ are two bases of the same lattice $L$, then $d=d'$. We call $d$ the \textbf{rank} (or \textbf{dimension}) of the lattice. $n$ is the \textbf{embedded dimension}. If $d=n$, we call the lattice \textbf{full-rank}.
+\end{proposition}
+
+\begin{proof}
+$d=dim(Span(b_1,b_2,...b_d))=dim(Span(c_1,c_2,...c_{d'}))=d'$
+\end{proof}
+
+\begin{definition}
+$U \in \mathbb{Z}^{d*d}$ is called \textbf{unimodular} if $det \ U = ^+_-1$
+\end{definition}
+
+\begin{proposition}
+$U$ unimodular $\Rightarrow$ $U^{-1}$ is unimodular.
+\end{proposition}
+
+For example:
+\begin{itemize}
+\item $U_{i,i}=^+_- 1$ and $U_{i,j}=0$ otherwise
+\item Permutation matrices: $U_{i,j}=1$ if $j=\sigma(i)$ and $U_{i,j}=0$ otherwise
+\item $U_{i,i}=^+_- 1$ and $U_{i,j}=0$ if $i < j$ (resp. $j<i$)  $U_{i,j}\in \mathbb{Z}$ if $j < i$ (resp. $i<j$)
+\end{itemize}
+
+A lattice is most often represented by one of its bases.
+A basis is usually encoded into an $n*d$ matrix.
+$L$ is the set of integer linear combinations of the columns of the basis matrix (if we use column vectors).
+When $2 \leq d$, any given lattice $L$ has infinitely many bases.
+
+\begin{theorem}
+Let $b_1, b_2,...,b_d$ and $b_1',...,b_d'$ be two bases of a lattice $L$.
+Then there exists $U$ unimodular such that $(b_i')_i . U=(b_i)_i$
+Moreover, if there is $U$ unimodular such that $(b_i')_i . U=(b_i)_i$, then $(b_1,b_2,...,b_d)$ and $(b_1',...,b_d')$ span the same lattice.
+\end{theorem}
+
+\begin{proof}
+\begin{itemize}
+\item $b_1' \in L(b_1,b_2,...,b_d)$. So there exists  $u_{1 1},u_{1 2},...u_{1 d} \in \mathbb{Z}$ such that $b_1'= \sum_{j=1}^d u_{1 j} b_j$. Similarily, $b_i'=  \sum_{j=1}^d u_{i j} b_j$ for some $u_{i j}$s in $\mathbb{Z}$.
+
+$B' = B U$ 
+
+Similarily, there exists $U' \in \mathbb{Z}^{d*d}$ such that $B = B' U'$.
+
+Overall, $B= B' U' = B U U'$. So $B(Id-U U')=0$.
+Since $B$ has rank $d$, there exists a subset of the rows of $B$, of cardinality $d$, which is square and invertible. Call $C$ this matrix in $\mathbb{R}^{d*d}$. We have $C(Id-U U')=0$. So $U U'=Id$
+\item $(b_i')_i U = (b_i)_i$ with $U$ unimodular means that any $b_i$ belongs to $L(b_1',b_2',..,b_d')$. Hence $L(b_1,b_2,..,b_d) \subset L(b_1',b_2',..,b_d')$
+
+Moreover, in $(b_i)_i U^{-1} = (b_i')_i$, $U^{-1}$ is unimodular. So $L(b_1',b_2',..,b_d') \subset L(b_1,b_2,..,b_d)$
+\end{itemize}
+\end{proof}
+
+To move from one basis to another, you can:
+\begin{itemize}
+\item Multiply vectors by $^+_- 1$
+\item Permutate vectors
+\item $b_i \leftarrow b_i + x b_j$ with $x \in \mathbb{Z}$ and $j \neq i$ 
+\end{itemize}
+
+\begin{definition}
+Let $b_1,...,b_d$ be a basis. We call fundamental parallelepiped of the $b_i$s the set:
+
+$P(b_1,b_2,...,b_d)=\{\sum^d_{i=1} y_i b_i, \ y_i \in [0,1) \}$
+\end{definition}
+
+\begin{proposition}
+$Span(L(b_1,b_2,...,b_d))=$ (Disjoint union of, for $b \in L$,) $\{ b+P(b_1,b_2,...,b_d) \}$
+\end{proposition}
+
+Two algorithmic questions :
+
+\begin{itemize}
+\item How do I test that a point belongs to a lattice?
+\item How do I test if $L(b_1,b_2,...,b_d)=L(b_1',b_2',...,b_d')$ ? What if the $b_i$s or $b_i'$ are not linearly independent?
+\end{itemize}
+
+\subsection{The Hermite Normal Form (HNF)}
+Provides a uniquely determined way of representing any \textbf{integral} lattice.
+
+\begin{definition}
+$H \in \mathbb{Z}^{n*d}$ with rank $r$ is said to be in HNF if:
+\begin{itemize}
+\item There exist $1 \leq i_1 < i_2 < ... < i_r \leq n$ such that $H_{ij}=0$ if $i < i_j$
+\item $H_{ij} =0$ if $j>r$
+\item $0 \leq H_{i_j,j} < H_{i_j,i_j}$ forall $j < i_j$
+\end{itemize}
+\end{definition}
+
+\begin{theorem}
+For any $B \in \mathbb{Z}^{n*d}$, there exists $U \in \mathbb{Z}^{d*d}$ unimodular such that $B U$ is in HNF. Moreover, $U$ can be computed in polynomial time from $B$ ("in polynomial time" meaning here: relatively to $n$, $d$ and $log \ B \ = max \ log(1+|B_{i,j}|)$).
+\end{theorem}
+
+\begin{proof}
+Micciancio and Warinski, ISSAC'01
+
+We consider the case of $B$ being square and invertible
+\begin{lemm}
+Assuming that there exists some $H= B U$ in HNF, then $0 \leq H_{i,j} < |det(B)|$
+\end{lemm}
+\begin{proof}
+$|det \ H|=|det \ B|=\pi_{i \leq d} H_{i,i}$ (which belongs in $\mathbb{Z}$)
+
+So $\forall i, \ H_{i,i} \leq |det \ B| $ and $H_{i,i}$ dominates the row.
+
+Consequently, $H_{i,j} < |det \ B|$ for $j < i$
+\end{proof}
+
+\begin{lemm}
+$|det \ B| \leq \pi_{i \leq d} || b_i || $ (Hadamard's bound) ($||.||$ is the euclidean norm)
+\end{lemm}
+$|det \ B| \leq \sqrt{d}^{d} \pi || b_i || \leq \sqrt{d}^{d} max |B_{i,j}|^d$
+\begin{lemm}
+In the extended gcd Euclidean algorithm, the "Bezout matrix" is unimodular
+\end{lemm}
+\begin{proof}
+$(r_0,r_1,...,r_t,r_{t+1})$
+
+Where $r_0$ and $r_1$ are the input, and $r_{t+1}=0$, and $r_t=gcd(r_0,r_1)>0$
+
+$\forall i, we have (r_i,r_{i+1})=(r_i,r_i-q_i r_{i-1})$
+
+The corresponding matrix is unimodular.
+
+The bezout matrix is the product of all those matrices, which enables us to compute $(gcd,0)$ from $(r_0,r_1)$.
+
+It is unimodular as a product of unimodular matrices.
+\end{proof}
+By induction, assuming $2 \leq d$
+
+We call $b$ the last column of $B$. We call $A$ the $d-1*d-1$ matrix at the top-left corner of $B$. And $^ta$ the last row (deprived of its last coefficient).
+
+Up to a permutation of the columns of $B$, $A$ is invertible (example of square invertible $B$ where $A$ is not invertible without permutation: $b_{i,j}=1$ if $i \leq j$, $0$ otherwise)
+
+Now let $U_A \in \mathbb{Z}^{d-1*d-1}$ and $H_A$ in HNF such that
+
+$A U_A = H_A$
+
+Apply the extended $U_A$ (equals the identity on the new elements of the basis)(it's unimodular) of size $d$ to $B$ and get $B'$, which we represent as $H_A$, $b'$ and $a'$ (according to the previously used representation) \textbf{A drawing would be nice here}
+(Complexity-wise, $U_A = A^{-1} H_A$ can be computed in time polynomial in the bit-size of $A$, which is itself polynomial in the bit-size of $B$) \newline
+
+How to clean the first entry of $b'$?
+Do extended-Euclid on $r_0 = H_{1,1}$ and $r_1 = b'_1$
+$(r_0,r_1).U = (gcd,0)$ where $U$ is of size $2*2$. 
+\textbf{Someone draw the matrices!}
+Keep going with $(H_{2,2},b'_2)$, $(H_{3,3},b'_3)$, etc and it ends up being lower triangular.
+Then use the right substraction of vectors to ensure that $0 \leq H_{i,j} \leq H_{i,i} \ \forall i, j$
+(Exercise: Could we do it for upper-triangular HNF?) \newline
+
+How to make this polynomial-time? (How to prevent entries from blowing up?)
+Thanks to $L_1$ and $L_2$, we know that the entries of $H_A$ are small.
+We are to ensure that the entries of the first ($H_1$) and last ($H_d$) columns are small, after having applied \textbf{drawing!}
+For $i$ from $2$ to $d-1$, do
+$H_1 \leftarrow H_1 - H_{i,i}*(floor \ of \ H_{1,i}/H_{i,i})$ 
+(At the end of this, $\forall i, |H_{1,i}| \leq H_{i,i} \leq |det \ A| \leq 2^{poly(lg \ B, d)}$)
+Do the same with $H_d$.
+(Exercise : Clean the complexity proof)
+\end{proof}
+
+\begin{proof}
+And in the general case? What if $B$ is not "square and invertible"?
+
+\begin{itemize}
+\item If $B$ has full row rank, $rank(B)=n$. We take a subset of the columns that is of cardinality $n$ and whose elements are linearly independant. (Use permutation matrices). Do HNF on the first $n$ columns, and add columns as we did before.
+\item Otherwise, take a subset of rows that are linearly independant, apply the above, and apply the transformation matrix to the full B. 
+\end{itemize}
+\end{proof}
+
+\begin{theorem}
+The HNF is unique
+\end{theorem}
+\begin{proof}
+By contradiction.
+
+Assume that $L(B)=L(B')$ with $B \neq B'$ (both in HNF)
+Let $j$ be the minimal integer such that $b_j \neq b'_j$
+Let $i$ be the minimal integer such that $b_{i,j} \neq b'_{i,j}$
+
+Look at $b_j-b_j'$ (which is in $L$): its first $i-1$ entries are $0$. 
+
+$b_j-b'_j = \sum_{k \leq d} x_k*b_k = \sum_{k=i}^d x_k b_k$ (can't use the first vectors of HNF)
+So $i$ is one of the $i_k$'s and $b_{i,j}-b'_{i,j}=x b_{i_k} i_k$ for some $x \in \mathbb{Z}$.
+Impossible because $0 \leq b_{i,j}, b'_{i,j} < b_{i_k,i_k}$ (The diagonal coefficient is the largest one in its row)
+\end{proof}
+
+(End of the first course)
+
+\subsection{Lattice invariants}
+
+The lattice rank ($d$) and the embedding dimension are lattice invariants (independant from the choice of the basis)
+
+\begin{definition}
+Let $L$ be a lattice $\neq \{ 0 \}$. The first minimum of $L$, denoted by $\lambda_1 (L)$, is the norm of a shortest non-zero vector: $\lambda_1(L)=min\{||b||, b \in L \backslash \{ 0 \}\}$
+\end{definition}
+
+Exercise: Prove that in dimension $d$, the minimum is reached no more than $3^d$ times.
+
+\begin{definition}
+If $k \leq d$, the $k^{th}$ minimum is $\lambda_k(L)=min\{r | B(0,r)$ contains at least $k$ linearly independant vectors of $L \}$
+\end{definition}
+
+\begin{proposition}
+If $L$ has rank $d$, then there exist $b_1,...b_d$ in $L$ linearly independant such that: $\forall i, ||b_i||=\lambda_i(L)$
+\end{proposition}
+
+\begin{proof}
+Left as an exercise.
+\end{proof}
+
+Exercise: Find a lattice such that no basis reaches all minima. (Tip: $5 \leq d$)
+
+\begin{definition}
+Let $L$ be a lattice with a basis $B=(b_1,...,b_d)$. The determinant/volume of $L$ is defined as $det(L)=\sqrt{det(B^t B)}$, where $B^t B$ is the Gram matrix of the $b_i$'s. 
+\end{definition}
+
+Remark: If $d=n$ then $det(L)=|det(B)|$.
+$det(L)=$ Area of the fundamental parallepiped $P(b_1,...,b_d)$
+
+\begin{proposition}
+$det(L)$ does not depend on the choice of $B$.
+\end{proposition}
+
+\begin{proof}
+Let $B$, $B'$ be two bases of $L$. $\exists U$ unimodular such that $B'=B U$.
+Then $det((B')^t B')=det(U^t (B^t B) U)=det(U^t) det(B^t B) det(U)=(det(U))^2 det(B^t B)=det(B^t B)$
+\end{proof}
+
+\subsection{Minkowski's theorem(s)}
+
+Which will link the $\lambda_i$'s and the $det$, respectively hard and easy to compute.
+
+\begin{theorem} (Blichfeld's theorem)
+Let $L \subset \mathbb{R}^n$ be a full-rank lattice. Let $S \subset \mathbb{R}^n$ with $vol(S)>det(L)$ ($vol$ in the sens of Lebesgue). Then there exist $z_1 \neq z_2 \in S$ such that $z_1-z_2 \in L$.
+\end{theorem}
+
+Exercise: What if we remove the "full-rank" condition?
+
+\begin{proof}
+Let $B$ be a basis of $L$.
+We have: $\mathbb{R}=$(disjoint union for $b \in L$)$[P(B)+b]$
+
+Let $S_b=S$ \textbf{intersection} $[P(B)+b]$
+
+We have: $S=$ (disjoint union for $b \in L$) $S_b$. Consequently, $vol(S)= \sum_{b \in L} vol(S_b)$
+
+Let $T_b=S_b-b$. We have: $\forall b, T_b \subset P(B)$.
+
+And $\sum vol(T_b)= \sum vol (S_b) = vol(S) > det(L) = vol(P(B))$
+
+There must exist $T_{b_1} \neq T_{b_2}$ such that $T_{b_1}$ \textbf{inter} $T_{b_2} \neq$ \textbf{void} (Lemme des tiroirs)
+
+Take $z \in T_{b_1}$ \textbf{inter} $T_{b_2}$ and define $z_1=z+b_1$ and $z_2=z+b_2$.
+\end{proof}
+
+\begin{theorem} (First Minkowski's theorem)
+Let $L \subset \mathbb{R}^n$ be a full-rank lattice.
+
+Let $S \subset \mathbb{R}^n$ be convex and symmetric with $vol(S)>2^n det(L)$.
+
+Then $S$ contains a non-null lattice point.
+
+Furthermore, if $S$ is compact, it suffices to have $2^n det(L) \leq vol(S)$.
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+\item Apply Blichfeld to $T=frac{S}{2}$ $(vol(T)>det(L))$. There exists $z_1 \neq z_2$ in $T$ such that $z_1-z_2 \in L$. Let $b=z_1-z_2 \in L \backslash \{ 0 \}$.
+
+$2 z_1 \in S$. 
+
+$2 z_2 \in S$. 
+
+$-2 z_2 \in S$. (symmetry) 
+
+$\frac{2 z_1 - 2 z_2}{2} \in S$. (convexity) 
+
+$z_1-z_2 \in S$.
+
+\item Use first part of the theorem with $S_n = S (1+ \frac{1}{n})$. Build sequence of points and use compacity (converging sub-sequence)(textbf{Left as an exercise})
+\end{enumerate}
+\end{proof}
+
+\begin{corollary}
+If $L$ is a $d$-dimensional lattice, there exists $b \in L \backslash \{ 0 \}$ such that $||b||_{ infinity} \leq det(L)^{1/d}$ ($||b||_{infinity}$ is $|max \ coeff \ of \ b|$)
+If $L$ is a $d$-dimensional lattice, there exists $b \in L \backslash \{ 0 \}$ such that $||b||_2 \leq det(L)^{1/d}$
+
+The latter implies $\lambda_1 (L) \leq \sqrt{L}[det(L)]^{1/d}$
+\end{corollary}
+
+\begin{proof}
+For the first point, use Minkowski's theorem with $S=[-R;R]^n$, with $R=det(L)^{1/d}$.
+
+For the second point, use Minkowski's theorem with $S=B(0,R)$, with $R=det(L)^{1/d}$.
+
+Or: $\forall b, \ ||b||_2 \leq \sqrt{d} ||d||_{infinity}$ ($||b||_2 = \sum b_i^2 \leq d \ max |b_i|^2 = d ||b||_{infinity}^2$)
+\end{proof}
+
+\begin{definition}
+§Let $2 \leq d$. We call \textbf{Hermite constant} the quantity $\gamma_d = sup_{L \ d-dim \ lattice} [\frac{\lambda_1 (L)}{det(L)^{1/d}}]^2$
+\end{definition}
+
+We know this quantity for only very few dimensions ($d \leq 8$ and $d=24$(Cohn, Kumar '04))
+
+\begin{theorem} (Second Minkowski's theorem)
+$\pi_{i \leq d} \lambda_i(L) \leq \gamma_d^{\frac{d}{2}} det(L) \leq d^{\frac{d}{2}} det(L)$
+\end{theorem}
+
+($\Rightarrow$ First Minkowski's theorem)
+
+\begin{proof}
+Left as an exercise (try to derive it from first Minkowski's theorem)
+\end{proof}
+
+\section{Lattice reduction, or how to compute short non-null vectors}
+
+\subsection{Some algorithmic problems}
+
+\begin{definition}
+\begin{itemize}
+\item \textbf{Decisional SVP (Shortest Vector Problem)}: Given a basis of a lattice $L$, and a real $r>0$, say whether $\lambda_1(L) \leq r$ or not.
+\item \textbf{Computational SVP}: Given a basis of a lattice $L$, find $b \in L$ such that $||b||=\lambda_1(L)$
+\item \textbf{Dec-Gap-SVP$_{\gamma}$} ($\gamma \geq 1$): Given a basis of a lattice $L$ such that $\lambda_2(L) \geq \gamma \lambda_1(L)$ and $r>0$, say whether \textbf{Missing part here!!!!!}
+\item \textbf{Computational-SVP$_{\gamma}$} ($\gamma \geq 1$): Given a basis of a lattice $L$, find $b \in L$ such that $||b|| \leq \gamma \lambda_1(L)$
+\item \textbf{Dec-CVP$_{\gamma}$ (Closest Vector Problem)}; Given a basis of a lattice $L$, a target $t \in Span(L)$, a real $r>0$ and a promise that either $min_{b \in L} ||b-t|| \leq r$ or $> \gamma^r$. Say in which of the two cases we are. (With $\gamma = 1$, is there a $b \in L$ within distance $r$ of $t$?)
+\item \textbf{Comp-CVP$_{\gamma}$}: Given a basis of $L$ and a target $t \in Span(L)$, find $b \in L$ such that $||b-t|| \leq \gamma min_{c \in L} ||c-t||$
+\end{itemize}
+\end{definition}
+\textbf{Here the complexity scale}
+
+The best known algorithms for SVP/CVP:
+
+Kamman ('83): $d^{O(d)}$-time, $d^{O(1)}$-space.
+
+Micciancio-Voulgaris ('10): $2^{O(d)}$-time and space
+
+\begin{definition}
+\textbf{$\gamma$-BDD (Bounded Distance Decoding)} ($\gamma \geq 2$): Given a basis of a lattice $L$, and a target vector $t$ such that $\exists b \in L, \ ||b-t|| \leq \frac{\lambda_1(L)}{\gamma}$,
+
+Find b.
+[There is a unique solution]
+\end{definition}
+
+\subsection{Gram-Schmidt Orthogonalisation}
+
+\begin{definition}
+Let $b_1,b_2,...b_d$ be linearly independant.
+
+We define $b_i^* = b_i - \sum_{j < i} \mu_{i,j} b_j^*$ with $\mu_{i,j} = \frac{(b_i,b_j^*)}{||b_j^*||^2}$
+
+(The $b_i$'s are orthogonal, $\forall j, Span_{i \leq j}(b_i^*)=Span_{i \leq j}(b_i)$ (But the $b_i^*$ may not be in $L$))
+\end{definition}
+
+\begin{proposition}(Pythagore)
+$\forall i, ||b_i||^2 = ||b_i^*||^2+\sum_{j<i} \mu_{i,j}^2 ||b_j^*||^2$
+\end{proposition}
+
+Remark: We can write $B= B^* M^t$, where $B^*$ is $[b_1^*,b_2^*,...,b_d^*]$ and $M^t$ is upper-triangular, with all diagonal coefficients at $1$.
+
+$B = B^* diag(||b_i^*||^{-1}) diag(||b-i^*||) M^t$
+
+$B= Q R$
+
+\textbf{À compléter - ce qui suit est le cours 4}
+
+\subsection{The RSA cryptosystem}
+
+Rivest, Shamir, Adleman ('78)
+
+$p, q$ large prime numbers.
+
+Compute $N= P Q$
+
+Pick an integer (usually small)(usually 3, 17, or 65537) $e$ coprime with (p-1)(q-1).
+
+Define $d=e^{-1} mod (p-1)(q-1)$
+
+Then $p_k=(N,e)$ and $s_k=(p,q,s)$.
+
+\textit{Encryption}:
+
+Convert the data into elements of $\mathbb{Z}/ n \mathbb{Z}$, say $m$.
+$m \rightarrow m^e mod N$
+
+\textit{Decryption}:
+
+$c \rightarrow c^d mod N$
+
+\textit{Soundness}:
+What happens, starting from m, if I encrypt then decrypt?
+$m \rightarrow m^e mod N$
+$m \rightarrow m^{e d} mod N$
+
+\begin{proposition}
+$m^{e d} = m (mod N)$
+\end{proposition}
+
+\begin{proof}
+Let us look at :
+$m^{e d} mod \phi$
+$ed = 1 (mod (p-1)(q-1))$
+Hence
+$ed=1+k(p-1)(q-1)$ for some $k$.
+
+$m^{1+k(p-1)(q-1)}= m ((m^{p-1})^{k(q-1)}) (mod p)$
+
+\begin{itemize}
+\item $m \neq 0 (mod p)$
+Fermat's little theorem: $m^{p-1}=1 mod p$
+$\Rightarrow m^{e d}=m (mod p)$
+\item $m=0 (mod p)$
+$m^{e d}=0=m (mod p)$
+\end{itemize}
+\end{proof}
+
+Consequence: In all cases, $m^{e d}= m(mod p)$. Similarly, $m^{e d}=m ()mod q$
+$\Rightarrow m^{e d}=m(mod N)$
+
+\textit{Hardness assumptions}
+
+\begin{enumerate}
+\item Starting from $N$, hard to recover $p$ and $q$ [Factoring-Record $N = 2^{768}$]
+\item Starting from $N$, $e$, hard to recover d [Probabilistic-polynomial time equivalent to (1)] ((1) and (2) are attachs on the key)
+\item Starting from $c$, recover $m$ [extract $e^{th}$ roots]
+\item CPA: Hard to deduce any information on $m$ given $c$ (Even want that it is hard to decide if $m_1=m_2$ given $c_1$ and $c_2$)(This is BAD for RSA, because it requires the encryption function to be probabilistic)
+\item CCA2: formal definition later
+\end{enumerate}
+
+Diffie-Hellman key exchange.
+Alice, Bob. They pick a group $G$ (e.g. $(\mathbb{Z}/p \mathbb{Z})^*$ for some prime $p$) and $g \in G$.
+Alice picks $a$. Bob picks $b$.
+
+Alice send $g^a=\alpha$. Bob send $g^b=\beta$.
+Alice computes $\beta^a$, Bob $\alpha^b$.
+Which makes $g^{a b}$: OK.
+
+Charlies sees $g^a$, $g^b$, $g$. Can he compute $g^{a b}$.
+
+Presumably hard for $(\mathbb{Z}/p \mathbb{Z})^*$
+
+(Unreasonable amount of computation : $2^{80}$ to $2^{128}$)
+
+[To build a fully-secure cryptosystem, we would have to use a key longer than the message. And then, bitwise Xor]
+
+\subsection{Formal definitions}
+
+Encryption algorithm=(KeyGen,Enc,Dec) (KeyGen and Enc are probabilistic functions)
+
+KeyGen: given a security parameter $\lambda$, generates $s_k$ and $p_k$.
+
+Enc: Given $m$ a message in some plain text domain, and $p_k$ the public key, returns $c$.
+
+Dec: Given $c$ and the secret key $s_k$, returns $m$ in the plain text domain.
+
+\textit{Efficiency}: All three algorithms shold be probabilistic polunomial time.
+
+\textit{Soundness}: With probabiblity "close to 1", Dec(Enc($m$,$p_k$),$s_k$)=$m$
+
+\textit{Security assumptions}:
+\textit{CPA (Chosen plaintext attack) security}:
+\begin{itemize}
+\item Attacker is given $p_k$
+\item In a first step, he can generate as many ciphertexts as he wants
+\item Second phase: He chooses $m_0$, $m_1$plaintexts and sends them
+\item Third phase: He receives $C=Enc(p_k,m_{random(1)})$
+\end{itemize}
+The attacker must guess if $C$ is the encryption of $m_0$ or of $m_1$.
+
+Scheme is said CPA-secure if $A$ cannot guess correctly with probability significantly better than $\frac{1}{2}$ (namely $\geq \frac{1}{2}+\frac{1}{poly(\lambda)}$)
+\textit{CCA2 (Adaptative chosen ciphertext attack)}
+\begin{itemize}
+\item As before
+\item $A$ can ask for decryption of any string of bits
+\item As before
+\item $A$ can ask for decryption of any string of bits $\neq c$
+\end{itemize}
+Same requirements.
+
+Have access to a decryption oracle which will answer any question but the challenge.
+
+Consequence: Ciphertext looks like random.
+
+\subsection{GGH (Golreich Goldwasser, Haleri)}
+
+Underlying problem: BDD/CVP.
+
+Security parameter: $n$, dimension of a lattice
+
+$s_k$: Good random basis of the lattice (almost orthogonal)($B_{s_k}$)
+
+$p_k$: Bad basis of the same lattice ($B_{p_k}$)
+
+\textit{Enc}:
+
+Starting from a message $M \rightarrow B_{p_k} M+r$ r some small noise so that CVP($B_{p_k} M+r$)=$B_{p_k} M$
+
+Attacker has to solve a CVP in a bad basis $\rightarrow$ hard.
+
+\textit{Dec}: Solve CVP using Babai and the knowledge of $B_{s_k}$, or compute $B_{s_k} Round(B_{s_k}^{-1} C)$
+$\rightarrow$ Recover $B_{p_k} M$
+$\rightarrow$ Multiply by $B_{p_k}^{-1}$
+
+Remark: You can exchange the roles of $m$ and $r$.
+
+Practice: 
+\begin{itemize}
+\item Security hard to analyze precisely.
+\item Unefficient. Keysize=$O(n^2)$. Underlying computations $O(n^2)$. Not very good.
+\end{itemize}
+
+\subsection{NTRU (Number Theory R Us)}
+
+Same thing with structured matrices to lower keysize and computation time to (quasi-)linear in $n$.
+
+Let $R$ be the ring $\mathbb{Z}[x]/(x^n-1)$.
+
+$R_q := \mathbb{Z}/q \mathbb{Z}[x]/(x^n-1)$, for $q$ not too small, $q$ about $n^2$.
+
+$p$ small prime-coprime to $q$ (say $p=3$).
+
+$s_k$: $f, g \in R$ with coefficients in $\{0;1\}$
+$f$ invertible in $\mathbb{Z}/p \mathbb{Z}[x]/(x^n-1)$
+$g$ invertible in $\mathbb{Z}/q \mathbb{Z}[x]/(x^n-1)$
+
+$p_k$: $h=\frac{g}{f}$, where $\frac{1}{g}$ is to be computed in $R_q$
+
+Enc: $m \in R$ with very small coefficients, $\{0;1\}$. Sample $r \in R$ with very small coefficients. $C := p r h +M \in R_q$
+
+Dec: $g^{-1} (C g mod p) mod p$
+
+Soundness: $C g= p f r + g M (mod q)$. Which is small as sum and product of small things.
+So $p f r+g M= Rem(C g,q))$
+
+$\Rightarrow g M = Rem (C g, q) mod p$
+$= Rem (Rem(C g,q) mod p)$
+$M = Rem(g^{-1} Rem(Rem (C g, q),p),p)$
+
+\begin{enumerate}
+\item \textit{Why is it fast?}
+Using FFT, multiplication in $R$ ($R_q$ if $q$ is well chosen) can be computed in $\tilde{O}(n)$
+\item \textit{Why is it related to lattices?} $L$ the lattice spanned by the columns of $M$ (\textbf{Draw here the matrix - cf Hugo Feree}). Claim: $(g_0,...,g_{n-1},f_0,...,f_{n-1}) \in L$. Proof left as an exercise. Its norm is smaller then $\sqrt{2 n}$. Minkowski's bound for $L$ is about $\sqrt{2 n} (q^n)^{\frac{1}{2 n}}$ which is of the magnitude of $\sqrt{2 n} \sqrt{q}$. So it is about $n \sqrt{2 n}$. So the vector is way smaller than Minkowski's bound. So it is probably the shortest non-zero vector in $L$. Attacking the key is an SVP. Decoding can be seens as a BDD. About close to GGH, with a structured lattice, of keysize $\tilde{O}(n)$. Computational time is quasilinear: $\tilde{O}(n)$. $\Rightarrow$ Heuristic security
+\end{enumerate}
+
+
+\include{cours2}
+
+\end{document}
