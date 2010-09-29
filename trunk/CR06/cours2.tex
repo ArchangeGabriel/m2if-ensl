@@ -1,0 +1,74 @@
+\part{Algebraic number theory, Ideal lattices, Fully homomorphic encryption}
+
+\section{Algebraic number theory and Ideal lattices}
+
+\subsection{Cyclotomic fields and rings}
+
+\begin{definition}
+A primitive $n^{th}$ root of unity is an element of $\mathbb{C}^*$ of exact order $n$, namely $e^{\frac{2 i \pi k}{n}}$, where $(k,n)=1$.
+\end{definition}
+
+\begin{definition}
+The $n^{th}$ cyclotomic polynomial $\Phi_n$  is $\Phi_n(X) = \Pi_{S \ prime \ n^{th} \ root \ of \ 1} (X-S)=\Pi_{(k,n)=1, 1 \leq k \leq n} (X - e^{\frac{2 i k \pi}{n}})$
+$S_n=e^{\frac{2 i \pi}{n}}$
+\end{definition}
+
+\textbf{Check the ex with Hugo Feree}
+
+rem: def $\Phi_n=phi(n)$
+$\phi(n)=n \Pi_{p|n} (1-\frac{1}{p})$
+
+($p$ is prime)
+
+\begin{proposition}
+$\Phi_n(X) \in \mathbb{Z}[X]$, monic.
+\end{proposition}
+
+\begin{proof}
+\begin{lemm}
+$X^n-1=\Pi_{d | n} \Phi_d(X)$
+\end{lemm}
+\begin{proof}
+$X^n-1=\Pi_k (X-S_n^k)$
+$k = k_1 k_2$, where $k_1=(k,n)$. $(k_2,n)=1$ $k_2=\frac{k}{k_1}$
+Then $X^n-1= \Pi_{k_1 | n} \Pi_{1 \leq k_2 \leq \frac{n}{k_1}, (k_2,n)=1} (X-S_n^{k_1 k_2})$
+$\Phi_{\frac{n}{k_1}}(X)=\Pi_{1}$
+ \textbf{Proof here, check that with Hugo Feree}
+\end{proof}
+By induction, $\Phi_1(X)$
+$\Phi_n(X)=\frac{X^n-1}{\Pi_{d | n d \neq n} \Phi_d(X)}$
+By induction, $\Pi_{d | n, d \neq n} \Phi_d(X) \in \mathbb{Z}[X]$+monic.
+
+The quotient of two monic polynomials with integer coefficients is monic, with integer coefficients.
+\end{proof}
+
+\begin{proposition}
+$\Phi_n(X)$ is an irreducible polynomial over $\mathbb{Q}$
+\end{proposition}
+\begin{proof}
+Admitted
+\end{proof}
+
+\begin{definition}
+The $n^{th}$ cyclotomic field over $\mathbb{Q}$ is
+
+$\mathbb{Q}(S_n)=\mathbb{Q}[x]/(\Phi_n(x)):=K_n$ (The first equality comes from the irreducibility of $\Phi_n$)
+\end{definition}
+
+Computationnally speaking, the representation in the most convenient.
+\begin{itemize}
+\item An element of $K_n$ is a polynomial with rationnal coeff. of degree $< n$
+\item Addition is ordinary. Polynomial addition.
+\item Mult is ordinary too, is polynomial mod $\Phi_n(X)$.
+\item Inversion is doing the extended Euclidean algorithm on $p$ and $\Phi_n$ $P(X)U(X)+\Phi_n(X)V(X)=1$ (since $\Phi_n$ is irreducible) $\rightarrow P(X)U(X)=1 mod (\Phi_n(X))$
+\end{itemize}
+
+Rem: $P(X)$ corresponds to $P(S_n) \in \mathbb{Q}(S_n)$
+Rem: $K_n$ has a $\mathbb{Q}$-vector space structure with dimension $\phi(n)$ 
+
+\begin{definition}
+The \textbf{ring} of integers $O_{K_n}$ of $K_n$ is $\mathbb{Z}[S_n]=\mathbb{Z}[X]/(\Phi_n(X))$
+\end{definition}
+
+Rem: $O_{K_n}$ is a free $\mathbb{Z}$-module with rank $\phi(n)$, with basis $1,S_n,...,S_n^{\phi(n)-1}$
+Elments of $O_{K_n}$ are called \textbf{algebraic integers}.
