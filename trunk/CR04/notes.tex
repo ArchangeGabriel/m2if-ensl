@@ -1,19 +1,196 @@
 \documentclass[a4paper,10pt]{article}
+
+% Modification de la géométrie de la page
+\setlength{\textheight}{21cm} % hauteur utile de texte sur la page
+\setlength{\textwidth}{15cm}  % largeur utile de texte sur la page
+\setlength{\hoffset}{-1.5cm}  % marge supérieure
+
+% Packages pour la langue
+\usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% Packages pour les maths
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{proof}
 \usepackage{amsthm}
+\usepackage{cmll}
+\usepackage{amssymb}
+\usepackage{amscd}
+\usepackage{latexsym}
+\usepackage{txfonts}
 
+% Packages pour étendre les fonctionnalités des tableaux en latex
+\usepackage{array}
+\usepackage{booktabs}
+
+% Macros
+\newcommand{\impl}{\rightarrow}	% ->
+\newcommand{\limpl}{\multimap} % -o
+
+
+% Macros pour les paragraphes:
+\newtheorem{definition}{Definition}
+\newtheorem{prop}{Property}
+\newtheorem{theo}{Theorem}
+\newtheorem{ex}{Example}
+\newtheorem{exo}{Exercise}
+\newtheorem{rmk}{Remark}
+
+% Infos sur le documents
 \author{Patrick Baillot \and Paulin Jacobé de Naurois \\ \and (transcripted by the students)}
-
-
-\title{Implicit complexity} 
+\title{CR04 - Implicit complexity} 
 
 \begin{document}
 
 \maketitle
 
+% TODO: Faire l'introduction (début du premier cours) ???
+
+
+\part{Linear Logic}
+
+% TODO: Le background (cf premier cours)
+% Sur le system F...
+
+
+
+% ------ Chap 1 : ELL
+\section{Elementary Linear Logic}
+
+\textbf{Introduction:}\\
+In normalization, cut-elimination and $\beta$-reduction, the complexity arises from the duplication of subproofs. To tame the complexity, one possible way is to control duplication. For this, we will use the linear logic.
+
+$A \impl B \equiv ! A \limpl B$, with $\impl$ the intuitionistic implication, $\limpl$ the linear arrow and $!$ the bang connective (which control duplication).
+
+$A \limpl B$ means that A is used exactly one time in the proof/program. On the opposite, $!A$ means that the formula $A$ can be duplicated or erased at will. The sequent-calculus rules related to the $!$ are:
+\begin{center}
+$	\infer[(contraction)]{!A, \Gamma \vdash B}{!A, !A, \Gamma \vdash B} \quad
+	\infer[(weakening)]{!A, \Gamma \vdash B}{\Gamma \vdash B} \quad
+	\infer[(promotion)]{!A_{1}, ... , !A_{n} \vdash !A }{!A_{1}, ... , !A_{n} \vdash A}
+$
+\end{center}
+
+\par Linear logic is at least as expressive as system F. The idea is to constraint duplication to have a complexity bound. For that, we have to make "$!$" less powerful $\Rightarrow$ we define a weaker "$!$" connective.
+
+
+\vspace{0.3cm}
+\textbf{Elementary Linear Logic (ELL):}
+\par We define the types of ELL as: $A,B \Coloneqq \alpha \ | \ A \limpl B \ | \ !A \ | \ \forall \alpha.A \ | \ A \otimes B \ $ (but we won't use this last operator). The typing judgments are on the form: $x_1 : A_1, ..., x_n : A_n \vdash t:B$. We give rules in natural deduction style:
+
+\par ELL typing rules:\\
+\vspace{-0.2cm}
+\begin{center}
+$	\infer[(ax)]{x:A \vdash x:A}{} \quad
+	\infer[(\limpl_i)]{\Gamma \vdash \lambda x.t : A \limpl B}{\Gamma, x:A \vdash t:B} \quad
+	\infer[(\limpl_e)]{\Gamma_1, \Gamma_2 \vdash (t_1 t_2) : B}{\Gamma_1 \vdash t_1 : A \limpl B & \Gamma_2 \vdash t_2 : A }$\\
+\vspace{0.2cm}
+$	\infer[(\forall_i), \alpha \notin FV(\Gamma)]{\Gamma \vdash t:\forall \alpha.A}{\Gamma \vdash t:A} \quad
+	\infer[(\forall_e)]{\Gamma \vdash t:A[B/\alpha]}{\Gamma \vdash t:\forall \alpha.A}
+$
+\end{center}
+
+\par In binary rules, we assume that $\Gamma_1 \cap \Gamma_2 = \emptyset$ (no common variable). Thus, we obtain the \emph{Intuitionistic multiplicative linear logic (IMLL)}.
+
+
+\par In IMLL, if $t$ is typable, then any variable in $t$ occurs at least once. Moreover, the $\beta$-reduction can be performed in a linear number of steps. However, we cannot represent Church Integers in IMLL. To get ELL, we add to IMLL the following typing rules:
+
+\begin{center}
+$	\infer[(contr)]{x:!A, \Gamma \vdash t[x/x_1][x/x_2]:B}{x_1 : !A, x_2 : !A, \Gamma \vdash t : B } \quad
+	\infer[(weak)]{\Gamma, x:!A \vdash t : B}{\Gamma \vdash t:B}$ \\
+	\vspace{0.5cm}
+$	\infer[(!_i)]{x_1 : !A_1, ..., x_n : !A_n \vdash t : !B}{x_1 : A_1, ..., x_n : A_n \vdash t : B} \quad
+	\infer[(!_e)]{\Gamma_1, \Gamma_2 \vdash u[t/x] : B}{\Gamma_1 \vdash t:!A  &  x:!A,\Gamma_2 \vdash u:B}
+$
+\end{center}
+
+\par We can notice that linear logic is more general than ELL. Moreover, we have an extra rule in linear logic:
+\begin{center}
+$\infer[(dereliction)]{!A, \Gamma \vdash B}{A, \Gamma \vdash B }$
+\end{center}
+
+\par By using the dereliction and the promotion, we can derive the $(!i)$ rule of ELL. However, $(!A \limpl A)$ and $(!A \limpl !!A)$ are provable in linear logic, and not in ELL.
+
+\par If we add the general weakening rule to ELL, we obtain a new system called \emph{Elementary Affine Logic (EAL)}. This rule is:
+\begin{center}
+$\infer[(gen.weak)]{x:A, \Gamma \vdash t:B}{\Gamma \vdash t:B }$
+\end{center}
+
+Almost all properties that we will see for ELL are also valid for EAL.
+
+\begin{definition}
+$!^k A = !...! A$, with k $!$.
+\end{definition}
+
+% -----
+\vspace{0.3cm}
+\textbf{Forgetful map:}
+
+\begin{definition}[Forgetful map]
+\par We define the function $(.)^{-} : ELL \mapsto F$ by induction with:\\
+$(!A)^{-} = A^{-}$, $(A \limpl B)^{-} = A \impl B$, $\alpha^{-} = \alpha$ and $(\forall \alpha.A)^{-} = \forall \alpha.A^{-}$.
+\end{definition}
+
+\begin{prop}
+\par If $\Gamma \vdash_{ELL} t:A$ is derivable in ELL, then $\Gamma^{-} \vdash_{F} t:A^{-}$ in F
+\end{prop}
+\begin{proof}
+By induction on the ELL derivation. Just note that the following rules are derivable in F:\\
+$	\infer{\Gamma_1 , \Gamma_2 \vdash (t_1 t_2):B}{\Gamma_1 \vdash t_1 :A \impl B & \Gamma_2 \vdash t_2 : A } \quad
+	\infer{\Gamma, x:A \vdash t[x/x_1 , x/x_2] : B}{x_1 :A, x_2 :A, \Gamma \vdash t:B} \quad
+	\infer{\Gamma , x:A \vdash t : B}{\Gamma \vdash t : B} \quad
+	\infer{\Gamma_1, \Gamma_2 \vdash u[t/x] : B}{\Gamma_1 \vdash t:A  &  x:A,\Gamma_2 \vdash u:B} $
+\end{proof}
+
+\begin{definition}[Decoration]
+If $T$ is a type of system F and $A$ is a type of ELL, with $A^{-}=T$, we say that $A$ is a \emph{decoration} of $T$.
+\end{definition}
+
+\begin{rmk}
+The system we call here ELL is often called intuitionistic elementary linear logic (there is also "classical" elementary linear logic).
+\end{rmk}
+
+% -----
+\vspace{0.5cm}
+\textbf{Data-types:}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+ELL & System F \\
+\hline
+$N^{ELL} = \forall \alpha. !(\alpha \limpl \alpha) \limpl !(\alpha \limpl \alpha)$ & $N^{F} = \forall \alpha. (\alpha \impl \alpha) \impl (\alpha \impl \alpha)$\\
+\hline
+$W^{ELL} = \forall \alpha. !(\alpha \limpl \alpha) \limpl !(\alpha \limpl \alpha) \limpl !(\alpha \limpl \alpha)$ & $W^{F} = \forall \alpha. (\alpha \impl \alpha) \impl (\alpha \impl \alpha) \impl (\alpha \impl \alpha)$\\
+\hline
+\end{tabular}
+\end{center}
+
+
+\begin{ex}{Type derivation of $\vdash_{ELL} 3:N$}\\
+
+\vspace{0.3cm}
+$ \infer[(\forall_i) (\limpl_e)]{\vdash \lambda f x.(f f f x) : N^{ELL}}
+	{
+	\infer[(contr) (contr)]{f: !(\alpha \limpl \alpha) \vdash \lambda x.(f f f x) : !(\alpha \limpl \alpha)}
+		{
+		\infer[(!_i) (\limpl_i)]{1 \leq i \leq 3, f_i: !(\alpha \limpl \alpha) \vdash \lambda x. (f_1 f_2 f_3 x) : !(\alpha \limpl \alpha)}
+			{
+				\infer{1 \leq i \leq 3, f_i: !(\alpha \limpl \alpha) \vdash f_1 f_2 f_3 x : \alpha}
+				{(To do)}
+			}
+		}
+	}$
+\end{ex}
+
+
+
+
+
+
 \end{document}
 
-	
+% Guillaume: pour le moment, je fais le chapitre 1.
+
