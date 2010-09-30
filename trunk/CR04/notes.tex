@@ -28,13 +28,15 @@
 
 % Macros
 \newcommand{\impl}{\rightarrow}	% ->
-\newcommand{\limpl}{\multimap} % -o
-
+\newcommand{\limpl}{\multimap}  % -o
+\newcommand{\pnet}{\mathcal{R}} % R
+\newcommand{\Nset}{\mathbb{N}} % N entiers naturels
 
 % Macros pour les paragraphes:
 \newtheorem{definition}{Definition}
 \newtheorem{prop}{Property}
-\newtheorem{theo}{Theorem}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
 \newtheorem{ex}{Example}
 \newtheorem{exo}{Exercise}
 \newtheorem{rmk}{Remark}
@@ -124,6 +126,7 @@ Almost all properties that we will see for ELL are also valid for EAL.
 $!^k A = !...! A$, with k $!$.
 \end{definition}
 
+
 % -----
 \vspace{0.3cm}
 \textbf{Forgetful map:}
@@ -151,6 +154,7 @@ If $T$ is a type of system F and $A$ is a type of ELL, with $A^{-}=T$, we say th
 \begin{rmk}
 The system we call here ELL is often called intuitionistic elementary linear logic (there is also "classical" elementary linear logic).
 \end{rmk}
+
 
 % -----
 \vspace{0.5cm}
@@ -185,12 +189,325 @@ $ \infer[(\forall_i) (\limpl_e)]{\vdash \lambda f x.(f f f x) : N^{ELL}}
 	}$
 \end{ex}
 
+\begin{rmk}
+Note that $(N^{ELL})^{-} = N^{F}$ and $(W^{ELL})^{-} = W^{F}$. We will write $N$ (resp. $W$) instead of $N^{ELL}$ and $W^{ELL}$.\\
+Notation: $N_A = !(A \limpl A) \limpl !(A \limpl A)$
+\end{rmk}
+
+\begin{exo}
+Write the type derivation in ELL for $\vdash_{ELL} 101 : W$, where $101 = \lambda s_0 s_1 x. (s_1 s_0 s_1 x)$.
+\end{exo}
+
+\par Some examples of typed terms:\\
+$add = \lambda n. \lambda m. \lambda f. \lambda x. (n f (m f) x) : N \limpl N \limpl N$\\
+$mult = \lambda n. \lambda m. \lambda f. (n (m f)) : N \limpl N \limpl N$\\
+$square = \lambda n. \lambda f. (n (n f)) : N \limpl N$.
+
+\par Some example of type derivation: addition.\\
+\vspace{0.3cm}
+\hspace{-2.5cm}
+$ \infer[(\forall_i)]{n:N, m:N \vdash \lambda f x.(n f (m f) x) : N}
+	{
+	\infer[(\limpl_i)]{n:N , m:N \vdash \lambda f x. t : !(\alpha \limpl \alpha) \limpl !(\alpha \limpl \alpha)}
+	{
+	\infer[(contr)]{n:N , m:N, f:!(\alpha \limpl \alpha) \vdash \lambda x.t : !(\alpha \limpl \alpha)}
+		{
+			\infer{n:N , m:N, f_1:!(\alpha \limpl \alpha), f_2:!(\alpha \limpl \alpha) \vdash \lambda x. (n f_1 (m f_2) x) : !(\alpha \limpl \alpha)}
+			{
+			\infer{n:N, f_1:!(\alpha \limpl \alpha) \vdash (n f_1):!(\alpha \limpl \alpha)}
+				{
+				\infer{n:N \vdash n:!(\alpha \limpl \alpha) \limpl !(\alpha \limpl \alpha)}{\infer{n:N \vdash n:N}{}}
+				&
+				\infer{f_1:!(\alpha \limpl \alpha) \vdash f_1:!(\alpha \limpl \alpha)}{}
+				}
+			&
+			\infer{y_1,f_2:!(\alpha \limpl \alpha), m:N \vdash \lambda x.(y_1 (m f_2 x)): !(\alpha \limpl \alpha)}
+				{
+				\infer{m:N, f_2:!(\alpha\limpl\alpha) \vdash m f_2 : !(\alpha \limpl \alpha)}{ \dots }
+				&
+				\infer[!_i]{y_1, y_2:!(\alpha \limpl \alpha) \vdash \lambda x. (y_1 y_2 x):!(\alpha \limpl \alpha)}
+					{
+					\infer{y_1, y_2:(\alpha \limpl \alpha) \vdash \lambda x. (y_1 y_2 x):(\alpha \limpl \alpha)}{ \dots } 
+					}
+				}
+			}
+		}
+	}
+	}$
+
+\begin{exo}
+Write the type derivation for mult.
+\end{exo}
+
+\par Type derivation for square:
+\begin{center}
+$	\infer[\limpl_i]{\vdash square: !N \limpl !N}{
+		\infer[contr]{k:!N \vdash \lambda f.(k (k f)): !N}{
+			\infer[!_i]{n,m:!N \vdash \lambda f.(n (m f)): !N}{
+				\infer{n,m:N \vdash \lambda f.(n (m f)): N}{ (exo) }
+			}
+		}
+	}$
+\end{center}
+
+\begin{prop}
+If $\Gamma \vdash_{ELL} t:A$ and $t \rightarrow t'$ where $t'$ is in $\beta$ normal form, then we have $\Gamma \vdash t':A$.
+\end{prop}
+
+\begin{rmk}
+In general, if $t \rightarrow t'$ by one reduction step, we do not have $\Gamma \vdash t':A$
+\end{rmk}
+
+\begin{exo}
+Find a counter-example
+\end{exo}
+
+\begin{thm}
+If $\vdash_{ELL} t:N \limpl !^{k} N$, then $t$ represent an elementary function.\\
+Conversely, if $f: \Nset \mapsto \Nset$ is an elementary function, then there exist $k\in \Nset$ and a term $t$ such that $t$ represents $f$ and $\vdash_{EAL} t:N\limpl !^{k}N$
+\end{thm}
 
 
+% ------
+\vspace{0.5cm}
+\textbf{Proof-nets}
+
+\par To prove the complexity board, we will use a graphical representation for the typed terms proof nets. We use proof-nets for ELL.
+
+% TODO : Premier schéma Equivalence type dérivation/proof nets.
+
+
+\par We define the ELL proof-nets by induction: each construction step corresponds to a typing rules. Each node has a principal port marked with a $\bullet$.
+
+% TODO: liste des proofs nets
+
+\begin{ex}[Example of proof-net]
+\par Derivation for $\vdash 3:N$:\\
+
+% TODO
+
+\par Addition: $n,m:!n \vdash \lambda f x. ((n f) (m f) x): N$
+
+% TODO
+
+\end{ex}
+
+
+% -----
+\vspace{0.5cm}
+\textbf{Proof-nets reduction}
+
+\par A \emph{cut} is an edge between 2 principal ports. To reduce the cuts in a proof-net, we use the following reduction steps:
+
+% TODO: faire les 5 règles de réduction.
+
+\begin{prop}
+If $\pnet = \Pi^{*}$ where $\Pi$ is a derivation of $\Gamma \vdash_{ELL} t:A$, and $\pnet \rightarrow \pnet'$.\\
+Then, there exist $\Pi'$ derivation of $\Gamma \vdash_{ELL} t':A$ with [$t \rightarrow_{\beta} t'$ or $t=t'$] and $(\Pi')^{*}=\pnet'$.
+\end{prop}
+
+\begin{prop}
+If $\pnet = \Pi^{*}$ where $\Pi$ is a derivation of $\Gamma \vdash_{ELL} t:A$ and if $\pnet$ is on normal form, then $t$ is on normal form.
+\end{prop}
+
+\begin{exo}
+Reduce and find the related terms of:
+% TODO : le proof-net exemple
+\end{exo}
+
+\begin{rmk}[Equivalent representation]
+\par The proof nets construction are related to those presented in CR02:
+
+% TODO: la figure equivalence entre les représentations avec arêtes orientées et avec des A^{\perp}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+$\lambda$-node & $\parr$-node \\
+\hline
+@-node & $\otimes$-node \\
+\hline
+$\relbar$ & axiom node \\
+$\multimapdotboth$ & cut node \\
+\hline
+\end{tabular}
+\end{center}
+
+\end{rmk}
+
+\begin{exo}
+Take the proof-net of Add, and apply it to 2 and 3 to get 5.
+\end{exo}
+
+\begin{prop}[Stratification]
+The depth of an edge does not change during a reduction step.
+\end{prop}
+
+\begin{definition}
+We define the function $K$ such as $K(0,n)=n$ and $K(k+1,n) = 2^{K(k,n)}$.
+\end{definition}
+
+\begin{thm}
+Let $\pnet$ be an ELL proof-net of depth $d$. Then, the reduction of $\pnet$ into its normal form can be done in a number of steps, bounded by $K(d+1, |\pnet|)$.
+\end{thm}
+
+\begin{definition}
+An \emph{exponential tree} of a proof-net $\pnet$ is a subgraph of $\pnet$ which is a tree with:
+\begin{itemize}
+\item Internal nodes, which are contraction
+\item Leaves, which are (!L) nodes or (W) nodes
+\end{itemize}
+
+An \emph{active node} is a contraction node, a (!L) node or a (W) node belonging to an exponential tree whose root-edge is a cut.
+\end{definition}
+
+\par Let $\pnet$ be a proof-net, without cuts at depths $\leq (i-1)$, and with exactly one exponential cut at depth $i$. We define the relation $<_{1}$ on the (!R) nodes at depth $i$ by: $N_1 <_{1} N_2 \Leftrightarrow $\\
+
+% TODO: faire la figure.
+
+
+\par Let $<$ be the reflexive and transitive closure of $<_1$.
+
+\begin{lem}
+$<$ is a partial order on the (!L) nodes at depth i.
+\end{lem}
+\begin{proof}
+Because of the correction criterion, we have an acyclic condition.
+\end{proof}
+
+\textbf{Reduction strategy:}
+\par Among the increasing depths $i$, i-round:
+\begin{itemize}
+	\item Phase a: We suppress the $\lambda/@$-cuts and the $\forall$-cuts
+	\item Phase b: We suppress a maximal exponential cut, until there is no more exponential cut.
+\end{itemize}
+
+\begin{rmk}
+During the phase a, the number of nodes is decreasing. During the phase b, the number of active nodes is decreasing.
+\end{rmk}
+
+\begin{lem}
+\begin{itemize}
+\item If $\pnet$ is a proof-net at the beginning of a i-round, then $length(i-round) \leq 2 |\pnet|$.
+\item $|\pnet^{(i)}|_{(i+1)} \leq 2^{\dots^{2^{|\pnet|}}} = K(i+1, |\pnet|)$, with $(i+1)$ power of $2$.
+\end{itemize}
+\end{lem}
+
+\par Conclusion: the number of step is $S \leq \sum_{i=0}^{d} 2.K(i,|\pnet|) \leq 2.(d+1).K(d,|\pnet|) \leq K(d+1,|\pnet|)$. Therefore, we have the proof of thm 2.
+
+
+
+% ------
+\vspace{0.5cm}
+\textbf{Representation of a function:}
+
+\begin{definition}
+If $\vdash_{ELL} t: N \limpl !^{k} N$, then \emph{t represents} $f:\Nset \mapsto \Nset$ iff $(\forall n) (t n)$ reduces itself into $f(n)$.
+\end{definition}
+
+\begin{prop}
+If $\vdash_{ELL} t:N \limpl !^{k} N$, then t represents an elementary function.
+\end{prop}
+
+\begin{prop}
+If $f: \Nset \mapsto \Nset$ is an elementary function, then $f$ is representable in EAL.\\
+That is to say: $\exists k \in \Nset, t$ term, such that: $\Gamma \vdash_{EAL} t: N \limpl !^{k} N$ and $t$ computes $f$.
+\end{prop}
+\begin{proof}
+Admitted
+\end{proof}
+
+
+% ------
+\vspace{0.5cm}
+\textbf{Iteration in ELL:}
+
+\par We define the iteration of the type N, as in system F: $iter^N = \lambda f x n. (n f x) : !(A \limpl A) \limpl !A \limpl N \limpl !A$, for any $A$.\\
+Therefore, $iter^N step base n \rightarrow step \dots step base$, with $n$ $step$.\\
+Its type derivation is:
+\begin{center}
+$	\infer[(\limpl_i) (\limpl_i) (\limpl_i)]{\vdash iter^N: !(A \limpl A) \limpl !A \limpl N \limpl !A}{
+		\infer[(!_e)]{f:!(A \limpl A), x:!A, n:N \vdash (n f x): !A}{
+			\infer{n:N, f:!(A \limpl A) \vdash n f: !(A \limpl A)}{
+				\infer[(\forall_e)]{n:N \vdash n: !(A\limpl A) \limpl !(A \limpl A)}{
+					\infer[(ax)]{n:N \vdash n:N}{}
+				}
+				&
+				\infer[(ax)]{f:!(A\limpl A) \vdash f:!(A\limpl A)}{}
+			}
+			&
+			\infer[(!_i)]{y:!(A\limpl A), x:!A \vdash y x:!A}{
+				\infer[(\limpl_e)]{y:A\limpl A, x:A \vdash y x:A}{
+					\infer[(ax)]{y:A\limpl A \vdash y:A \limpl A}{}
+					&
+					\infer[(ax)]{x:A \vdash x:A}{}
+				}
+			}
+		}
+	}$
+\end{center}
+
+\begin{ex}
+\begin{itemize}
+\item $mult: N \limpl N \limpl N$
+\item $double=(mult 2): N \limpl N$
+\item $exp=iter^N double 1: N \limpl !N$
+\item $tower=iter^N exp 1$ is not typable in ELL ($N\limpl !N \neq A\limpl A$).
+\item Derivation of exp:
+\begin{center}
+$	\infer{\vdash iter^N double 1: N \limpl !N}{
+		\infer{\vdash iter^N double: !N \limpl N \limpl !N}{
+			\infer{\vdash iter^N: !(N\limpl N) \limpl !N \limpl N \limpl !N}{}
+			&
+			\infer[(!i)]{\vdash double:!(N\limpl n)}{\vdash double:N\limpl N}
+		}
+		&
+		\infer{\vdash 1:!N}{\infer{\vdash 1:N}{}}
+	}$
+\end{center}
+
+\item $2exp= \lambda x.(exp exp x): N \limpl !!N$ (represent $2^{2^{n}}$). Type derivation:
+\begin{center}
+$	\infer[(!_e)]{x:N \vdash exp exp x: !!N}{
+		\infer{x:N \vdash exp x: !N}{\vdash exp:N \limpl !N}
+		&
+		\infer[(!_i)]{y:!N \vdash exp y:!!N}{y:N \vdash exp y:!N}
+	}$
+\end{center}
+\end{itemize}
+
+\end{ex}
+
+
+% -----
+\vspace{0.5cm}
+\textbf{Coercions:}
+\begin{definition}
+We define: $Coerc = iter^N$ $succ$ $0: N \limpl !N$.
+\end{definition}
+
+\par We have $Coerc n \rightarrow n$.
+\par More generally, $Coerc: N \limpl !^i N$, $i\geq 1$, by taking $A=!^{(i-1)} N$ and $succ=!(!^{(i-1)} N \limpl !^{(i-1)} N)$
+\par Therefore, if $\vdash_{ELL} t: !^{i} N \limpl A$, then $t$ can be replaced with $t'$ representing the same function, with $\vdash t':N \limpl A$. For that, we take $t' = \lambda x.(t (Coerc x))$.
+
+\begin{rmk}
+This is why we considered functions of type $N \limpl !^k N$. The same property also holds for the type $W$ and the other data types.
+\end{rmk}
+
+
+
+
+% ------ Chap 2 : LLL
+\section{Light Linear Logic}
+
+% TODO: Continuer...
 
 
 
 \end{document}
 
-% Guillaume: pour le moment, je fais le chapitre 1.
+
+% FIXME:
+% - Comment on fait les soulignés? (pour signaler qu'on parle d'entier de Church). Pour le moment, je les ai omis.
+% - Il va également falloir faire toutes les figures des proof-nets => @Hugo: soit tu t'en occupes, soit tu me fais un rapide tuto de comment marche ipe... :D
+
 
