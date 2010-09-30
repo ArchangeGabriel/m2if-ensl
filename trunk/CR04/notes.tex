@@ -21,6 +21,8 @@
 \usepackage{amscd}
 \usepackage{latexsym}
 \usepackage{txfonts}
+\usepackage{graphicx}
+
 
 % Packages pour étendre les fonctionnalités des tableaux en latex
 \usepackage{array}
@@ -42,7 +44,7 @@
 \newtheorem{rmk}{Remark}
 
 % Infos sur le documents
-\author{Patrick Baillot \and Paulin Jacobé de Naurois \\ \and (transcripted by the students)}
+\author{Patrick Baillot \and Paulin Jacobé de Naurois \and (transcribed by the students)}
 \title{CR04 - Implicit complexity} 
 
 \begin{document}
@@ -52,7 +54,7 @@
 % TODO: Faire l'introduction (début du premier cours) ???
 
 
-\part{Linear Logic}
+t{Linear Logic}
 
 % TODO: Le background (cf premier cours)
 % Sur le system F...
@@ -62,7 +64,7 @@
 % ------ Chap 1 : ELL
 \section{Elementary Linear Logic}
 
-\textbf{Introduction:}\\
+\subsection{Introduction:}
 In normalization, cut-elimination and $\beta$-reduction, the complexity arises from the duplication of subproofs. To tame the complexity, one possible way is to control duplication. For this, we will use the linear logic.
 
 $A \impl B \equiv ! A \limpl B$, with $\impl$ the intuitionistic implication, $\limpl$ the linear arrow and $!$ the bang connective (which control duplication).
@@ -75,15 +77,14 @@ $	\infer[(contraction)]{!A, \Gamma \vdash B}{!A, !A, \Gamma \vdash B} \quad
 $
 \end{center}
 
-\par Linear logic is at least as expressive as system F. The idea is to constraint duplication to have a complexity bound. For that, we have to make "$!$" less powerful $\Rightarrow$ we define a weaker "$!$" connective.
+ Linear logic is at least as expressive as system F. The idea is to constraint duplication to have a complexity bound. For that, we have to make "$!$" less powerful $\Rightarrow$ we define a weaker "$!$" connective.
 
 
-\vspace{0.3cm}
-\textbf{Elementary Linear Logic (ELL):}
-\par We define the types of ELL as: $A,B \Coloneqq \alpha \ | \ A \limpl B \ | \ !A \ | \ \forall \alpha.A \ | \ A \otimes B \ $ (but we won't use this last operator). The typing judgments are on the form: $x_1 : A_1, ..., x_n : A_n \vdash t:B$. We give rules in natural deduction style:
+\subsection{Elementary Linear Logic (ELL)}
+ We define the types of ELL as: $A,B \Coloneqq \alpha \ | \ A \limpl B \ | \ !A \ | \ \forall \alpha.A \ | \ A \otimes B \ $ (but we won't use this last operator). The typing judgments are on the form: $x_1 : A_1, ..., x_n : A_n \vdash t:B$. We give rules in natural deduction style:
 
-\par ELL typing rules:\\
-\vspace{-0.2cm}
+\subsection{ELL typing rules}
+
 \begin{center}
 $	\infer[(ax)]{x:A \vdash x:A}{} \quad
 	\infer[(\limpl_i)]{\Gamma \vdash \lambda x.t : A \limpl B}{\Gamma, x:A \vdash t:B} \quad
@@ -94,10 +95,10 @@ $	\infer[(\forall_i), \alpha \notin FV(\Gamma)]{\Gamma \vdash t:\forall \alpha.A
 $
 \end{center}
 
-\par In binary rules, we assume that $\Gamma_1 \cap \Gamma_2 = \emptyset$ (no common variable). Thus, we obtain the \emph{Intuitionistic multiplicative linear logic (IMLL)}.
+In binary rules, we assume that $\Gamma_1 \cap \Gamma_2 = \emptyset$ (no common variable). Thus, we obtain the \emph{Intuitionistic multiplicative linear logic (IMLL)}.
 
 
-\par In IMLL, if $t$ is typable, then any variable in $t$ occurs at least once. Moreover, the $\beta$-reduction can be performed in a linear number of steps. However, we cannot represent Church Integers in IMLL. To get ELL, we add to IMLL the following typing rules:
+In IMLL, if $t$ is typable, then any variable in $t$ occurs at least once. Moreover, the $\beta$-reduction can be performed in a linear number of steps. However, we cannot represent Church Integers in IMLL. To get ELL, we add to IMLL the following typing rules:
 
 \begin{center}
 $	\infer[(contr)]{x:!A, \Gamma \vdash t[x/x_1][x/x_2]:B}{x_1 : !A, x_2 : !A, \Gamma \vdash t : B } \quad
@@ -108,14 +109,14 @@ $	\infer[(!_i)]{x_1 : !A_1, ..., x_n : !A_n \vdash t : !B}{x_1 : A_1, ..., x_n :
 $
 \end{center}
 
-\par We can notice that linear logic is more general than ELL. Moreover, we have an extra rule in linear logic:
+ We can notice that linear logic is more general than ELL. Moreover, we have an extra rule in linear logic:
 \begin{center}
 $\infer[(dereliction)]{!A, \Gamma \vdash B}{A, \Gamma \vdash B }$
 \end{center}
 
-\par By using the dereliction and the promotion, we can derive the $(!i)$ rule of ELL. However, $(!A \limpl A)$ and $(!A \limpl !!A)$ are provable in linear logic, and not in ELL.
+ By using the dereliction and the promotion, we can derive the $(!i)$ rule of ELL. However, $(!A \limpl A)$ and $(!A \limpl !!A)$ are provable in linear logic, and not in ELL.
 
-\par If we add the general weakening rule to ELL, we obtain a new system called \emph{Elementary Affine Logic (EAL)}. This rule is:
+ If we add the general weakening rule to ELL, we obtain a new system called \emph{Elementary Affine Logic (EAL)}. This rule is:
 \begin{center}
 $\infer[(gen.weak)]{x:A, \Gamma \vdash t:B}{\Gamma \vdash t:B }$
 \end{center}
@@ -127,17 +128,16 @@ $!^k A = !...! A$, with k $!$.
 \end{definition}
 
 
-% -----
-\vspace{0.3cm}
-\textbf{Forgetful map:}
+
+\subsection{Forgetful map}
 
 \begin{definition}[Forgetful map]
-\par We define the function $(.)^{-} : ELL \mapsto F$ by induction with:\\
+ We define the function $(.)^{-} : ELL \mapsto F$ by induction with:\\
 $(!A)^{-} = A^{-}$, $(A \limpl B)^{-} = A \impl B$, $\alpha^{-} = \alpha$ and $(\forall \alpha.A)^{-} = \forall \alpha.A^{-}$.
 \end{definition}
 
 \begin{prop}
-\par If $\Gamma \vdash_{ELL} t:A$ is derivable in ELL, then $\Gamma^{-} \vdash_{F} t:A^{-}$ in F
+ If $\Gamma \vdash_{ELL} t:A$ is derivable in ELL, then $\Gamma^{-} \vdash_{F} t:A^{-}$ in F
 \end{prop}
 \begin{proof}
 By induction on the ELL derivation. Just note that the following rules are derivable in F:\\
@@ -148,7 +148,7 @@ $	\infer{\Gamma_1 , \Gamma_2 \vdash (t_1 t_2):B}{\Gamma_1 \vdash t_1 :A \impl B 
 \end{proof}
 
 \begin{definition}[Decoration]
-If $T$ is a type of system F and $A$ is a type of ELL, with $A^{-}=T$, we say that $A$ is a \emph{decoration} of $T$.
+If $T$ is a type of system F and $A$ is a type of ELL, with $A^{-}=T$, we say that $A$ is a \textbf{decoration} of $T$.
 \end{definition}
 
 \begin{rmk}
@@ -156,9 +156,8 @@ The system we call here ELL is often called intuitionistic elementary linear log
 \end{rmk}
 
 
-% -----
-\vspace{0.5cm}
-\textbf{Data-types:}
+
+\subsection{Data-types}
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -173,10 +172,9 @@ $W^{ELL} = \forall \alpha. !(\alpha \limpl \alpha) \limpl !(\alpha \limpl \alpha
 \end{center}
 
 
-\begin{ex}{Type derivation of $\vdash_{ELL} 3:N$}\\
+\begin{ex}{Type derivation of $\vdash_{ELL} 3:N$}
 
-\vspace{0.3cm}
-$ \infer[(\forall_i) (\limpl_e)]{\vdash \lambda f x.(f f f x) : N^{ELL}}
+$$ \infer[(\forall_i) (\limpl_e)]{\vdash \lambda f x.(f f f x) : N^{ELL}}
 	{
 	\infer[(contr) (contr)]{f: !(\alpha \limpl \alpha) \vdash \lambda x.(f f f x) : !(\alpha \limpl \alpha)}
 		{
@@ -186,7 +184,7 @@ $ \infer[(\forall_i) (\limpl_e)]{\vdash \lambda f x.(f f f x) : N^{ELL}}
 				{(To do)}
 			}
 		}
-	}$
+	}$$
 \end{ex}
 
 \begin{rmk}
@@ -198,14 +196,15 @@ Notation: $N_A = !(A \limpl A) \limpl !(A \limpl A)$
 Write the type derivation in ELL for $\vdash_{ELL} 101 : W$, where $101 = \lambda s_0 s_1 x. (s_1 s_0 s_1 x)$.
 \end{exo}
 
-\par Some examples of typed terms:\\
+ Some examples of typed terms:\\
 $add = \lambda n. \lambda m. \lambda f. \lambda x. (n f (m f) x) : N \limpl N \limpl N$\\
 $mult = \lambda n. \lambda m. \lambda f. (n (m f)) : N \limpl N \limpl N$\\
 $square = \lambda n. \lambda f. (n (n f)) : N \limpl N$.
 
-\par Some example of type derivation: addition.\\
+ Some example of type derivation: addition.\\
 \vspace{0.3cm}
-\hspace{-2.5cm}
+\hspace{-1.5cm}
+\begin{small}
 $ \infer[(\forall_i)]{n:N, m:N \vdash \lambda f x.(n f (m f) x) : N}
 	{
 	\infer[(\limpl_i)]{n:N , m:N \vdash \lambda f x. t : !(\alpha \limpl \alpha) \limpl !(\alpha \limpl \alpha)}
@@ -234,12 +233,13 @@ $ \infer[(\forall_i)]{n:N, m:N \vdash \lambda f x.(n f (m f) x) : N}
 		}
 	}
 	}$
+\end{small}
 
 \begin{exo}
 Write the type derivation for mult.
 \end{exo}
 
-\par Type derivation for square:
+ Type derivation for square:
 \begin{center}
 $	\infer[\limpl_i]{\vdash square: !N \limpl !N}{
 		\infer[contr]{k:!N \vdash \lambda f.(k (k f)): !N}{
@@ -268,140 +268,165 @@ Conversely, if $f: \Nset \mapsto \Nset$ is an elementary function, then there ex
 \end{thm}
 
 
-% ------
-\vspace{0.5cm}
-\textbf{Proof-nets}
+\subsection{Proof-nets}
 
-\par To prove the complexity board, we will use a graphical representation for the typed terms proof nets. We use proof-nets for ELL.
+ To prove the complexity bound, we will use a graphical representation for the typed terms proof nets. We use proof-nets for ELL.
 
-% TODO : Premier schéma Equivalence type dérivation/proof nets.
+% TODO : Premier schéma Equivalence type dérivation/proof nets. 
+% HUGO : ??????
 
 
-\par We define the ELL proof-nets by induction: each construction step corresponds to a typing rules. Each node has a principal port marked with a $\bullet$.
+ We define the ELL proof-nets by induction: each construction step corresponds to a typing rules. Each node has a principal port marked with a $\bullet$.
 
-% TODO: liste des proofs nets
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[height=0.4\textheight]{figures/ell.pdf}
+		\caption{ELL-proof-nets}
+	\end{center}	
+\end{figure}
 
 \begin{ex}[Example of proof-net]
-\par Derivation for $\vdash 3:N$:\\
 
-% TODO
-
-\par Addition: $n,m:!n \vdash \lambda f x. ((n f) (m f) x): N$
-
-% TODO
+\begin{figure}[h]
+   \begin{minipage}[c]{.46\linewidth}
+      \includegraphics[width=0.8\linewidth]{figures/three.pdf}
+      \caption{Derivation for $\vdash 3:N$}
+   \end{minipage} \hfill
+   \begin{minipage}[c]{.46\linewidth}
+      \includegraphics[width=0.7\linewidth]{figures/add.pdf}
+      \caption{Derivation for addition: $n,m:\ !n \vdash \lambda f x. ((n f) (m f) x): N$}
+   \end{minipage}
+\end{figure}
 
 \end{ex}
 
 
-% -----
-\vspace{0.5cm}
-\textbf{Proof-nets reduction}
+\subsection{Proof-nets reduction}
 
-\par A \emph{cut} is an edge between 2 principal ports. To reduce the cuts in a proof-net, we use the following reduction steps:
+ A \textbf{cut} is an edge between 2 principal ports. To reduce the cuts in a proof-net, we use the reduction steps described by figure~\ref{fig:cut}.
 
-% TODO: faire les 5 règles de réduction.
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=\textwidth]{figures/cut.pdf}
+		\caption{The cut-reduction steps}
+		\label{fig:cut}
+	\end{center}	
+\end{figure}
 
 \begin{prop}
-If $\pnet = \Pi^{*}$ where $\Pi$ is a derivation of $\Gamma \vdash_{ELL} t:A$, and $\pnet \rightarrow \pnet'$.\\
-Then, there exist $\Pi'$ derivation of $\Gamma \vdash_{ELL} t':A$ with [$t \rightarrow_{\beta} t'$ or $t=t'$] and $(\Pi')^{*}=\pnet'$.
+	If $\pnet = \Pi^{*}$ where $\Pi$ is a derivation of $\Gamma \vdash_{ELL} t:A$, and $\pnet \rightarrow \pnet'$.\\
+	Then, there exist $\Pi'$ derivation of $\Gamma \vdash_{ELL} t':A$ with [$t \rightarrow_{\beta} t'$ or $t=t'$] and $(\Pi')^{*}=\pnet'$.
 \end{prop}
 
 \begin{prop}
-If $\pnet = \Pi^{*}$ where $\Pi$ is a derivation of $\Gamma \vdash_{ELL} t:A$ and if $\pnet$ is on normal form, then $t$ is on normal form.
+	If $\pnet = \Pi^{*}$ where $\Pi$ is a derivation of $\Gamma \vdash_{ELL} t:A$ and if $\pnet$ is on normal form, then $t$ is on normal form.
 \end{prop}
 
-\begin{exo}
+\begin{exo}\label{ex:term}
 Reduce and find the related terms of:
-% TODO : le proof-net exemple
+\begin{figure}[h]
+\begin{center}
+	\includegraphics[width=0.4\textwidth]{figures/exo1.pdf}
+	\caption{Exercise~\ref{ex:term}.}
+\end{center}
+\end{figure}
 \end{exo}
 
 \begin{rmk}[Equivalent representation]
-\par The proof nets construction are related to those presented in CR02:
+ The proof nets construction are related to those presented in CR02:
 
 % TODO: la figure equivalence entre les représentations avec arêtes orientées et avec des A^{\perp}
+%HUGO : je ne dois pas l'avoir ...
 \begin{center}
-\begin{tabular}{|c|c|}
-\hline
-$\lambda$-node & $\parr$-node \\
-\hline
-@-node & $\otimes$-node \\
-\hline
-$\relbar$ & axiom node \\
-$\multimapdotboth$ & cut node \\
-\hline
-\end{tabular}
+	\begin{tabular}{|c|c|}
+		\hline
+		$\lambda$-node & $r$-node \\
+		\hline
+		@-node & $\otimes$-node \\
+		\hline
+		$\relbar$ & axiom node \\
+		$\multimapdotboth$ & cut node \\
+		\hline
+	\end{tabular}
 \end{center}
 
 \end{rmk}
 
 \begin{exo}
-Take the proof-net of Add, and apply it to 2 and 3 to get 5.
+	Take the proof-net of Add, and apply it to 2 and 3 to get 5.
 \end{exo}
 
 \begin{prop}[Stratification]
-The depth of an edge does not change during a reduction step.
+	The depth of an edge does not change during a reduction step.
 \end{prop}
 
 \begin{definition}
-We define the function $K$ such as $K(0,n)=n$ and $K(k+1,n) = 2^{K(k,n)}$.
+	We define the function $K$ such as $K(0,n)=n$ and $K(k+1,n) = 2^{K(k,n)}$.
 \end{definition}
 
 \begin{thm}
-Let $\pnet$ be an ELL proof-net of depth $d$. Then, the reduction of $\pnet$ into its normal form can be done in a number of steps, bounded by $K(d+1, |\pnet|)$.
+	Let $\pnet$ be an ELL proof-net of depth $d$. Then, the reduction of $\pnet$ into its normal form can be done in a number of steps, bounded by $K(d+1, |\pnet|)$.
 \end{thm}
 
 \begin{definition}
-An \emph{exponential tree} of a proof-net $\pnet$ is a subgraph of $\pnet$ which is a tree with:
-\begin{itemize}
-\item Internal nodes, which are contraction
-\item Leaves, which are (!L) nodes or (W) nodes
-\end{itemize}
-
-An \emph{active node} is a contraction node, a (!L) node or a (W) node belonging to an exponential tree whose root-edge is a cut.
+	An \textbf{exponential tree} of a proof-net $\pnet$ is a subgraph of $\pnet$ which is a tree with:
+		\begin{itemize}
+			\item Internal nodes, which are contraction
+			\item Leaves, which are (!L) nodes or (W) nodes
+		\end{itemize}
 \end{definition}
 
-\par Let $\pnet$ be a proof-net, without cuts at depths $\leq (i-1)$, and with exactly one exponential cut at depth $i$. We define the relation $<_{1}$ on the (!R) nodes at depth $i$ by: $N_1 <_{1} N_2 \Leftrightarrow $\\
+\begin{definition}
+	An \textbf{active node} is a contraction node, a (!L) node or a (W) node belonging to an exponential tree whose root-edge is a cut.
+\end{definition}
 
-% TODO: faire la figure.
+\begin{definition}
+ Let $\pnet$ be a proof-net, without cuts at depths $\leq (i-1)$, and with exactly one exponential cut at depth $i$. We define the relation $<_{1}$ on the (!R) nodes at depth $i$ by: $N_1 <_{1} N_2 \Leftrightarrow $
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics{figures/lt1.pdf}
+	\end{center}	
+\end{figure}
 
 
-\par Let $<$ be the reflexive and transitive closure of $<_1$.
+ Let $<$ be the reflexive and transitive closure of $<_1$.
+
+\end{definition}
 
 \begin{lem}
-$<$ is a partial order on the (!L) nodes at depth i.
+	$<$ is a partial order on the (!L) nodes at depth i.
 \end{lem}
 \begin{proof}
-Because of the correction criterion, we have an acyclic condition.
+	Because of the correction criterion, we have an acyclic condition.
 \end{proof}
 
-\textbf{Reduction strategy:}
-\par Among the increasing depths $i$, i-round:
+\subsection{Reduction strategy:}
+ Among the increasing depths $i$, i-round:
 \begin{itemize}
 	\item Phase a: We suppress the $\lambda/@$-cuts and the $\forall$-cuts
 	\item Phase b: We suppress a maximal exponential cut, until there is no more exponential cut.
 \end{itemize}
 
 \begin{rmk}
-During the phase a, the number of nodes is decreasing. During the phase b, the number of active nodes is decreasing.
+	During the phase a, the number of nodes is decreasing. During the phase b, the number of active nodes is decreasing.
 \end{rmk}
-
+%FIXME : preuve complète ?
 \begin{lem}
-\begin{itemize}
-\item If $\pnet$ is a proof-net at the beginning of a i-round, then $length(i-round) \leq 2 |\pnet|$.
-\item $|\pnet^{(i)}|_{(i+1)} \leq 2^{\dots^{2^{|\pnet|}}} = K(i+1, |\pnet|)$, with $(i+1)$ power of $2$.
-\end{itemize}
+	\begin{itemize}
+		\item If $\pnet$ is a proof-net at the beginning of a i-round, then $length(i-round) \leq 2 |\pnet|$.
+		\item $|\pnet^{(i)}|_{(i+1)} \leq 2^{\dots^{2^{|\pnet|}}} = K(i+1, |\pnet|)$, with $(i+1)$ power of $2$.
+	\end{itemize}
 \end{lem}
 
-\par Conclusion: the number of step is $S \leq \sum_{i=0}^{d} 2.K(i,|\pnet|) \leq 2.(d+1).K(d,|\pnet|) \leq K(d+1,|\pnet|)$. Therefore, we have the proof of thm 2.
+ Conclusion: the number of step is $S \leq \sum_{i=0}^{d} 2.K(i,|\pnet|) \leq 2.(d+1).K(d,|\pnet|) \leq K(d+1,|\pnet|)$. Therefore, we have the proof of thm 2.
+%FIXME c'est quoi thm 2 ? utiliser label et ref !!!
 
 
-
-% ------
-\vspace{0.5cm}
-\textbf{Representation of a function:}
+\subsection{Representation of a function:}
 
 \begin{definition}
-If $\vdash_{ELL} t: N \limpl !^{k} N$, then \emph{t represents} $f:\Nset \mapsto \Nset$ iff $(\forall n) (t n)$ reduces itself into $f(n)$.
+If $\vdash_{ELL} t: N \limpl !^{k} N$, then $t$ \textbf{represents} $f:\Nset \mapsto \Nset$ iff $(\forall n) (t n)$ reduces itself into $f(n)$.
 \end{definition}
 
 \begin{prop}
@@ -409,19 +434,17 @@ If $\vdash_{ELL} t:N \limpl !^{k} N$, then t represents an elementary function.
 \end{prop}
 
 \begin{prop}
-If $f: \Nset \mapsto \Nset$ is an elementary function, then $f$ is representable in EAL.\\
-That is to say: $\exists k \in \Nset, t$ term, such that: $\Gamma \vdash_{EAL} t: N \limpl !^{k} N$ and $t$ computes $f$.
+	If $f: \Nset \mapsto \Nset$ is an elementary function, then $f$ is representable in EAL.\\
+	That is to say: $\exists k \in \Nset, t$ term, such that: $\Gamma \vdash_{EAL} t: N \limpl !^{k} N$ and $t$ computes $f$.
 \end{prop}
 \begin{proof}
-Admitted
+	Admitted
 \end{proof}
 
 
-% ------
-\vspace{0.5cm}
-\textbf{Iteration in ELL:}
+\subsection{Iteration in ELL}
 
-\par We define the iteration of the type N, as in system F: $iter^N = \lambda f x n. (n f x) : !(A \limpl A) \limpl !A \limpl N \limpl !A$, for any $A$.\\
+ We define the iteration of the type N, as in system F: $iter^N = \lambda f x n. (n f x) : !(A \limpl A) \limpl !A \limpl N \limpl !A$, for any $A$.\\
 Therefore, $iter^N step base n \rightarrow step \dots step base$, with $n$ $step$.\\
 Its type derivation is:
 \begin{center}
@@ -449,7 +472,7 @@ $	\infer[(\limpl_i) (\limpl_i) (\limpl_i)]{\vdash iter^N: !(A \limpl A) \limpl !
 \begin{ex}
 \begin{itemize}
 \item $mult: N \limpl N \limpl N$
-\item $double=(mult 2): N \limpl N$
+\item $double=(mult\ 2): N \limpl N$
 \item $exp=iter^N double 1: N \limpl !N$
 \item $tower=iter^N exp 1$ is not typable in ELL ($N\limpl !N \neq A\limpl A$).
 \item Derivation of exp:
@@ -478,16 +501,14 @@ $	\infer[(!_e)]{x:N \vdash exp exp x: !!N}{
 \end{ex}
 
 
-% -----
-\vspace{0.5cm}
-\textbf{Coercions:}
+\subsection{Coercions:}
 \begin{definition}
 We define: $Coerc = iter^N$ $succ$ $0: N \limpl !N$.
 \end{definition}
 
-\par We have $Coerc n \rightarrow n$.
-\par More generally, $Coerc: N \limpl !^i N$, $i\geq 1$, by taking $A=!^{(i-1)} N$ and $succ=!(!^{(i-1)} N \limpl !^{(i-1)} N)$
-\par Therefore, if $\vdash_{ELL} t: !^{i} N \limpl A$, then $t$ can be replaced with $t'$ representing the same function, with $\vdash t':N \limpl A$. For that, we take $t' = \lambda x.(t (Coerc x))$.
+ We have $Coerc n \rightarrow n$.
+ More generally, $Coerc: N \limpl !^i N$, $i\geq 1$, by taking $A=!^{(i-1)} N$ and $succ=!(!^{(i-1)} N \limpl !^{(i-1)} N)$
+ Therefore, if $\vdash_{ELL} t: !^{i} N \limpl A$, then $t$ can be replaced with $t'$ representing the same function, with $\vdash t':N \limpl A$. For that, we take $t' = \lambda x.(t (Coerc x))$.
 
 \begin{rmk}
 This is why we considered functions of type $N \limpl !^k N$. The same property also holds for the type $W$ and the other data types.
@@ -501,13 +522,14 @@ This is why we considered functions of type $N \limpl !^k N$. The same property 
 
 % TODO: Continuer...
 
-
+%figure : figures/lll.pdf
 
 \end{document}
 
 
 % FIXME:
-% - Comment on fait les soulignés? (pour signaler qu'on parle d'entier de Church). Pour le moment, je les ai omis.
+% - Comment on fait les soulignés? (pour signaler qu'on parle d'entier de Church). Pour le moment, je les ai omis. 
+% REPONSE : \underbar 
 % - Il va également falloir faire toutes les figures des proof-nets => @Hugo: soit tu t'en occupes, soit tu me fais un rapide tuto de comment marche ipe... :D
-
+% c'est (presque) tout fait. ipe c'est kikoo-lol, c'est facile. il faut juste enregistrer au format .ipe (et pas .pdf) puis compiler avec make.
 
