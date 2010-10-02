@@ -28,11 +28,23 @@
 \usepackage{array}
 \usepackage{booktabs}
 
-% Macros
+% ---- Macros ----
+
+% Logique
 \newcommand{\impl}{\rightarrow}	% ->
 \newcommand{\limpl}{\multimap}  % -o
-\newcommand{\pnet}{\mathcal{R}} % R
-\newcommand{\Nset}{\mathbb{N}} % N entiers naturels
+\newcommand{\pnet}{\mathcal{R}} % R proof-net
+
+% Général
+\newcommand{\Nset}{\mathbb{N}} % N ens des entiers
+
+% Théorie de la complexité
+\newcommand{\Mnice}{\mathcal{M}}			 % M Turing machine
+\newcommand{\clFP}{\textbf{FP}}				 % Classe FP
+\newcommand{\clP}{\textbf{P}}				 % Classe P
+\newcommand{\clElem}{\textbf{Elem}}			 % Classe Elem
+\newcommand{\clFExpT}{\textbf{FExpTime}}	 % Classe FExpTime
+
 
 % Macros pour les paragraphes:
 \newtheorem{definition}{Definition}
@@ -47,6 +59,8 @@
 \author{Patrick Baillot \and Paulin Jacobé de Naurois \and (transcribed by the students)}
 \title{CR04 - Implicit complexity} 
 
+
+
 \begin{document}
 
 \maketitle
@@ -54,12 +68,103 @@
 % TODO: Faire l'introduction (début du premier cours) ???
 
 
-t{Linear Logic}
+\part{Linear Logic}
 
-% TODO: Le background (cf premier cours)
-% Sur le system F...
+\subsection{Deterministic Turing Machines}
+
+\par Let $f:\{0;1\}^{*} \mapsto \{0;1\}^{*}$. We say that $\Mnice$ \emph{represents} $f$ iff, on input $x$, $\Mnice$ terminates after a finite number of steps, with $y=f(x)$ written on the output tape.
+
+\par Then, we define $\clFP$ as the set of function $f:\{0;1\}^{*} \mapsto \{0;1\}^{*}$ computable by a Turing machine in a polynomial time in the size of its input. We also define $\clP$ as the set of function $f:\{0;1\}^{*} \mapsto \{0;1\}$ which verify the same conditions.
+
+\begin{definition}
+The class $\clElem$ of \emph{elementary functions} is the set of functions which are computable by a Turing Machine in time $O(2^{\dots ^{2^n}}$, with $d$ power of 2, where $d$ is fixed (does not depend of n).
+\end{definition}
+
+\par Therefore, we have $\clFExpT \subseteq \clElem \subseteq$ primitive recursive functions. $\clElem$ can also be characterized as a class of functions: it is the smallest class of function $\Nset^{k} \mapsto \Nset$ which:
+\begin{itemize}
+\item contains some basic functions (0, Succ, projections...)
+\item is closed by schemes of bounded sums and products.
+\end{itemize}
 
 
+
+\subsection{System F of polymorphic types}
+
+\begin{definition}
+\item Terms of $\lambda$-calculus: $t,u,... \Coloneqq x | (t u) | \lambda x.t$
+\item System F types: $A,B,... \Coloneqq \alpha | A\impl B | \forall \alpha .A $
+\item Type judgments: $x_1:A_1, ..., x_n:A_n \vdash t:A$
+\end{definition}
+
+\par The typing rules for system F are:
+$	\infer[(ax)]{x:A \vdash x:A}{} \quad
+	\infer[(\limpl_i)]{\Gamma \vdash \lambda x.t : A \limpl B}{\Gamma, x:A \vdash t:B} \quad
+	\infer[(\limpl_e)]{\Gamma \vdash (t u) : B}{\Gamma \vdash t : A \limpl B & \Gamma \vdash u : A }$\\
+\vspace{0.2cm}
+$	\infer[(\forall_i), \alpha \notin FV(\Gamma)]{\Gamma \vdash t:\forall \alpha.A}{\Gamma \vdash t:A} \quad
+	\infer[(\forall_e)]{\Gamma \vdash t:A[B/\alpha]}{\Gamma \vdash t:\forall \alpha.A}
+$
+
+\begin{rmk}
+These rules corresponds by Curry-Howard to natural deduction in second order intuitionistic logic
+\end{rmk}
+
+\begin{ex}
+$$ \infer[(\forall_e) (B=\forall \alpha.(\alpha \impl \alpha))]{\vdash \lambda x. x: (\forall \alpha. \alpha \impl \alpha) \impl (\forall \alpha. \alpha \impl \alpha)}
+	{
+	\infer[(\forall_i)]{\vdash \lambda x.x : \forall \alpha.(\alpha \limpl \alpha)}
+		{
+		\infer[(\limpl_i)]{\vdash \lambda x.x : \alpha \limpl \alpha}
+			{
+				\infer{x:\alpha \vdash x:\alpha}{}
+			}
+		}
+	}$$
+\end{ex}
+
+
+
+\subsection{Data types}
+
+\begin{definition}
+\item Boolean Bool: $\forall \alpha.(\alpha \impl \alpha \impl \alpha)$
+\item Unary (Church) Integers: $N = \forall \alpha.(\alpha \impl \alpha) \impl (\alpha \impl \alpha)$
+\item[$\rightarrow$] $\underbar{n} = \lambda f x. f\dots f x$, with $n$ applications of $f$.
+\item Binary words: $W = \forall \alpha.(\alpha \impl \alpha) \impl (\alpha \impl \alpha) \impl (\alpha \impl \alpha)$
+\item[$\rightarrow$] $<1,0,0> = \lambda s_0 s_1 x. s_1 s_0 s_0 x$.
+\vspace{0.2cm}
+
+\item Iterators: $iter^{N} = \lambda step base n. (n step base) : (A \impl A) \impl A \impl N \impl A$
+\item[$\rightarrow$] $iter^{N} step base n \mapsto^{*} (step \dots step base)$, with $n$ $step$.
+\item $iter^{W} = \lambda step_0 step_1 base w. (w step_0 step_1 base) : (A \impl A) \impl (A \impl A) \impl A \impl W \impl A$
+\item[$\rightarrow$] $iter^{W} step_0 step_1 base <1,0,0> \mapsto^{*} step_1 step_0 step_0 base$
+\end{definition}
+
+\begin{ex}[Examples of terms]
+\item Addition: $add = \lambda n m f x.(m f (n f x))$
+\item Multiplication: $mult = \lambda n m f. (m (n f)) = \lambda n m.(iter^N (add n) \underbar{0}) m$
+\item Concatenation: $conc = \lambda w w' s_0 s_1 x. (w s_0 s_1 (w' s_0 s_1 x)) : W \impl W \impl W$
+\item Length: $\lambda w f x.(w f f w): W \impl N$
+\item Exp: $\lambda n. iter double 1 n : N \impl N$
+\item t: $\lambda n.iter^N exp 1 n: N \impl N$ represents a non-elementary function.
+\end{ex}
+
+\begin{prop}[Subject reduction]
+If $\Gamma \vdash t:A$ and $t \rightarrow^{*} t'$, then $\Gamma \vdash t':A$
+\end{prop}
+
+\begin{thm}[Girard 1972]
+If $t$ is typable in system F, then it is strongly normalizing.
+\end{thm}
+
+\par Therefore, a type derivation in F is a kind of termination certificate. In particular, if $\vdash W \impl W$ is derivable in system F, then for any word $w \in \{0;1\}^{*}$, $t \underbar{w}$ terminates, where $\underbar{w}$ represent $w$.
+
+\par Can we refine this kind of certificate in order to ensure complexity bounds instead of termination ?
+
+
+% -----------------------------------------------------------------------------------------------------
+
+\newpage
 
 % ------ Chap 1 : ELL
 \section{Elementary Linear Logic}
@@ -172,7 +277,7 @@ $W^{ELL} = \forall \alpha. !(\alpha \limpl \alpha) \limpl !(\alpha \limpl \alpha
 \end{center}
 
 
-\begin{ex}{Type derivation of $\vdash_{ELL} 3:N$}
+\begin{ex}{Type derivation of $\vdash_{ELL} \underbar{3}:N$}
 
 $$ \infer[(\forall_i) (\limpl_e)]{\vdash \lambda f x.(f f f x) : N^{ELL}}
 	{
@@ -193,7 +298,7 @@ Notation: $N_A = !(A \limpl A) \limpl !(A \limpl A)$
 \end{rmk}
 
 \begin{exo}
-Write the type derivation in ELL for $\vdash_{ELL} 101 : W$, where $101 = \lambda s_0 s_1 x. (s_1 s_0 s_1 x)$.
+Write the type derivation in ELL for $\vdash_{ELL} \underbar{101} : W$, where $\underbar{101} = \lambda s_0 s_1 x. (s_1 s_0 s_1 x)$.
 \end{exo}
 
  Some examples of typed terms:\\
@@ -274,7 +379,8 @@ Conversely, if $f: \Nset \mapsto \Nset$ is an elementary function, then there ex
 
 % TODO : Premier schéma Equivalence type dérivation/proof nets. 
 % HUGO : ??????
-
+% Guillaume: Le schéma où à gauche tu as une derivation \infer{x_1:A_1, ..., x_n:A_n \vdash t:A}{D} et à droite D^* avec une image de proof net avec des arêtes orientées A_i et A entrantes et sortante, respecivement.
+% Si tu l'as pas, je m'en occuperais plus tard, ou au pire, c'est pas une figure fondamentale...
 
  We define the ELL proof-nets by induction: each construction step corresponds to a typing rules. Each node has a principal port marked with a $\bullet$.
 
@@ -337,6 +443,8 @@ Reduce and find the related terms of:
 
 % TODO: la figure equivalence entre les représentations avec arêtes orientées et avec des A^{\perp}
 %HUGO : je ne dois pas l'avoir ...
+
+
 \begin{center}
 	\begin{tabular}{|c|c|}
 		\hline
@@ -353,7 +461,7 @@ Reduce and find the related terms of:
 \end{rmk}
 
 \begin{exo}
-	Take the proof-net of Add, and apply it to 2 and 3 to get 5.
+	Take the proof-net of Add, and apply it to $\underbar{2}$ and $\underbar{3}$ to get $\underbar{5}$.
 \end{exo}
 
 \begin{prop}[Stratification]
@@ -366,6 +474,7 @@ Reduce and find the related terms of:
 
 \begin{thm}
 	Let $\pnet$ be an ELL proof-net of depth $d$. Then, the reduction of $\pnet$ into its normal form can be done in a number of steps, bounded by $K(d+1, |\pnet|)$.
+\label{ComplexityThm}
 \end{thm}
 
 \begin{definition}
@@ -411,7 +520,9 @@ Reduce and find the related terms of:
 \begin{rmk}
 	During the phase a, the number of nodes is decreasing. During the phase b, the number of active nodes is decreasing.
 \end{rmk}
-%FIXME : preuve complète ?
+% FIXME : preuve complète ?
+% Guillaume: Je l'ai pas sur mon cours. Après, c'étais le cours en plus du Jeudi, et je n'étais pas là. Du coup, j'ai rattrapé sur Lucien. Donc, si tu as une preuve à cet endroit, n'hésite pas à la mettre...
+
 \begin{lem}
 	\begin{itemize}
 		\item If $\pnet$ is a proof-net at the beginning of a i-round, then $length(i-round) \leq 2 |\pnet|$.
@@ -419,9 +530,7 @@ Reduce and find the related terms of:
 	\end{itemize}
 \end{lem}
 
- Conclusion: the number of step is $S \leq \sum_{i=0}^{d} 2.K(i,|\pnet|) \leq 2.(d+1).K(d,|\pnet|) \leq K(d+1,|\pnet|)$. Therefore, we have the proof of thm 2.
-%FIXME c'est quoi thm 2 ? utiliser label et ref !!!
-
+ Conclusion: the number of step is $S \leq \sum_{i=0}^{d} 2.K(i,|\pnet|) \leq 2.(d+1).K(d,|\pnet|) \leq K(d+1,|\pnet|)$. Therefore, we have the proof of thm~\ref{ComplexityThm}.
 
 \subsection{Representation of a function:}
 
@@ -516,6 +625,8 @@ This is why we considered functions of type $N \limpl !^k N$. The same property 
 
 
 
+% ----------------------------------------------------------------------------------------------------------
+\newpage
 
 % ------ Chap 2 : LLL
 \section{Light Linear Logic}
@@ -528,8 +639,7 @@ This is why we considered functions of type $N \limpl !^k N$. The same property 
 
 
 % FIXME:
-% - Comment on fait les soulignés? (pour signaler qu'on parle d'entier de Church). Pour le moment, je les ai omis. 
-% REPONSE : \underbar 
 % - Il va également falloir faire toutes les figures des proof-nets => @Hugo: soit tu t'en occupes, soit tu me fais un rapide tuto de comment marche ipe... :D
 % c'est (presque) tout fait. ipe c'est kikoo-lol, c'est facile. il faut juste enregistrer au format .ipe (et pas .pdf) puis compiler avec make.
+
 
