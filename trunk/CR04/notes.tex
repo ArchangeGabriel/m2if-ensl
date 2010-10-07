@@ -65,9 +65,6 @@
 
 \maketitle
 
-% TODO: Faire l'introduction (début du premier cours) ???
-
-
 \part{Linear Logic}
 
 \subsection{Deterministic Turing Machines}
@@ -187,9 +184,6 @@ $
 
 \subsection{Elementary Linear Logic (ELL)}
  We define the types of ELL as: $A,B \Coloneqq \alpha \ | \ A \limpl B \ | \ !A \ | \ \forall \alpha.A \ | \ A \otimes B \ $ (but we won't use this last operator). The typing judgments are on the form: $x_1 : A_1, ..., x_n : A_n \vdash t:B$. We give rules in natural deduction style:
-
-\subsection{ELL typing rules}
-
 \begin{center}
 $	\infer[(ax)]{x:A \vdash x:A}{} \quad
 	\infer[(\limpl_i)]{\Gamma \vdash \lambda x.t : A \limpl B}{\Gamma, x:A \vdash t:B} \quad
@@ -376,19 +370,17 @@ Conversely, if $f: \Nset \mapsto \Nset$ is an elementary function, then there ex
 \subsection{Proof-nets}
 
  To prove the complexity bound, we will use a graphical representation for the typed terms proof nets. We use proof-nets for ELL.
-
-% TODO : Premier schéma Equivalence type dérivation/proof nets. 
-% HUGO : ??????
-% Guillaume: Le schéma où à gauche tu as une derivation \infer{x_1:A_1, ..., x_n:A_n \vdash t:A}{D} et à droite D^* avec une image de proof net avec des arêtes orientées A_i et A entrantes et sortante, respecivement.
-% Si tu l'as pas, je m'en occuperais plus tard, ou au pire, c'est pas une figure fondamentale...
+\begin{center}
+	\vspace{-0.3cm}
+	\includegraphics[scale=0.5]{figures/trad_deriv_pn.pdf}
+\end{center}
 
  We define the ELL proof-nets by induction: each construction step corresponds to a typing rules. Each node has a principal port marked with a $\bullet$.
-
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[height=0.4\textheight]{figures/ell.pdf}
+		\includegraphics[height=0.36\textheight]{figures/ell.pdf}
 		\caption{ELL-proof-nets}
-	\end{center}	
+	\end{center}
 \end{figure}
 
 \begin{ex}[Example of proof-net]
@@ -413,10 +405,10 @@ Conversely, if $f: \Nset \mapsto \Nset$ is an elementary function, then there ex
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=\textwidth]{figures/cut.pdf}
+		\includegraphics[width=0.8\textwidth]{figures/cut.pdf}
 		\caption{The cut-reduction steps}
 		\label{fig:cut}
-	\end{center}	
+	\end{center}
 \end{figure}
 
 \begin{prop}
@@ -429,11 +421,12 @@ Conversely, if $f: \Nset \mapsto \Nset$ is an elementary function, then there ex
 \end{prop}
 
 \begin{exo}\label{ex:term}
-Reduce and find the related terms of:
+Reduce and find the related terms of figure~\ref{fig:exo4}.
 \begin{figure}[h]
 \begin{center}
 	\includegraphics[width=0.4\textwidth]{figures/exo1.pdf}
 	\caption{Exercise~\ref{ex:term}.}
+	\label{fig:exo4}
 \end{center}
 \end{figure}
 \end{exo}
@@ -441,11 +434,11 @@ Reduce and find the related terms of:
 \begin{rmk}[Equivalent representation]
  The proof nets construction are related to those presented in CR02:
 
-% TODO: la figure equivalence entre les représentations avec arêtes orientées et avec des A^{\perp}
-%HUGO : je ne dois pas l'avoir ...
-
-
 \begin{center}
+	\begin{minipage}[c]{.46\linewidth}
+    	\includegraphics[width=0.8\textwidth]{figures/pn_equiv_representation.pdf}
+	\end{minipage} \hfill
+	\begin{minipage}[c]{.46\linewidth}
 	\begin{tabular}{|c|c|}
 		\hline
 		$\lambda$-node & $r$-node \\
@@ -456,8 +449,8 @@ Reduce and find the related terms of:
 		$\multimapdotboth$ & cut node \\
 		\hline
 	\end{tabular}
+	\end{minipage}
 \end{center}
-
 \end{rmk}
 
 \begin{exo}
@@ -491,12 +484,9 @@ Reduce and find the related terms of:
 
 \begin{definition}
  Let $\pnet$ be a proof-net, without cuts at depths $\leq (i-1)$, and with exactly one exponential cut at depth $i$. We define the relation $<_{1}$ on the (!R) nodes at depth $i$ by: $N_1 <_{1} N_2 \Leftrightarrow $
-
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics{figures/lt1.pdf}
-	\end{center}	
-\end{figure}
+\begin{center}
+	\includegraphics[scale=0.7]{figures/lt1.pdf}
+\end{center}
 
 
  Let $<$ be the reflexive and transitive closure of $<_1$.
@@ -639,7 +629,11 @@ This is why we considered functions of type $N \limpl !^k N$. The same property 
 
 
 % FIXME:
-% - Il va également falloir faire toutes les figures des proof-nets => @Hugo: soit tu t'en occupes, soit tu me fais un rapide tuto de comment marche ipe... :D
-% c'est (presque) tout fait. ipe c'est kikoo-lol, c'est facile. il faut juste enregistrer au format .ipe (et pas .pdf) puis compiler avec make.
+% - J'ai rajouté les figures manquantes du chapitre 1. Par contre, la différence d'épaisseur entre tes figures et les miennes viennent du latex ou de la figure elle-même?
+% (j'ai fait tous mes traits avec l'épaisseur "normal")
+
+% - La preuve complète au niveau de la sous-section "Reduction Stratégie" (il y a un Fixme à cet endroit)
+
+% J'ai agencé les figures de manière qu'elles se trouvent près de leur texte correspondant si possible... Attention, c'est fragile... :oD
 
 
