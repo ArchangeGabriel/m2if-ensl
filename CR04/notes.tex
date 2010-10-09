@@ -94,13 +94,12 @@ The class $\clElem$ of \emph{elementary functions} is the set of functions which
 \end{definition}
 
 \par The typing rules for system F are:
-$	\infer[(ax)]{x:A \vdash x:A}{} \quad
+$$	\infer[(ax)]{x:A \vdash x:A}{} \quad
 	\infer[(\limpl_i)]{\Gamma \vdash \lambda x.t : A \limpl B}{\Gamma, x:A \vdash t:B} \quad
-	\infer[(\limpl_e)]{\Gamma \vdash (t u) : B}{\Gamma \vdash t : A \limpl B & \Gamma \vdash u : A }$\\
-\vspace{0.2cm}
-$	\infer[(\forall_i), \alpha \notin FV(\Gamma)]{\Gamma \vdash t:\forall \alpha.A}{\Gamma \vdash t:A} \quad
+	\infer[(\limpl_e)]{\Gamma \vdash (t u) : B}{\Gamma \vdash t : A \limpl B & \Gamma \vdash u : A }$$ \\
+$$	\infer[(\forall_i), \alpha \notin FV(\Gamma)]{\Gamma \vdash t:\forall \alpha.A}{\Gamma \vdash t:A} \quad
 	\infer[(\forall_e)]{\Gamma \vdash t:A[B/\alpha]}{\Gamma \vdash t:\forall \alpha.A}
-$
+$$
 
 \begin{rmk}
 These rules corresponds by Curry-Howard to natural deduction in second order intuitionistic logic
@@ -616,10 +615,72 @@ This is why we considered functions of type $N \limpl !^k N$. The same property 
 
 
 % ----------------------------------------------------------------------------------------------------------
+% ----------------------------------------------------------------------------------------------------------
+% ----------------------------------------------------------------------------------------------------------
+
+
+
 \newpage
 
 % ------ Chap 2 : LLL
 \section{Light Linear Logic}
+
+\begin{ex}
+ Let us consider, for instance double (with an add inside the box and $A=N$):
+% TODO: proof-net pour double (sans rien mettre dans la !-box)
+
+ We put $n$ copies one after the others, and we reduce the two last copies:
+
+% TODO: proof-net obtenu après réduction de 2 doubles mis bout à bout.
+
+ Therefore, during reduction, contraction node $i$ eventually creates $2^i$ contraction nodes. So, eventually, $size \geq 2^n$
+\end{ex}
+
+\par To avoid this situation, we distinguish two kind of boxes: boxes with at most one auxiliary door, which are duplicable, and boxes with 2 or more auxiliary doors, which are not duplicable. So, we have to introduce a new connective $§$, called \emph{paragraph} (or \emph{neutral}). Thus, we obtain the Light Linear Logic (introduced by Girard in 1995).
+
+\subsection{Light Linear Logic (LLL)}
+\par The grammar type of LLL is: $A,B,... \Coloneqq \alpha | A \limpl B | !A | §A | \forall \alpha.A $
+
+\par Its typing rules are the same than in IMLL and ELL for (ax), ($\limpl_i$), ($\limpl_e$), ($\forall_i$) and ($\forall_e$). The (contr) and (weak) rules are the same than in ELL. In addition, we have 4 more rules in LLL which are:\\
+$	\infer[(!_i)]{x:!A \vdash t:!B}{x:A \vdash t:B} \quad
+	\infer[(!_i)]{\vdash t:!B}{\vdash t:B} \quad
+	\infer[(!_e)]{\Gamma_1,\Gamma_2 \vdash u[t/x]:B}{\Gamma_1 \vdash t:!A & x:!A,\Gamma_2 \vdash u:B} \\
+	\infer[(§_i), 0\leq k\leq n]{x_1:!A_1, ... ,x_k:!A_k, x_{k+1}:§A_{k+1}, ... ,x_n:§A_n \vdash t: B}{x_1:A_1, ... x_n:A_n \vdash t: B} \quad
+	\infer[(§_e)]{\Gamma_1,\Gamma_2 \vdash u[t/x]:B}{\Gamma_1 \vdash t:§A & x:§A,\Gamma_2 \vdash u:B} \quad
+$
+
+In particular:
+$	\infer[(§_i), k=0]{§\Gamma \vdash t: B}{\Gamma \vdash t: B} \quad
+	\infer[(§_i), k=n]{!\Gamma \vdash t: B}{\Gamma \vdash t: B}
+$
+
+\begin{ex}
+$$ \infer[(\limpl_i)]{\vdash \lambda x.x : !A \limpl §A}{
+	\infer[(§_i)]{x:!A \vdash x:§A}{x:A \vdash x:A}
+	}
+$$
+\end{ex}
+
+\par To obtain the Light Affine Logic (LAL), we just have to add to LLL the general weak rule:
+$LAL = LLL + \infer[(gen weak)]{§x:A, \Gamma \vdash t: B}{\Gamma \vdash t: B}$
+
+\par We have a forgetfull map $(.)^{o}$ between LLL and ELL which transform every $§$ in a formula into a $!$. Therefore, we have a forgetful map to system F.
+
+\begin{prop}
+If $\Gamma \vdash_{LLL}$, then $\Gamma^o \vdash_{ELL} t:A^o$
+\end{prop}
+\begin{proof}
+By induction on the LLL derivation.
+\end{proof}
+
+
+% -----
+\subsection{LLL data types}
+
+
+
+
+
 
 % TODO: Continuer...
 
