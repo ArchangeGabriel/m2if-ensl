@@ -1,24 +1,26 @@
-	\documentclass[a4paper,10pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage{amsfonts}
-\usepackage{amsmath}
-\usepackage{proof}
-\usepackage{amsthm}
+\documentclass[11pt]{article}
+\usepackage{graphicx} 
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[english]{babel}
+\usepackage{biblatex}
+\usepackage{eurosym}
+\usepackage{fullpage}
+\usepackage{palatino}
 
-\newtheorem{definition}{Definition}
-\newtheorem{theorem}{Theorem}
-\newtheorem{proposition}{Property}
-\newtheorem{lemm}{Lemma}
-\newtheorem{corollary}{Corollary}
-\newtheorem{ex}{Example}
-\newtheorem{exo}{Exercise}
-\newtheorem{rmk}{Remark}
+%\pagestyle{plain}
 
+\title{Euclidean Lattices \\ \textit{Geometry of numbers}}
 
+\author{Damien Stehle}
 
-\author{Guillaume Hanrot \and Damien Stehlé \\ \and (transcribed by the students)}
-
-\title{Cryptology} 
+\newtheorem{lemma}{Lemma}
+\newtheorem{lemm}{L}
+\newtheorem{definition}{Def}
+\newtheorem{theorem}{Thm}
+\newtheorem{proposition}{Prop}
+\newtheorem{corollary}{Cor}
 
 \begin{document} 
 
@@ -345,7 +347,7 @@ $\frac{2 z_1 - 2 z_2}{2} \in S$. (convexity)
 
 $z_1-z_2 \in S$.
 
-\item Use first part of the theorem with $S_n = S (1+ \frac{1}{n})$. Build sequence of points and use compacity (converging sub-sequence)(textbf{Left as an exercise})
+\item Use first part of the theorem with $S_n = S (1+ \frac{1}{n})$. Build sequence of points and use compacity (converging sub-sequence)(\textbf{Left as an exercise})
 \end{enumerate}
 \end{proof}
 
@@ -365,7 +367,7 @@ Or: $\forall b, \ ||b||_2 \leq \sqrt{d} ||d||_{infinity}$ ($||b||_2 = \sum b_i^2
 \end{proof}
 
 \begin{definition}
-§Let $2 \leq d$. We call \textbf{Hermite constant} the quantity $\gamma_d = sup_{L \ d-dim \ lattice} [\frac{\lambda_1 (L)}{det(L)^{1/d}}]^2$
+Let $2 \leq d$. We call \textbf{Hermite constant} the quantity $\gamma_d = sup_{L \ d-dim \ lattice} [\frac{\lambda_1 (L)}{det(L)^{1/d}}]^2$
 \end{definition}
 
 We know this quantity for only very few dimensions ($d \leq 8$ and $d=24$(Cohn, Kumar '04))
@@ -481,8 +483,8 @@ $m^{e d}=0=m (mod p)$
 \end{itemize}
 \end{proof}
 
-Consequence: In all cases, $m^{e d}= m(mod p)$. Similarly, $m^{e d}=m ()mod q$
-$\Rightarrow m^{e d}=m(mod N)$
+Consequence: In all cases, $m^{e d}= m(mod \ p)$. Similarly, $m^{e d}=m (mod \ q)$
+$\Rightarrow m^{e d}=m(mod \ N)$
 
 \textit{Hardness assumptions}
 

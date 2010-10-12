@@ -55,7 +55,7 @@ The $n^{th}$ cyclotomic field over $\mathbb{Q}$ is
 $\mathbb{Q}(S_n)=\mathbb{Q}[x]/(\Phi_n(x)):=K_n$ (The first equality comes from the irreducibility of $\Phi_n$)
 \end{definition}
 
-Computationnally speaking, the representation in the most convenient.
+Computationnally speaking, the representation is the most convenient.
 \begin{itemize}
 \item An element of $K_n$ is a polynomial with rationnal coeff. of degree $< n$
 \item Addition is ordinary. Polynomial addition.
@@ -71,4 +71,557 @@ The \textbf{ring} of integers $O_{K_n}$ of $K_n$ is $\mathbb{Z}[S_n]=\mathbb{Z}[
 \end{definition}
 
 Rem: $O_{K_n}$ is a free $\mathbb{Z}$-module with rank $\phi(n)$, with basis $1,S_n,...,S_n^{\phi(n)-1}$
-Elments of $O_{K_n}$ are called \textbf{algebraic integers}.
+Elements of $O_{K_n}$ are called \textbf{algebraic integers}.
+
+\subsection{Plongements, trace et norme} (plongement = embedding)
+
+\begin{definition}
+Les plongements de $K_n$ dans $\mathbb{C}$ sont définis par: 
+
+$\sigma_k: K_n \rightarrow \mathbb{C}$ 
+
+$\sum_{i=0}^{\phi(n)-1} x_i (\zeta)^i \mapsto \sum_{i=0}^{\phi(n)-1} x_i K^{ki} $ (où $(k,n)=1$)
+\end{definition}
+
+Dans le cas présent, ce sont des automorphismes de $K_i$, l'ensemble de ces automorphismes forme un groupe $Gal(K_n,\mathbb{Q})$.
+
+Rem: L'image d'un entier algébrique par $\sigma_k$ est un entier algébrique.
+
+But: Réaliser $O_{K_n}$ (et ses idéaux) comme sous-ensemble de $\mathbb{R}^d$.
+
+Méthode 1: "coordinate embedding"
+$\theta: K_n \rightarrow \mathbb{R}^{\phi(n)}$
+
+$\sum_{i=0}^{\phi(n)-1} x_i \zeta^i \mapsto (x_0,...,x_{\phi(n)-1})$ (où $x_i \in \mathbb{Q}$)
+
+\begin{proposition}
+$\Theta(O_{K_n})=\mathbb{Z}^{\phi(n)}$ est un réseau de rang $\phi(n)$, de volume 1.
+\end{proposition}
+Méthode 2: Plongement $T_2: K_n \rightarrow \mathbb{R}^{\phi(n)}$
+
+$x \mapsto (Re \sigma_1(x), Im \sigma_1(x),Re \sigma_2(x),...., Re \sigma_{\frac{\phi(n)}{2}}, Im \sigma_{\frac{\phi(n)}{2}})$
+
+\begin{proposition}
+$T_2(O_{K_n})$ est un réseau de rang $\phi(n)$. Son volume est appelé (au signe près) \textbf{discriminant de $K_n$} et noté $\Delta_{K_n}$.
+\end{proposition}
+
+On a $\Delta_{K_p}=p^{p-1}[(-1)^{\frac{p-1}{2}}]$ $p \in \mathbb{P}$
+
+$\Delta_{K_n}=\frac{n}{2}^{\frac{n}{2}}, n=2^k$
+
+\begin{definition}
+$x \in K_n$, $x$ induit.
+
+$m_x \in L_{\mathbb{Q}}(K_n):=$ appl $\mathbb{Q}$-linéaire sur $K_n$
+
+$m_x : K_n \rightarrow K_n$
+
+$y \mapsto xy$
+\begin{itemize}
+\item $Tr_{K/\mathbb{Q}}^-(x)=Tr(m_x)$
+\item $N_{K/\mathbb{Q}}(x)=det(m_x)$
+\item $\chi_{K/\mathbb{Q}}(x)=det(X I_{\phi(n)}-m_x)$
+\end{itemize}
+\end{definition}
+
+\begin{proposition}
+$Tr(x+y)=Tr(x)+Tr(y)$
+
+$N(xy)=N(x)+N(y)$
+\end{proposition}
+
+\begin{theorem}
+$Tr_{K/\mathbb{Q}}(x)=\sum \sigma_i(x)$
+
+$N_{K/\mathbb{Q}}(x)=\Pi \sigma_i(x)$
+
+$\chi_{K/\mathbb{Q}}(x)=\Pi(X-\sigma_i(x))$
+\end{theorem}
+
+\begin{corollary}
+$Tr_{K_p/\mathbb{Q}}(\zeta_p)=\sum_{k=1}^{p-1} \sigma_k(\zeta)=\sum_{k=1}^{p-1} \zeta^k=-1$ (Somme des racines de $\Phi_p(X)=X^{p-1}+X^{p-2}+...+1$)
+
+$Tr_{K_{2^n}/\mathbb{Q}}(\zeta_{2^n})=0$ (Somme des racines de $\Phi_{2^n}(X)=X^{2^{n-1}}+1$)
+
+$N_{K_p/\mathbb{Q}}(\zeta_p)=(-1)^{p-1}.1=1$ ($p >2$, $p \in \mathbb{P}$)
+\end{corollary}
+
+Exercise: $N_{K_p/\mathbb{Q}}(1-\zeta_p)$
+
+\begin{proposition}
+Si $x \in O_{K_n}$,
+
+$Tr(x), N(x) \in \mathbb{Z}$
+\end{proposition}
+
+\subsection{Idéaux}
+
+\begin{definition}
+Un idéal entier de $O_{K_n}$ est un sous-groupe additif $I$ de $O_{K_n}$ tel que $\forall a \in O_{K_n}, \forall x \in I, a x \in I$
+\end{definition}
+
+Ex: Idéal principal.
+
+$x \in O_{K_n}$, l'ensemble $x O_{K_n}$ est un idéal, appelé idéal principal engendré par x.
+
+\begin{definition} (Somme de deux idéaux)
+Si $I$ et $J$ sont deux idéaux entiers, $I+J=\{i+j, i \in I, j \in J\}$ est un idéal entier.
+\end{definition}
+
+\begin{definition} (Produit de deux idéaux)
+Si $I$ et $J$ sont deux idéaux entiers,
+$I J= \{ i_1 j_1+ i_2 j_2+...+ i_k j_k, (i_l,j_l) \in I*J \forall l \}$ est un idéal entier de $O_{K_n}$
+\end{definition}
+
+\begin{proposition}
+Soit $I$ un idéal entier. Alors $O_{K_n}/I$ est \textbf{fini}. Son cardinal est la norma de $I$, notée $N(I)$
+\end{proposition}
+
+\begin{proof}
+Soit $x \in I$.
+
+$N_{K / \mathbb{Q}}(x)= \sigma_1(x) \sigma_2(x).. \sigma_k(x) \in I$ ($\sigma_1(x)=x$)
+
+$\Rightarrow N_{K/\mathbb{Q}}(x) O_{K_n} \subset I$
+
+$\Rightarrow O_{K_n}/I \subset O_{K_n}/ (N_{K/\mathbb{Q}}(x) O_{K_n})$ (isomorphe à $\mathbb{Z}^{phi(n)}$, $N_{K/\mathbb{Q}}(x)=u \in \mathbb{Z}$).
+
+$O_{K_n}/I \subset \mathbb{Z}^{phi(n)}/u \mathbb{Z}^{phi(n)}$ (isomorphe à $(\mathbb{Z}/u \mathbb{Z})^{\phi(n)}$).
+
+Donc $|O_{K_n}/I|<$ \textbf{infinity}
+\end{proof}
+
+\begin{proposition}
+$I$, $J$ deux idéaux entiers. Alors 
+
+$N(IJ)=N(I) N(J)$, 
+
+$I=x O_{K_n}$, 
+
+$N(I)=|N(x)|$
+\end{proposition}
+
+\begin{theorem}
+I idéal entier. Alors $O(I)$ (resp. $T_2(I)$) est un réseau de $\mathbb{Z}^{\phi(n)}$ de volume $N(I)$ (resp. $N(I) \sqrt{|\Delta_k|}$)
+\end{theorem}
+
+\textbf{Important: plus haut, $\Delta_k$ est le carré du volume de $O_{K_n}$ dans $T_2$}
+
+\begin{definition}
+Un idéal fractionnaire est un sous-groupe additif $I$ de $O_{K_n}$ tel qu'il existe $d \in \mathbb{Z}-\{ 0 \}$ avec $d I$ idéal entier de $O_{K_n}$.
+\begin{itemize}
+\item Somme et produit d'idéaux s'étendent à ce cas
+\item $N(I)=N(d I)/d^{\phi(n)}$ où $d$ est un entier tel que $dI$ idéal entier de $O_{K_n}$. $N(I) \in \mathbb{Q}$. 
+\end{itemize}
+\end{definition}
+
+\begin{theorem}
+Tout idéal fractionnaire $I (\neq \{ 0 \})$ est inversible, ie $\exists J$ idéal fractionnaire tel que $I J = O_{K_n}$. ($J=I^{-1}=\{y \in K_n / yI \subset O_{K_n} \}$)
+\end{theorem}
+
+\subsection{Idéaux premiers, décompositions}
+
+\begin{definition}
+Un idéal entier premier est un idéal entier $I$ de $O_{K_n}$ tel que $x y \in I \Rightarrow x \in I$ ou $y \in I$
+\end{definition}
+
+De façon équivalente, $O_{K_n}/I$ est un anneau intègre.
+
+\begin{definition}
+Un idéal entier $I \neq O_{K_n}$ est \textbf{maximal} si $\forall J$ idéal entier, $I \subset J \Rightarrow J=O_{K_n}$ ou $J=I$. De façon équivalente, $O_{K_n}/I$ est un corps.
+\end{definition} 
+
+\begin{proposition}
+$I$ ($\neq O_{K_n}$) idéal entier. Alors $I$ premier $\Leftrightarrow$ $I$ maximal.
+\end{proposition}
+
+\begin{proof}
+Anneau intègre fini $\Leftrightarrow$ corps fini
+\end{proof}
+
+\begin{theorem}
+Tout idéal de $O_{K_n}$ s'écrit de manière unique, à l'ordre des facteurs près, sous la forme $\Pi_{i=1,r} \beta_i^{\alpha_i}$, $\alpha_i \in \mathbb{Z}, \beta_i$ idéal entier premier
+
+Un tel idéal est entier ssi $\alpha_i \geq 0 \forall i$
+\end{theorem}
+
+\begin{corollary}
+$I |J \Leftrightarrow J \subset I$ (où $I|J \Leftrightarrow \exists I', I I'=J$)
+\end{corollary}
+
+\begin{definition}
+Soit $\mathfrak{P}$ idéal premier de $O_{K_n}$.
+
+Alors $\mathfrak{P} \cap \mathbb{Z}$ est un idéal premier de $\mathbb{Z}$, ie $\beta \cap \mathbb{Z}= p \mathbb{Z}$.
+
+$\mathbb{Z}/p \mathbb{Z} = O_{K_n} \cap \mathbb{Z}/ \mathfrak{P} \cap \mathbb{Z} \subset O_{K_n}/ \mathfrak{P}$
+
+Sonc $O_{K_n}/ \mathfrak{P}$ est un corps fini de caractérisitique $p$, donc de la forme $CTF(p^k), k|\phi(n)$
+
+En particulier, $p \in \mathfrak{P} \Rightarrow p O_{K_n} \subset \mathfrak{P} \Rightarrow \mathfrak{P} | p O_{K_n}$.
+
+Pour décrire les idéaux prmeiers, il faut étudier la factorisation des idéaux $p O_{K_n}$
+\end{definition}
+
+Soit $p$ premier, $\exists e_i \in \mathbb{N}^*$, $\mathfrak{P}_i$ idéaux premiers tels que
+$p O_{K_n} = \Pi_{i=1}^{r} \mathfrak{P}_i^{e_i}$
+
+\begin{proposition}
+$p^{f_i}:=N \mathfrak{P}_i$
+\begin{itemize}
+\item Alors $f_i=f$ ne dépend pas de $i$.
+\item $e_i=e$ ne dépend pas de $i$.
+\end{itemize}
+
+Donc $p O_{K_n}=(\Pi_{i=1}^{r} \mathfrak{P}_i)^e$, avec $e f r= \phi(n)$.
+$p$ est dit ramifié si $e > 1$; c'est équivalent à $p | n$.
+\end{proposition}
+
+\begin{theorem}
+On suppose que
+$\Phi_n(X)=\Pi_{i=1}^{r} T_i^{e_i}(X)$ (mod p)
+est la factorisation de $\Phi_n(X) mod p$.
+
+Alors, $\mathfrak{P}_i= T_i(\zeta) O_{K_n}+p O_{K_n}$ est un idéal premier de norme $p^{deg T_i}$, et $p O_{K_n} = \Pi_{i=1}^{r} \mathfrak{P}_i^{e_i}$
+\end{theorem}
+
+\begin{proof}
+$N \mathfrak{P} = p^f \Rightarrow \mathfrak{P}$ est un idéal premier de degré $f$.
+\end{proof}
+
+\begin{corollary}
+p ne divise pas n; $w=$ l'ordre de $p$ modulo $n$. $=inf\{ k >0 / p^k$ congru à$1 mod n \}$
+Alors $p O_{K_n}=\Pi_{i=1}^{\phi(n)/w} \mathfrak{P}_i$, $f(\mathfrak{P}_i)=w$
+\end{corollary}
+
+Rm: Tout idéal est de la forme $k O_{K_n}+ \alpha O_{K_n}, k \in \mathbb{Z}, \alpha \in K_n$
+
+\subsection{FFT (Fast Fourier Transform)}
+
+Principe: On va faire de la crypto en utilisant des idéaux (presque) principaux.
+\begin{itemize}
+\item Représentation $O(n)$
+\item Calcul= produit de 2 éléments de $O_{K_n}$; $O(n log n)$
+\end{itemize}
+
+$z_1 = \sum_{i=0}^{\phi(n)-1} z_{1,i} \zeta^i \mapsto^{DFT} (\sigma_k(z_1))_{i\le k \le n \\ (k, n)=1}$
+
+$z_2 = \sum_{i=0}^{\phi(n)-1} z_{2,i} \zeta^i \mapsto^{DFT} (\sigma_k(z_2))_{i\le k \le n \\ (k, n)=1}$
+
+$(\sigma_k(z_1).\sigma_k(z_2))_{1\le k \le n \\ (k, n)=1} = (\sigma_k(z_1.z_2))_{1\le k \le n \\ (k, n)=1}$ ($n$ multiplications)
+
+$(\sigma_k(z_1.z_2))_{1\le k \le n \\ (k, n)=1} \mapsto^{DFT^{-1}} z_1.z_2$
+
+Coût total de $z_1.z_2$:
+\begin{itemize}
+	\item $2$ $DFT$
+	\item $1$ $DFT^{-1}$
+	\item $n$ multiplications
+\end{itemize}
+
+Comment calculer $DFT$ rapidement ? Via l'algorithme $FFT$.
+
+$FFT_n(Z(X))=FFT_n(\sum_{i=0}^k z_i X^i)=(z(1), z(\omega), \dots, z(\omega^{n-1}))$
+où $\omega =\exp(\frac{2i\pi}{n})$
+
+$Z(X)=Z_p(X^2) + XZ_i(X^2)$
+
+$FFT_{2n}(Z(X))=FFT_{2n}(Z_p(X^2))+FFT_{2n}(X Z_i(X^2))$
+
+$=(Z_p(1),Z_p(w_{2n}^2),...,Z_p(w_{2n}^{2n})),$
+\textbf{À compléter}
+Si $f(n)=$ coût de $FFT_n$,
+
+$f(2n)=2f(n)+O(n)$
+
+$\frac{f(2n)}{2n}=\frac{f(n)}{n}+O(1)$
+
+$\frac{f(2^k)}{2^k}=O(k) \Rightarrow f(2^k)=O(k 2^k)$
+
+et $f(n)=O(n log n)$.
+
+\begin{proposition}
+$FFT^{-1}=\frac{1}{n}* \overline{FFT}$
+
+$\overline{FFT}=FFT$ avec $\overline{w}=e^{\frac{-2 i \pi}{n}}$
+\end{proposition}
+
+Rem: Tout ça marche encore das un corps contenant les racines 2n-ièmes de l'unité. En crypto à base de réseaux, on travaille en général dans $O_{K_n}/p$ avec $p$ choisi de telle sorte qu'on ait suffisammen t de racines de l'unité dans $\mathbb{Z}/p \mathbb{Z}$ ($p$ congru à $1 mod n$). 
+
+Dans ce cas, $w_n \in \mathbb{Z}/p \mathbb{Z}$ et on ne fait que des opérations dans $\mathbb{Z}/p \mathbb{Z}$.
+$\Rightarrow O(n log n (log p)^2)$ pour une multiplication.
+
+\section{Chiffrement totalement homomorphe} (Fully Homomorphic Encryption, FHE)
+
+\subsection{Problème}
+
+Construire un système de chiffrement à clé publique KeyGen/Enc/Dec+ une fonction Evaluate telle que 
+$\forall f: (\mathbb{Z}/ 2 \mathbb{Z})^n \rightarrow (\mathbb{Z}/ 2 \mathbb{Z})^{n'}$,
+
+$\forall m \in (\mathbb{Z}/ 2 \mathbb{Z})^n | Enc(p_k,m_i)=c_i$,
+
+$Dec(s_k, Evaluate(p_k,f,c_1,...,c_n))=f(m_1,..,m_n)$
+
+Un tel système est dit homomorphe pour $f$ - Il est totalement homomorphe s'il est homomorphe pour tous les $f$.
+
+Ex: RSA homomorphe pour la multiplication modulo $N$.
+
+$f : (\mathbb{Z}/ N \mathbb{Z})*(\mathbb{Z}/ N \mathbb{Z}) \rightarrow (\mathbb{Z}/ n \mathbb{Z})$
+
+$(x,y) \mapsto x y$
+
+$f(RSA(p_k,x),RSA(p_k,y))=RSA(p_k,x) RSA(p_k,y)=(x^e \ mod \ N)(y^e \ mod \ N)=(x y)^e \ mod \ N=RSA(p_k,x y)$
+
+Mais RSA n'est pas totalement homomorphe. Pour être totalement homomorphe, il faut savoir traiter les cas f=XOR, AND.
+
+Exemple trivial: Evaluate = id (paresseuse)
+$Dec(s_k,x)=f(Dec(s_k,c_1),....,Dec(s_k,c_n))$.
+
+Pour écarter cet exemple, on demande que la sortie d'Evaluate ne donne aucune info sur $f$.
+
+\textbf{Sécurité}: On veut que le système à clé publique sous-jacent soit sémantiquement sûr.
+
+CCA2 ?
+
+$c=Enc(p_k,m)$
+
+$c'=Evaluate(p_k,+,c,Enc(p_k,m'))$
+
+On donne $c'$ à déchiffrer $\Rightarrow m + m'$
+
+On connait $m'$ $\Rightarrow$ On connaît $m$.
+
+Jamais de sécurité CCA2 dans le cas homomorphe.
+
+\subsection{Un exemple simple, sans réseaux - SWHE = Somewhat Homomorphic}
+
+Principe: Schéma de chiffrement symétrique. Clé $p \in \mathbb{N}$, $2^{\eta-1} \leq p < 2^{\eta}$
+
+Chiffrement: $m \in \{ 0 ; 1 \}$
+Choisir $p$, $q$ au hasard.
+
+$c=pq+2 r+m$
+
+Déchiffrement:
+$(c \ mod \ p) \ mod \ 2 = m$
+
+Nécessite $r < \frac{p-1}{2}$ (sinon, si $2 r=p+1$, résultat faux)
+
+Correction: 
+
+$2 r + m < p$
+
+$\Rightarrow c \ mod \ p = 2 r + m$
+
+$c \ mod \ p \ mod \ 2 =m$
+
+Variante à clé publique: On publie un grand nombre de valeurs $X_i = p q_i + 2 r_i$, $i \in [1,N]$
+
+Chiffrement: $c=m+ \sum_{i \in I} X_i, I \subset[1,N]$
+
+Déchiffrement: $c \ mod \ p \ mod \ 2$. (ça marche dès que $|I|max r_i < \frac{p-1}{2}$)
+
+Description formelle du schéma:
+
+KeyGen($\lambda$). $s_k =$ entier impair, uniforme, taille $\lambda^2$
+
+$p_k =$ Pour $i$ de $1$ à $2 \lambda^5$.
+
+Tirer $q_i$ aléatoire de $[0, \frac{2 \lambda^5}{p}]$
+
+$r_i$ aléatoire de taille $\lambda$
+
+$X_i \leftarrow p q_i + r_i$
+
+Quitte à réordonner les $X_i$, $X_0$ est le plus grand, est impar, et $X_0 \ mod \ p$ est pair.
+
+Enc: Tirer $S \subset [1, 2 \lambda^5]$. $R$ de taille $2 \lambda$. $c=m+2 R+2 \sum_{i \in S} X_i (mod \ X_0)$
+
+Evaluate: XOR : $add(c_1,c_2) \mod \ X_0$
+AND : $mul(c_1,c_2) \ mod \ X_0$
+
+Dec: $c \ mod \ p \ mod \ 2$
+
+\begin{lemma}
+$c=a p + 2 b +m$, avec $(2 b +m)\leq 2 \lambda^5 2^{2 \lambda + 3}$
+\end{lemma}
+
+$f(c_1,...,c_n)$ congru à $f(2 b_1+m_1,..., 2 b_n+m_n)$ modulo p
+
+Donc si $f(1 b_1+m_1,...,2 b_n+ m_n)<p$ alors
+
+$f(2 b_1+m_1,..,2 b_n + m_n)=f(c_1,...,c_n) \ mod \ p$
+
+$\Rightarrow f(m_1,...,m_n)=f(c_1,...,c_n) \ mod \ p \ mod \ 2$
+
+Idem pour * : Ok par récurrence sur le nombre de portes.
+
+$Dec(s_k,Evaluation(f,c_1,...c_n))=f(m_1,..m_n)$
+
+Si $f(2 b_1+m_1,...,2 b_n+m_n)<p$
+
+$2 b_i + m_i \leq 2 \lambda^5 + 2^{2 \lambda+3}$
+
+Conséquence: On sait évaluer homomorphiquement tous les circuits qui, sur des entrées de taille $\leq 2 \lambda^4 2^{2 \lambda +3}$, produisent un résultat $< 2^{\lambda^2 -1} (x p)$.
+
+Profondeur max autorisée dans des multiplications en cascade : $log_2 \lambda$
+
+\subsection{La "vraie" construction, mais SWHE}
+
+SWHE = Homomorphe pour des circuits "pas trop profonds".
+
+$\lambda$ paramètre de sécurité.
+
+$n=f(\lambda)$, $n$ de la forme $2^k$
+
+$R=O_{K_n}$
+
+(Méta)-Description:
+
+Idéal $Gen(\lambda,R)$ "tire" un idéal de $R$, avec une "bonne" base de $J$
+
+$KeyGen(\lambda,R)$: $J,B_J^{s_k} \leftarrow IdealGen(\lambda,R)$
+
+$B_I$, $I$ un idéal de $R$ tel que $I+J=R$ [I=(2) est un classique]
+
+Clé secrète: $B_J^{s_k}$
+
+Clé publique: $I, B_J^{p_k}=HNF(B_J^{s_k})$
+
+Avec une mauvaise base ($B_J^{p_k}$), je peux calculer des éléments de $J$, mais pas "réduire mod $J$" (au sens résoudre un BDD); je peux en revanche "réduire mod $J$" connaissant $B_J^{s_k}$.
+
+Chiffrement: 
+Hypothèse: Je sais encoder mon message en un élément de $P(B_I)$.
+Si $I=(2)$, $m \in \{0,1\}[X]/(X^n+1)$
+
+$Samp(x,r_Enc) \rightarrow x+ \rho, \rho \in I, x \in P(B_I), r_Enc \in \mathbb{R}^+$ t.q. $||x+p|| \leq r_Enc$
+
+[Rem. Les ||.|| sont relatives au plongement des coordonnées]
+
+$c=x+\rho mod B_J^{p_k}$
+
+$=x+ \rho - B_J^{p_k} *(Roundoff de (B_J^{p_k-1}(x+ \rho)))$ (méthode Roundoff pour trouver un vecteur proche de $x + \rho$ dans $J$).
+
+Comme $B_J^{p_k}$ est une mauvaise base, $B_J^{p_k} Roundoff(B_J^{p_k-1} (x+ \rho))$ est presque un élément aléatoire de $J$ (C'est le $p q$ de tout à l'heure)
+
+Par rapport au système simple,
+
+\begin{itemize}
+\item On peut calculer directement des éléments de $J$ connaissant $p_k$, alors qu'on ne pouvait pas calculer des mult. de $p$.
+\item Pourquoi : La donnée de p permettait de déduire $mod \ p$. Dans le cas des réseaux, on peut se donner le réseau (via une mauvaise base) sans se donner la possibilité de réduire modulo le réseau (ce qui nécessite une bonne base !)
+\end{itemize}
+
+Déchiffrement: $c \ mod \ B_J^{s_k} \ mod \ B_I$
+
+Evaluate: $(p_k,c_1,..)$
+
+$Add(c_2,c_2)=c_1+c_2 \ mod \ B_j^{p_k}$
+
+$Mult(c_2,c_2)=c_1 c_2 \ mod \ B_j^{p_k}$
+
+Correction: À quelle condition déchiffre-t-on correctement ?
+
+$c=m+\rho+j$, $j \in J$
+
+\begin{theorem}
+Ce message est déchiffré correctement si $m+p \in P(B_J^{s_k})$;
+Pour ce faire, il suffit que $||m+p|| < r_Dec$, où
+
+$r_{Dec}$ est le rayon de la plus grande boule $\leq P(B_J^{s_k})$
+\end{theorem}
+
+\begin{proof}
+$x mod B_J^{s_k}$
+
+$x = x - B_J^{s_k} [(B_J^{s_k})^{-1} x]$
+
+Quelles sont les coordonnées de $x \ mod \ B_J^{s_k}$ dans la base $B_J^{s_k}$ ?
+
+$(B_J^{s_k})^{-1}. (x \ mod \ B_J^{s_k})$
+
+$= (B_J^{s_k})^{-1} x - Roundoff((B_J^{s_k})^{-1})$
+
+$\in [- \frac{1}{2},\frac{1}{2}[$
+
+$\Rightarrow x mod B_J^{s_k}= B_J^{s_k}.([- \frac{1}{2},\frac{1}{2}[^n)=P(B_J^{s_k})$
+
+$c \ mod \ B_J^{s_k}=m+\rho+j$, $j \in J$
+
+et $c mod B_J^{s_k} \in P(B_J^{s_k})$
+
+Conséquence: si $m+\rho \in P(B_J^{s_k})$,
+
+$m+\rho = c \ ,mod \ B_J^{s_k}$
+
+Par le même argument, $m * \rho \ mod \ B_I = m$
+\end{proof}
+
+\begin{proposition}
+$B^* := (^t B_j^{s_k})^{-1}$
+Alors $r_{Dec}= \frac{1}{2 ||| B |||}$, où $|||M|||= sup ||$colonnes de M$||$
+\end{proposition}
+
+\begin{proof}
+Soit $\rho \in P(B_J^{s_k})$
+$\Leftrightarrow (B_J^{s_k})^{-1} \rho$ a toutes ses coordonnées dans $[- \frac{1}{2},\frac{1}{2}]$
+
+$\Leftrightarrow ||(B_J^{s_k})^{-1} \rho||_{infinity} < \frac{1}{2}$.
+
+$(B_J^{s_k})^{-1}=(<\gamma_i,\rho>)$, où les $\gamma_i$ sont les colonnes de $B^*$
+
+Cauchy-Schwarz:
+
+$\Rightarrow ||B_J^{-1} \rho||_{infinity} \leq (sup || \gamma_i ||) ||\rho||$.
+
+En particulier, si $||\rho|| < \frac{1}{2} ||| B^* ||| \Rightarrow ||(B_J^{s_k})^{-1}||_{infinity} < \frac{1}{2}$
+
+$\rightarrow \rho \in P(B_J^{s_k})$.
+
+Inversement, si $||\gamma_j||= sup_{1 \leq i \leq n} ||\gamma_i||$, alors $\rho=\frac{1}{2} \gamma_j$ vérifie $|| \rho || = \frac{1}{2} |||B^*|||$ et $\rho \not\in P(B_J^*)$ car sa $j^{ème}$ coordonnée dans cette base vaut $\frac{1}{2}$
+\end{proof}
+
+\textbf{Dessin !!!! Cf Hugo Feree}
+
+Idéalement, on veut $r_{Dec}$ le plus grand possible.
+
+$r_{Dec} \leq \frac{\lambda_1(L)}{2}$
+
+\begin{proposition}
+$r_{Dec}$ peut être pris $= \frac{\lambda_1(L)}{O(1)}$
+\end{proposition}
+
+\begin{proof}
+On considère $t \in \mathbb{N}$
+
+$V= t e_1 + \sigma_1$, $\sigma \in B(0,s)$
+
+$B_J^{s_k}=(X^i V)=(Rot^i(V))$
+
+$V_i=Rot^i(V)$
+
+$a \in \mathfrak{d} P(B_J^{s_k})$
+
+Alors $a=\sum \alpha_i v_i$ avec un des $\alpha_i=^+_- \frac{1}{2}$
+
+$=^+_- \frac{1}{2} v_i + \sum_{j \neq i} \alpha_j v_j$, $\alpha_j \in [-\frac{1}{2},\frac{1}{2}]$
+
+$(a,e_i)=^+_- \frac{1}{2}(v_i,e_i)+ \sum_{j  \neq i} \alpha_j (v_j,e_i)$
+
+$|(v_i,e_i)| \geq t-s$ 
+
+$|(v_j,e_i)| \leq s \Rightarrow |(a,e_i)| \geq \frac{1}{2} (t-s)- \frac{1}{2}(n-1)s$
+
+$\geq \frac{1}{2} (t-n s)$
+
+$||a||^2=\sum_{j=1}^n <a,e_j>^2 \geq <a,e_i>^2 \geq \frac{1}{4}(t-n s)^2$
+
+$||a|| \geq \frac{1}{2} (t-n s)$
+
+$r_{Dec} \geq \frac{1}{2} (t - n s)$ (En prenant $n s$ de l'ordre de $\frac{t}{2}$, on trouve $r_{Dec}$ de l'ordre de $\frac{t}{4}$, $\lambda_1(L)$ de l'ordre de $\frac{3 t}{2}$)
+
+$\lambda_1(L) \leq ||v||$ de l'ordre de $t+ n s$
+\end{proof}
+
+\subsection{Comment transformer SWHE+bootstrappable (réinitialisable) en FHE}
+
+\subsection{Comment rendre la solution de 3 réinitialisable}
