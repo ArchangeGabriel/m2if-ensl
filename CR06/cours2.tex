@@ -515,9 +515,9 @@ Déchiffrement: $c \ mod \ B_J^{s_k} \ mod \ B_I$
 
 Evaluate: $(p_k,c_1,..)$
 
-$Add(c_2,c_2)=c_1+c_2 \ mod \ B_j^{p_k}$
+$Add(c_1,c_2)=c_1+c_2 \ mod \ B_j^{p_k}$
 
-$Mult(c_2,c_2)=c_1 c_2 \ mod \ B_j^{p_k}$
+$Mult(c_1,c_2)=c_1 c_2 \ mod \ B_j^{p_k}$
 
 Correction: À quelle condition déchiffre-t-on correctement ?
 
@@ -622,6 +622,263 @@ $r_{Dec} \geq \frac{1}{2} (t - n s)$ (En prenant $n s$ de l'ordre de $\frac{t}{2
 $\lambda_1(L) \leq ||v||$ de l'ordre de $t+ n s$
 \end{proof}
 
+%% $r_Enc \leq ||m+\rho||$
+
+Les portes Add et Mult sont l'addition et la multiplication de $R/I$.
+
+Dans le cas $I=(2)$.
+
+$R/I$ isomorphe à $\mathbb{Z}/2 \mathbb{Z}$ (en tant que groupe).
+
+Add= addition bit à bit
+Mult = ?!
+
+On s'en sort en disant que le message de départ est $m \in \{0 ; 1 \}$
+
+Dans ce cas, mult sur $R/I$ est un simple Et.
+
+Et si $I \neq (2)$, $m \in \{ 0 ; 1 \}$
+Mult = $m_1 . m_2$ avec $.$ la multiplication dans $R/I$
+Not = $1-m_1$ avec $-$ l'addition dans $R/I$.
+
+\subsubsection{Limites sur le circuit évaluable}
+
+\begin{theorem}
+$C$ un polynôme en $t$ variables, de degré total $d$. L'évaluation de $C$ de façon homomorphe est possible si
+$\gamma_X^{d-1} ||C||_1 r_{Enc}^d < r_{Dec}$
+
+En particulier, si $C$ a des coefficients $\{ 0 ; 1\}$, le circuit est licite si
+
+$d \leq \frac{log r_{Dec}}{log \gamma_X^{d-1} (t-1) r_{Enc}}$
+
+où $\gamma_X = max_{u, v \in R} \frac{||u v||}{||u|| ||v||}=\sqrt{n}$ si $R= \mathbb{Z}[X]/(X^n +1)$ ($n=2^k$)
+\end{theorem}
+
+\begin{proof}
+Supposons qu'on évalue de façon homomorphe $C(x_1,...,x_n)$.
+
+$x_i$ (flèche bizarre) $ x_i + \rho_i$ (où $\rho_i \in I$) (flèche bizarre) $x_i + \rho_i + j_i$ (où $j_i \in J$).
+
+On vérifie par induction sur la structure du circuit, utilisant, qu'on calcule en réalité  $C(x_1+i_1,...,x_n+i_n)+j$, $j \in J$.
+
+Dès que $||C(x_1+i_1,...,x_n+i_n)|| < r_{Dec}$, $(*')$
+
+on a $Dec(s_k,C(x_1+i_1,...,x_n+i_n)+j)=C(x_1+i_1,....,x_n+i_n) mod \ B_I$ (par déf de $r_{Dec}$)
+
+$C(x_1+i_1,...,x_n+i_n)=C(x_1,...,x_n) mod \ B_I$
+
+et le résultat de Evaluate $(p_k, C, Enc(p_k,x_1),...,Enc(p_k,x_n))$ se déchiffre bien en $C(x_1,...,x_n) mod \ B_I$: on évalue correctement les circuits polynomiaux mod $B_I$ vérifiant $(*')$.
+
+$||C(x_1,...,x_n)||< ?$
+
+$C-u_1,...,u_n)= \sum_{\sum \alpha_i \leq d} C_{\alpha_1,...,\alpha_n} u_1^{\alpha_1}... u_n^{\alpha_n}$
+
+$||C(u_1,...,u_n)|| \leq \sum C_{\alpha_1,...,\alpha_n} || u_1^{\alpha_1}... u_n^{\alpha_n}|| \leq \sum C_{\alpha_1,...,\alpha_n}  \gamma_X^{d-1}$
+
+\textbf{À compléter}
+
+Pour $u_i = x_i + \rho_i$, $||u_i||< r_{Enc}$, d'où $||C(x_1+i_1,...,x_n+i_n) ||< ||C||_1 \gamma_X^{d-1} r_{Enc}^d$ et le calcul est correct dès que ceci est $< r_{Dec}$.
+
+Si $C$ est à coeffs $\{0;1 \}$, $||C||_1 \leq (t+1)^d$
+
+$\gamma_X = \sqrt{n} ?$
+
+$u.v = (^+_- u_i v_{n+j-i mod \ n})_{0 \leq j \ n-i}$
+
+Chacun des termes du vecteur sont $\leq ||u|| ||v||$ par Cauchy-Schwarz, donc $||u v||^2= \sum(termes)^2 \leq n||u||^2 ||v||^2$
+\end{proof}
+
+\subsubsection{Analyse de sécurité}
+
+Attaquer le schéma: étant donné $x + \rho mod B_J^{p_k}$, trouver $x+\rho$ sachant que $||x+\rho|| < r_{Enc}$
+
+$\Leftrightarrow$ étant donné $x+\rho+j, j \in J$, trouver $j$, $d(x+\rho+j,J)< r_{Enc}$
+
+BDD (bounded distance decoding)
+
+Ideal-BDDP:
+
+$Samp_1(r)$: renvoie $r \in R$
+
+$b \leftarrow \{0;1 \}$, $(B_J^{s_k},B_J^{p_k}) \leftarrow IdealGen$ (comme dans système de chiffrement)
+
+Si $b=0$, $r \leftarrow Samp_1(R), t \leftarrow r mod B_J^{p_k}$
+
+Si $b=1$, $t=Unif (R mod B_J^{p_k})$
+
+Étant donné t, l'attaquant doit deviner $b$.
+
+Principe: 
+
+Attaquer I-BDD, c'est savoir distinguer entre:
+\begin{itemize}
+\item Un élément proche de $J$ (cas $b=0$, chiffré de $0$)
+\item Un élément aléatoire $mod$ $J$ (cas $b=1$)
+\end{itemize}
+
+\begin{theorem}
+Si on sait attaquer la sécurité sémantique du système SWHE avec avantage $\epsilon$ (et $I=(s), \rho=s. Samp_1(R)$), alors on sait attaquer Ideal-BDDP aavec avantage $\geq \frac{ \epsilon}{2}$ et la même complexité.
+\end{theorem}
+
+\begin{proof}
+Idée : Je suppose que j'ai un oracle O pour attaquer la sécurité sémantique de mon système.
+
+Je reçois un défi $t$ pour I-BDDP.
+
+L'oracle, étant donné $m_0, m_1$,
+
+$Enc(p_k, m_{\beta}) \rightarrow \beta$ avec avantage $\epsilon$.
+
+
+$m_{\beta}+t s mod \ B_J^{p_k}$ est : du bruit si $b=1$, le chiffré de $m_{\beta}$ si $b=0$
+
+J'envoie $m_{\beta}+ t s mod \ B_J^{s_k}$ à mon oracle
+
+\begin{itemize}
+\item si $b=0$, l'oracle répond $\beta'=\beta$ avec avantage $\epsilon$
+\item si $b=1$, l'oracle répond $0$ ou $1$ avec probabilité $\frac{1}{2}$
+\end{itemize}
+
+Je réponds $0$ si $\beta = \beta'$, $1$ si $\beta \neq B'$ au défi IBDDP.
+
+Mon avantage est $\epsilon$ quand $b=0$, $0$ quand $b=1$,
+
+donc surtout $\epsilon * \frac{1}{2}+ 0* \frac{1}{2}= \frac{\epsilon}{2}$
+
+\end{proof}
+
+\subsubsection{Choix de paramètres}
+
+$r_{Enc}, r_{Dec}$
+
+Difficulté de BDD:
+
+"rule of thumb": approcher CVP, SVP ou BDD en dim. $n$ à un facteur $2^k$ coûte $2^{\frac{n}{k}}$
+
+Ici, le facteur d'approximation de BDD est $\frac{\lambda_1(J)}{||Samp_1(R)||}$ qui est de l'ordre de $r_{Enc}$ et $r_{Dec}$ ($||r||$, avec $r_{Enc}=||m+r s||$ avec $m \in \{0 ; 1 \}$)($s=2$ pour $I=(2)$)
+
+Le choix $r_{Enc}$ polynômial en n, $r_{Dec}$ de l'ordre de $\lambda_1(J)$, donc en $2^{O(\sqrt{n})}$ donne un facteur d'approximation $2^{O(\sqrt{n})}$, donc une difficulté $2^{O(\sqrt{n})}$.
+
+Taille des circuits évaluables de l'ordre de $\frac{1}{2} log n$
+
+\subsubsection{Une optimisation}
+
+Principe: Remplacer la clé secrète $B_J^{s_k}$ par un vecteur court $v_J^{s_k}$ de $J^{-1}$
+
+Dec: $(c-(v_J^{s_k})^{-1}. Roundoff(v_J^{s_k})) mod \ B_I$
+
+Principe: correct si $J^{-1}$ est principal, engendré par $v_J^{s_k}$; dans ce cas, $J$ est principal, engendré par $(v_J^{s_k})^{-1}$, et calculer $(v_J^{s_k})^{-1}. Roundoff(v_J^{s_k})$ est identique à calculer $(B_J^{s_k})^{-1}. Roundoff(v_J^{s_k})$ où $B_J^{s_k}=(v_J^{s_k},Rot(v_J^{s_k}),....,Rtot^{n-1}(v_J^{s_k}))$
+
+(bonne base)
+
+Si $J^{-1}$ n'est pas principal, comme $v_J^{s_k} \in J^{-1}$, $<v_J^{s_k}> \subset J^{-1} \Leftrightarrow J \subset <(v_J^{s_k})^{-1}>$
+
+On réduit modulo un réseau plus dense qui correspond au parallélogramme fondamental du réseau engendré par $(v_J^{s_k})^{-1}$. On peut montrer qu'on peut toujours choisir $v_J^{s_k}/ r_{Dec} = r_{Dec}/poly(n)$
+
 \subsection{Comment transformer SWHE+bootstrappable (réinitialisable) en FHE}
+
+Un schéma SWHE (sachant évaluer des circuits "pas trop gros") qui sait évaluer un circuit composé d'une porte $\and$ ou $\xor$ et de son propre circuit de déchiffrement peut être rendu FHE.
+
+On dit qu'il est réinitialisable.
+
+Principe:
+
+\begin{itemize}
+\item Quand on fait trop de calculs, on introduit trop de bruit (de l'ordre de $r_{Dec}$ (grand))
+\item Il faut rafraîchir les chiffrés, ie déchiffrer+rechiffrer (bruit redevient de l'ordre de $r_{Enc}$ (petit))
+\item En l'état: pas pratique
+\end{itemize}
+
+En revanche, on peut exécuter le circuit de déchiffrement de façon homomorphe.
+
+Recrypt:Nouveau couple $(pk_2,sk_2)$.
+$C=$Evaluate$(p_k,f,C_i)$
+$s_k'=$Enc$(pk_2,s_k)$
+
+$C'=Enc(pk_2,C)$
+
+$C''=$Evaluate$(pk_2,Dec,s_k',C')$
+
+\begin{prop}
+$Dec(sk_2,C'')=Dec(s_k,C)=f(m_1,...m_n)$ (en ignorant les problèmes de bruit)
+\end{prop}
+
+\begin{proof}
+$Dec(sk_2,C'')=Dec(sk_2,Evaluate(pk_2,Dec,s_k',C'))=Dec(Dec(sk_2,s_k'),Dec(sk_2,C'))=Dec(s_k,C)=Dec(s_k,Evaluate(p_k,f,c_1,...,c_n))=f(m_1,...,m_n)$
+\end{proof}
+
+Si le schéma est réinitialisable, par hypothèse le calcul est licite, ie ça marche effectivement malgré les aspects "bruit", et on peut encore évaluer une porte logique ur le résultat tout en gardant la validité du déchiffrement.
+
+On obtient un schéma FHE en faisant Recrypt après chaque porte logique.
+
+Problème (ouvert): le schéma de chiffrement/déchiffrement tel que présenté n'est pas réinitialisable, le déchiffrement coûte trop cher.
+
+Compacter le déchiffrement: Idée: Soulager le circuit de déchiffrement d'une partie du calcul.
+
+Difficulté: Imaginer que tout est fait dans le monde homomorphe. ($\Rightarrow$ pas de tests !)
+
+On va inclure dans la clé publique des indices sur la clé secrète qui permettent d'accélérer le déchiffrement.
+
+$KeyGen^*(\lambda)$
+$(s_k,p_k) \leftarrow KeyGen(\lambda)$
+$(s_k^*,\tau) \leftarrow SplitKey(s_k,p_k)$
+
+Clé publique: $(p_k,\tau)$
+Clé secrète: $s_k^*$
+
+Enc^*: $c \leftarrow Enc(p_k,m)$
+$c^* \leftarrow (c,Expand CT(p_k,c))$
+
+$Add^*$ : $(Add(c_1,c_2),Expand CT(p_k, Add(c_1,c_2)))$
+$Mult^*$ : Idem
+
+Splitkey($s_k$):
+$\tau=$ensemble $\{ t_1,...,t_{\gamma_s(n)} \}$, $t_i$ uniformes dans $J^{-1} mod \ B_I$, tel qu'il existe un ensemble $S$ de taille $\gamma_{ss(n)}$ avec
+
+$\sum_{i \in S} t_i= v_J^{s_k} mod \ I$ ($v_J^{s_k}$= vecteur court de $J^{-1}$)
+
+$s_k^*=(M)_{\gamma_{ss} \gamma_s}$ $M_{i,j}=1$ si $j$ est le $i^{ème}$ élément de $S$, $0$ sinon. 
+
+Par exemple, $t_1,...,t_{\gamma_s(n)-1}$ au hasard uniformément, choisir $S'$ de cardinal $\gamma_{ss(n)}-1$ et
+$t_{\gamma_{s(n)}}=v_J^{s_k} - \sum_{i \in S'} t_i$, $S=S' \cup \{ \gamma_S(n) \}$
+
+On repermute les $t_i$.
+
+ExpandCT($p_k,c$)
+
+renvoyer $c_i=t_i c mod \ B_I$, $i=1... \gamma_S(n)$
+
+Idée: $\sum_{i \in S} c_i = \sum_{i \in S} t_i c= c \sum_{i \in S} t_i=c b_J^{p_k}$
+
+On veut calculer Roundoff($\sum_{i \in S} c_i$)
+
+$(X_i) \leftarrow (1....1)M(c_j)$
+
+$X \leftarrow Roundoff(\sum X_i)$
+
+C'est un morceau du circuit de déchiffrement, qu'il faut exécuter de façon homomorphe.
+
+$y_1,...,y_n \in \{0;1\}$
+
+$y_1+...+y_n=\overline{z_1...z_k}$ où $z_i=poly(y_1,...,y_n)$
+
+\begin{lemma}
+$e_i(y_1,...,y_n)$ le $i^eme$ polnôme symétrique élémentaire en $y_1,...,y_n$.
+
+Alors le développement binaire de $y_1+...+y_n$ est $e_{2^k} (y_1,...y_n) mod \ 2$
+\end{lemma}
+
+\begin{proof}
+Si $w$ termes $x_i$ sont $=1$.
+
+$e_{2^k}(x_1,...,x_n)=(2^k parmi w) (mod 2)$
+\end{proof}
+
+\begin{lemma}
+La plus grande puissance de $2$ divisant $n!= \sum_{j=1}^{infini} \floor{\frac{n}{2 ^{\gamma}}}$
+\end{lemma}
+
+\begin{proof}
+\end{proof}
 
 \subsection{Comment rendre la solution de 3 réinitialisable}
