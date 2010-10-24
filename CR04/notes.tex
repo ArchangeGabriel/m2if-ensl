@@ -677,6 +677,100 @@ By induction on the LLL derivation.
 % -----
 \subsection{LLL data types}
 
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+LLL & ELL \\
+\hline
+$N^{LLL}=\forall \alpha. !(\alpha \limpl \alpha) \limpl §(\alpha \limpl \alpha)$ & $N^{ELL} = \forall \alpha. !(\alpha \limpl \alpha) \limpl !(\alpha \limpl \alpha)$\\
+\hline
+$W^{LLL}=\forall \alpha.!(\alpha \limpl \alpha) \limpl !(\alpha \limpl \alpha) \limpl §(\alpha \limpl \alpha)$ & $W^{ELL} = \forall \alpha. !(\alpha \limpl \alpha) \limpl !(\alpha \limpl \alpha)$\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{ex}[Type derivation for $\underbar{2}$]
+$$	\infer{\vdash \underbar{2}:N^{LLL}}{
+		\infer{\vdash \lambda f x. f f x : !(\alpha \limpl \alpha) \limpl §(\alpha \limpl \alpha)}{
+			\infer[(contr)]{f: !(\alpha \limpl \alpha) \vdash \lambda x. f f x : §(\alpha \limpl \alpha)}{
+				\infer[(§i)]{f_1,f_2:!(\alpha \limpl \alpha) \vdash \lambda x. f_1 f_2 x:§(\alpha \limpl \alpha)}{
+				\infer{f_1,f_2:(\alpha \limpl \alpha) \vdash \lambda x.f_1 f_2 x: \alpha \impl \alpha}{}
+				}
+			}
+		}
+	}$$
+\end{ex}
+
+\begin{ex}[Examples of typed terms]
+\item $add = \lambda n m f x.(n f (m f x)): N^{LLL} \limpl N^{LLL} \limpl N^{LLL}$
+\item $double = \lambda n f x.(n f (n f x)): N \limpl § N$
+\item $Conc = \lambda w w' s_0 s_1 x.(w s_0 s_1 (w' s_0 s_1 x)) : W \limpl W \limpl W$
+\end{ex}
+
+\begin{exo}
+Write the type derivation for $add$ in $LLL$.
+(Hint: the derivation has the same shape as the one in $ELL$, but we have to replace one $(!_i)$ by a $(§_i)$ and 2 $(!_e)$ by $(§_e)$
+\end{exo}
+
+\begin{ex}[Type derivation for double]
+$$ \infer{\vdash \lambda k.add k k: !N \limpl §N}{
+		\infer{k:!N \vdash add k k: §N}{
+			\infer[(contr)]{n:!N, m:!N \vdash add n m :§N}{
+			\infer[(§i)]{n:N, m:N \vdash add n m:N}{}
+		}
+	}
+} $$
+\end{ex}
+
+ However, $mult$ has not the type $(N \limpl N \limpl N)$ in LLL, but is represented by an other term, which is typable in LLL (intuition: (m f) has a type $§(\alpha \limpl \alpha)$ but $n$ expect an argument of type $§(\alpha \limpl \alpha)$.
+
+\begin{exo}
+Give 2 terms representing $Cons_0$ and $Cons_1$, and show that they can be given the type $W \limpl W$.
+\end{exo}
+
+
+% -----
+\subsection{Iteration in LLL}
+ We define $iter^N = \lambda f x n.(n f x): !(A \limpl A) \limpl §A \limpl N \limpl §A$.
+
+\begin{ex}
+We have $add: N \limpl N \impl N$ and $add \underbar{2} : N \limpl N$.
+So, $iter^N (add \underbar{2}) \underbar{0} : N \limpl §N $.
+$$ \infer{\vdash iter^N (add \underbar{2}) \underbar{0} : N \limpl §N}{
+		\infer{\vdash add \underbar{2} : !(N \limpl N)}{
+			\infer{\vdash add \underbar{2} : N \limpl N}{}
+		}
+		&
+		\infer{\vdash \underbar{0} : §N}{ \vdash \underbar{0} : N}
+	}$$
+\end{ex}
+
+\begin{rmk}
+If $\Gamma \vdash step: A \limpl A$, one will be able to iterate on $step$ in LLL, only if $step$ has at most one free variable (in order to apply the $(!_i)$ rule.
+\end{rmk}
+
+\begin{definition}
+Multiplication: $mult' = \lambda n m. iter^N (add n) \underbar{0} m$
+$$ \infer{\vdash \lambda n.iter^N (add n) \underbar{0} : !N \limpl N \limpl §N}{
+	\infer{ n:!N \vdash iter^N (add n) \underbar{0} : N \limpl §N}{
+		\infer{n:!N \vdash add n : !(N \limpl N)}{ n:N \vdash add n : N \limpl N}
+	&
+		\infer{\vdash \underbar{0} : §N}{ \vdash \underbar{0} : N}
+	}
+} $$
+\end{definition}
+
+\begin{exo}
+Write some typed terms representing the following functions on binary words:
+$f(<a_1, ..., a_n>) = <\overline{a_1}, ..., \overline{a_n}>$ where $\overline{0}=1$ and $\overline{1}=0$.
+$g(<a_1, ..., a_n>) = <a_1, a_1, a_2, a_2, ..., a_n, a_n>$.
+Hint: use iteration on binary words: $iter^W= \lambda f_0 f_1 x w.(w f_0 f_1 x) : !(A \limpl A) \limpl !(A \limpl A) \limpl §A \limpl W \limpl §A$.
+
+\end{exo}
+
+
+% -----
+\subsection{LLL proof nets}
 
 
 
@@ -684,17 +778,11 @@ By induction on the LLL derivation.
 
 % TODO: Continuer...
 
-%figure : figures/lll.pdf
 
 \end{document}
 
 
 % FIXME:
-% - J'ai rajouté les figures manquantes du chapitre 1. Par contre, la différence d'épaisseur entre tes figures et les miennes viennent du latex ou de la figure elle-même?
-% (j'ai fait tous mes traits avec l'épaisseur "normal")
-
-% - La preuve complète au niveau de la sous-section "Reduction Stratégie" (il y a un Fixme à cet endroit)
-
-% J'ai agencé les figures de manière qu'elles se trouvent près de leur texte correspondant si possible... Attention, c'est fragile... :oD
-
+% - La preuve complète Chap 1 au niveau de la sous-section "Reduction Stratégie" (il y a un Fixme à cet endroit)
+% Attention à l'agencement des figures chap 1 si quelqu'un la rajoute...
 
