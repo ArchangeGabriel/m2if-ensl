@@ -777,7 +777,7 @@ On réduit modulo un réseau plus dense qui correspond au parallélogramme fonda
 
 \subsection{Comment transformer SWHE+bootstrappable (réinitialisable) en FHE}
 
-Un schéma SWHE (sachant évaluer des circuits "pas trop gros") qui sait évaluer un circuit composé d'une porte $\and$ ou $\xor$ et de son propre circuit de déchiffrement peut être rendu FHE.
+Un schéma SWHE (sachant évaluer des circuits "pas trop gros") qui sait évaluer un circuit composé d'une porte $\and$ ou $\oplus$ et de son propre circuit de déchiffrement peut être rendu FHE.
 
 On dit qu'il est réinitialisable.
 
@@ -799,9 +799,9 @@ $C'=Enc(pk_2,C)$
 
 $C''=$Evaluate$(pk_2,Dec,s_k',C')$
 
-\begin{prop}
+\begin{proposition}
 $Dec(sk_2,C'')=Dec(s_k,C)=f(m_1,...m_n)$ (en ignorant les problèmes de bruit)
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 $Dec(sk_2,C'')=Dec(sk_2,Evaluate(pk_2,Dec,s_k',C'))=Dec(Dec(sk_2,s_k'),Dec(sk_2,C'))=Dec(s_k,C)=Dec(s_k,Evaluate(p_k,f,c_1,...,c_n))=f(m_1,...,m_n)$
@@ -826,7 +826,7 @@ $(s_k^*,\tau) \leftarrow SplitKey(s_k,p_k)$
 Clé publique: $(p_k,\tau)$
 Clé secrète: $s_k^*$
 
-Enc^*: $c \leftarrow Enc(p_k,m)$
+$Enc^*: c \leftarrow Enc(p_k,m)$
 $c^* \leftarrow (c,Expand CT(p_k,c))$
 
 $Add^*$ : $(Add(c_1,c_2),Expand CT(p_k, Add(c_1,c_2)))$
@@ -875,7 +875,7 @@ $e_{2^k}(x_1,...,x_n)=(2^k parmi w) (mod 2)$
 \end{proof}
 
 \begin{lemma}
-La plus grande puissance de $2$ divisant $n!= \sum_{j=1}^{infini} \floor{\frac{n}{2 ^{\gamma}}}$
+La plus grande puissance de $2$ divisant $n!= \sum_{j=1}^{infini} \lfloor \frac{n}{2 ^{\gamma}} \rfloor$
 \end{lemma}
 
 \begin{proof}
