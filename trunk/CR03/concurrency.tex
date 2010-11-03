@@ -1,0 +1,346 @@
+\part{Process calculi}
+
+\section{A basic process calculus}
+
+channels, names : $a, b, c\dots$
+Each name $a$ has a co-name $\bar a$
+
+Processes: $P::= (P\parc P) \parc \eta \parc 0$
+where $\eta = a$ or $\bar a$, $O$ is the inactive process.
+
+\subsection{Operational semantics: reduction.}
+
+\begin{definition}[Structural congruence: $\equiv$]
+	It is an equivalence relation such that: 
+	$$\infer{P \parc T \equiv Q \parc T}{P \equiv Q} \quad  \infer{P\parc 0  \equiv 0}{}\quad  \infer{P\parc Q \equiv Q \parc P}{}\quad \infer{P \parc (Q \parc R) \equiv (P \parc Q) \parc R}{}\footnote{The last two are soup laws.}$$
+\end{definition}	
+	\begin{ex}
+		$a \parc (b \parc \bar a) \equiv b \parc a \parc \bar a$
+	\end{ex}
+	
+	\textbf{Reduction:} $infer{a \parc \bar a \rightarrow 0}{}$
+	Interaction is basically synchronization.
+	$$\infer{P \equiv Q}{P \equiv P_1 & P_1 \rightarrow Q_1 & Q_1 \equiv Q}\quad \infer{P \parc Q \rightarrow P'\parc Q}{P\rightarrow P'}$$
+	
+	\begin{ex}
+		$\infer{a \parc b \parc \bar a \rightarrow b}
+		{a \parc b \parc \bar a \equiv a \parc \bar a \parc b & \infer{a \parc \bar a \parc b \rightarrow 0 \parc b}{\infer{a \parc \bar a \rightarrow 0}{}}
+		& b \equiv b}$
+	\end{ex}
+	
+	\begin{rmk}
+		In $a\parc \bar a \parc a$, we don't know which $a$ was reduced.
+	\end{rmk}
+
+\subsection{Operational semantics: labeled transition system.}
+	Judgments: $P \xrightarrow \mu  P'$. Actions: $\mu = a\parc \bar a \parc \tau$ ($\tau$ is a special constant).
+	
+	$$
+		\infer{a \xrightarrow a 0}{}\quad
+		\infer[C_1]{P \parc Q \xrightarrow \tau P' \parc Q'}{P \xrightarrow a P' & Q \xrightarrow {\bar a} Q'}\quad
+		\infer[P_1]{P\parc Q \xrightarrow \mu P'\parc Q}{P\xrightarrow \mu P'}\quad
+	$$
+	$$
+	\infer{\bar a \xrightarrow {\bar a} 0}{}\quad
+	\infer[C_2]{P \parc Q \xrightarrow \tau P' \parc Q'}{P \xrightarrow {\bar a} P' & Q \xrightarrow a Q'}	\quad{}
+	\infer[P_2]{P\parc Q \xrightarrow \mu P\parc Q'}{Q\xrightarrow \mu Q'}
+	$$
+	There are no soup laws anymore.
+	
+	\begin{lemma}[Harmony lemma]\label{lem:harmony}
+		$P\xrightarrow \tau P'$ if and only if there exists $P_1$ such that $P\rightarrow P_1$ and $P_1 \equiv P'$.
+	\end{lemma}
+	
+	
+\subsection{Behavioural equivalences}
+
+\begin{definition}[Bisimilarity $\sim$]
+	$\sim$ is the greatest symmetric relation such that whenever $P \sim Q$, if $P \xrightarrow \mu P'$, then there exists $Q'$ such that $Q\xrightarrow \mu Q'$ and $P' \sim Q'$: $$\includegraphics{figures/bisimilarity.pdf}$$
+\end{definition}
+
+	\textbf{Proof technique: bisimulation.} Find a relation $\mathcal R$ such that $$\includegraphics{figures/bisimulation.pdf}$$ Then $\mathcal R \subseteq \sim$ .
+
+	\begin{prop}
+		$\sim$ is an equivalence relation.
+		Symmetry is ok.
+		
+		Relfexivity: take ${\mathcal R} = \{(P, P)\}$.
+		
+		Transitivity: $$\includegraphics{figures/bis_trans.pdf}$$
+	\end{prop}
+	
+	\begin{lemma}[Congruence]
+		If $P\sim Q$, then $\forall T, P \parc T \sim Q\parc T$.
+	\end{lemma}
+	\begin{proof}% TODO or not to do ?
+		${\mathcal R} = \{(P \parc T, Q \parc T) \parc P\sim Q\}$. Prove that $\mathcal R$ is a bisimulation, by a case analysis ($C_1, C_2, P_1, P_2$).
+	\end{proof}
+	
+	\begin{definition}
+		Let $\mathcal R$ be a relation between processes. $\mathcal R$ is:
+		\begin{enumerate}
+			\item Reduction closed if $ \left . \begin{matrix} P \R Q \\ P \rightarrow P' \end{matrix}\right \} \Rightarrow \exists Q'	
+			\left \{ \begin{matrix} P' \R Q' \\ Q \rightarrow Q'\end{matrix} \right .$.
+				\label{one}
+			\item Context closed if  $P\R Q \Rightarrow  \forall T, (P \parc T) \R (Q \parc T)$.
+			\label{two}
+			\item Observable preserving if "$a$ appears in $P$" and $P\R Q$ implies that "$a$ appears in $Q$".
+			\label{three}
+		\end{enumerate}
+	\end{definition}
+	
+	\begin{definition}[Barbed equivalence $\simeq$]
+		$\simeq$ is the greatest symmetric relation verifying \ref{one}, \ref{two} and \ref{three}.
+	\end{definition}
+	
+	%\begin{ex}/ TODO true ???
+		%$0  \not \simeq \bar a$ (but $0 \sim \bar a$)
+	%\end{ex}
+	
+	\begin{lemma}\label{lem:equiv_sim}
+		$\equiv \subseteq \sim$
+	\end{lemma}
+	\begin{proof}
+		Easy.
+	\end{proof}
+	
+	\begin{theo}
+	$P \sim Q \Leftrightarrow P \simeq Q$
+	\end{theo}
+	\begin{proof}
+		$\sim \subseteq \simeq$:
+		
+		\begin{enumerate}
+				\item $\sim$ is reduction closed:
+				Suppose that $P \sim Q$ and $P\rightarrow P'$. Then, by the harmony lemma, $P \xrightarrow \tau P'$, and by definition of $\sim$, there exists $Q'$ such that $Q \xrightarrow Q'$ and $P' \sim Q'$. By the other implication of the harmony lemma, there exists $Q_1$ such that $Q_1 \equiv Q'$ and $Q\rightarrow Q_1$. Then, lemma~\ref{lem:equiv_sim} allows us to conclude.
+				
+				\item $\sim$ is closed by context: it has already been proved.
+				
+				\item If $a$ appears in $P$ and $P\sim Q$, then $a$ appears in $Q$.
+				\begin{lemma}[admitted]
+					If $a$ appears in $P$, then $P\xrightarrow a P'$ for some $P'$.
+				\end{lemma}
+				By this lemma, there exists $Q'$ such that $P' \sim Q'$ and $Q \xrightarrow a Q'$, which means that $a$ appears in $Q$.
+		\end{enumerate}
+		
+		$\simeq \subseteq \sim$: Suppose that $P \simeq Q$ and $P \xrightarrow a P'$.
+		Then we have: $$\includegraphics{figures/barbed_is_bisim.pdf}$$ where $\tau$ "corresponds to an $a$" and $Q \xrightarrow a Q'$.
+		For this we need the following (admitted) lemma:
+		\begin{lemma}
+			If $P \simeq Q$, then $|P|_{a} = |Q|_{a}$.
+		\end{lemma}		
+	\end{proof}
+	
+\section{Toward CCS: prefixing}
+
+$P ::= (P_1 \parc P_{2}) \parc 0 \parc \eta . P$ where $\eta = a \parc \bar a$.
+
+Interaction $=$ synchronization and the triggering of continuations: $\infer{a.P \parc \bar a .Q \rightarrow P \parc Q}{}$ and the other rules. 
+
+\textbf{Notation:} $\eta .0$ is noted $\eta$, and $a$ is $a.0$.
+
+
+\begin{ex}
+	$\bar a \parc a.b \parc \bar b \parc a {\nearrow \atop \searrow} \begin{matrix} b\parc \bar b \parc a \rightarrow a \\ a.b \parc \bar b \not\rightarrow\end{matrix}$
+\end{ex}
+
+\subsection{Labeled transition system}
+
+$\infer{a.P \xrightarrow a P}{}$ $\infer{\bar a.P \xrightarrow {\bar a} P}{}$
+
+\begin{ex}
+	$\begin{matrix}a.b &\not \sim & a \parc b \\ \not \downarrow_{b} & & \downarrow_{b} \end{matrix}$, but $a.a \sim a\parc a$. 
+	Indeed, $\mathcal R \{(a.a, a \parc a), (a, a \parc 0), (a, 0\parc a), (0, 0\parc 0)\}$ is a bisimulation.
+\end{ex}
+
+\begin{rmk}
+	$a.P\parc a.P \sim a.(P \parc a.P)$
+\end{rmk}
+
+\subsection{Behavioural equivalences}
+
+We explicit the third condition of the barbed equivalence: $a$ appears in $P$ if $P \equiv a.P_{1} \parc P_{2}$.
+
+\begin{theo}
+	$\sim = \simeq$
+\end{theo}
+\begin{proof}
+	$\begin{matrix} P & \simeq & Q \\ \downarrow_{a} & & \\ P' & & \end{matrix}$
+	Let $c$ be a fresh name. 
+	By definition of $\simeq$, $P\parc \bar a. \parc c.0 \parc c.1000 \simeq Q\parc \bar a. \parc c.0 \parc c.1000$, where $1000$ represents a process which has a big sequence of reduction (big compared to the size of the reduction sequences beginning from $P$ or $Q$).%
+	The left one reduces to $P' \parc \bar a. \parc c.0 \parc c.1000$. This enforces $Q$ to interact with $\bar a$. %TODO: finish
+\end{proof}
+
+\section{Finite public $\pi$-calculus}
+
+This calculus adds name passing and substitution.
+
+$P ::= (P_{1} \parc P_{2}) \parc 0\parc \eta.P$, with $\eta = \bar a<b> \parc a(b)$
+
+$a(b)$: input on $a$ of channel $b$
+
+$\bar a <b>$: output of $b$ on $a$.
+
+$\infer{a(x).P \parc \bar <b> .Q \rightarrow P[b/x]\parc Q}{}$
+
+
+\begin{ex}
+	\begin{itemize}
+			\item forwarder: $a(x).\bar b <x>.0$ (receives $x$ on $a$ and forwards it on $b$)
+			\item pointers: $\bar a <c>. \bar c <t> .0 \parc a(x).x(y).P \rightarrow \bar c<t>.0 \parc c.(y).P \rightarrow 0.\parc P[c/x][t/y]$
+			\item if then else: $a(x).(\bar x <t> | b(y).P_{1} | c(z).Q_{2})$
+	\end{itemize}
+\end{ex}
+
+%LTS: later (?)
+
+\textbf{Notation} $\bar a<b>.P$ can also be noted $\bar a b.P$.
+
+\subsection{Diadic $\pi$-calculus}
+$\eta = a(x, y) \parc \bar a <x, y>$
+
+There is an encoding $\interp{}$ of $\Pi_{2}$ into $\Pi_{1}$:
+% give the first ideas ?
+$\interp{\bar a <b, c>.P} = \bar a n.\bar n b.\bar n c.\interp{P}$ with $n$ fresh.
+$\interp{a(x,y).Q} = a(p).p(x).p(y).\interp{Q}$ with $p$ fresh in $Q$.
+
+\section{Finite $\pi$-calculus}
+
+$P=0 \parc (P_1 \parc P_2) \parc \eta P \parc (\Nu c) P$
+with $\eta = a(x) \parc \bar a<b>$
+
+$\Nu c$ is a restriction (such as the input): in $\Nu c P$, $c$ is private to $P$ (\ie only known by $P$).
+
+This restriction is a binder: $(\Nu c) P \equiv_\alpha (\Nu c') P[c'/c]$ if $c'\not \in fn(P)$. \footnote{$fn(P)$ is the set of names which are free in $P$.}
+
+%only the first one (?)
+\begin{prop}
+\begin{itemize}
+	\item scope extrusion: $a(x).P \parc (\Nu c) \bar a<c>. Q \rightarrow \Nu c (P[c/x]\parc Q)$
+	\item $P \parc (\Nu c) Q \equiv (\Nu c) (P \parc Q)$ if $c\not \in fn(P)$
+	\item $(\Nu c)(\Nu d) P \equiv (\Nu d)(\Nu c) P$ in general, we write $(\Nu \tilde c)P$, with $\tilde c$ a tuple of names.
+\end{itemize}
+\end{prop}
+
+\subsection{Reduction}
+The same plus: $\infer{(\Nu c) P \rightarrow (\Nu c) P'}{P \rightarrow P'}$
+
+\begin{proof}{of scope extrusion}
+$$\infer[\equiv]{a(x).P\parc (\Nu c) \bar a<c>.Q \rightarrow (\Nu c)(P[c/X] \parc Q)}
+	{
+		\infer[\Nu]{(\Nu c)(a(x).P\parc \bar a<c>.Q)\rightarrow (\Nu c)(P[c/x]\parc Q)}	
+		{
+			\infer{a(x).P\parc \bar a<c>.Q\rightarrow P[c/x]\parc Q}{}
+		}
+	}
+$$
+
+\end{proof}	
+
+\subsection{Diadic communication}
+
+$\interp{\bar a<b, c>.P} = (\Nu n)(\bar a<n>.\bar n<b>.\bar n<c>.\interp{P})$
+$\interp{a(b, c).Q} = a(t).t(x).t(y).\interp{Q}$
+
+%\begin{ex} 
+%hello, ack, key ... TODO ?
+%\end{ex}
+
+Here we have a lot of interactions: synchronisation, triggering of continuation, name passing and scope extrusion\footnote{The last two represent name mobility.}.
+
+\begin{ex}
+	If $c \not \in fn(P)$, $(\Nu c) P \equiv P$:
+$(\Nu c) P \equiv (\Nu c)(P\parc 0) \equiv P\parc (\Nu c) 0 \equiv P\parc 0\equiv P$\footnote{we need to add the rule $(\Nu c) 0 \equiv 0$}
+\end{ex}
+
+\subsection{Behavioural equivalences}
+
+\textbf{Barbed equivalence:}
+\begin{enumerate}
+	\item Nothing to change.
+	\item contexts: $C[] ::= ([]\parc T)\parc (T\parc []) \parc (\Nu c)[]\parc a(x).[]$
+	\item observability: $P\downarrow_a = (\Nu \tilde c)(a(x).P_1\parc P_2)$
+for some $\tilde c$, $P_1$ and $P_2$ such that $a\not\in \tilde c$\footnote{and the similar definition with $\bar a$.}
+\end{enumerate}
+
+\begin{prop}[behavioural law]
+	$$(\Nu t )(\bar a <t>.\bar t<c>.Q)\simeq (\Nu t)(\bar a<t> \parc \bar t<c>.Q)$$
+\end{prop}
+
+\section{Asynchronous $\pi$-calculus ($A\Pi$)}
+
+$P ::= 0 \parc (P_1\parc P_2)\parc a(x).P \parc \bar a b$: there is no continuation after an output. $\bar a b$ can be viewed as a message.
+
+\begin{rmk}
+	$A\Pi \subseteq \Pi$ ($\bar a b$ is equivalent to $\bar a b.0$)
+\end{rmk}
+
+\begin{exo}{Program $\Pi$ into $A\Pi_2$}
+	$\interp{\bar a b.P} =  \Nu r(\bar a<b, r>.r(z).\interp{P})$
+with $z, r$ fresh for $P$
+	$\interp{a(x).Q} = a(x, z).(\bar z<t>.\interp{Q})$
+with $z$ fresh for $Q$
+\end{exo}
+
+\section{$\pi$-calculus}
+
+$P ::= \dots  \parc !a(x).P$
+
+$!$ is the replication operator.
+
+$\interp{!a(x).P\parc \bar a<b>.Q \rightarrow !a(x).P \parc P[b/x]\parc Q}{}$
+
+\begin{ex}
+		$!a(x).\bar a<x> \parc \bar a<b>$ loops.\footnote{You can also do a nuclear bomb: $!a(x).(\bar a <x> \parc \bar a<x>)\parc \bar a<b>$}
+\end{ex}
+
+\subsection{Encoding $\lambda$ in $\Pi$}
+Intuition: let $f = x\mapsto M$ is $!f(x).\interp{M}$
+
+Let's take a reduction strategy: we chose call by value.
+
+Terms: $M=x \parc \lambda x. M \parc M_1\ M_2$
+
+Values: $V::= x \parc \lambda x.M$
+
+\textbf{Reduction:}
+
+$
+	\infer{(\lambda x.M)\ V \rightarrow M[V/x]}{}\quad
+	\infer{M\ N \rightarrow M'\ N}{M\rightarrow M'}\quad
+	\infer{V\ N \rightarrow V\ N'}{N \rightarrow N'}
+$
+If $p$ is a $\Pi$-calculus name, $\interp{M}_p$ is defined by:
+
+\begin{itemize}
+	\item $\interp{x}_p =  \bar p x$ (injection of $\lambda$-calculus variables into $\Pi$-calculus names)
+	\item $\interp{\lambda x.M}_p = (\Nu y)(\bar p y \parc !y(x,q).\interp{M}_q)$
+	\item $\interp{M\ N}_p=(\Nu q)(\interp{M}_q \parc q(f).((\Nu r)(\interp{N}_r \parc r(x).f<x,p>)))$
+\end{itemize}
+That is first compute $M$, then $N$, then perform the $\beta$-reduction.
+
+\begin{ex}
+	$\interp{\lambda x.x}_p = (\Nu y)(\bar p y \parc y(x,q).\bar q x)$
+\end{ex}
+
+\begin{rmk}
+	Note that there are two kind of names: $x, y, f$ are values, and $p, q, r$ are pointers to values.
+
+In fact we gave an encoding into $A\Pi_2$
+\end{rmk}
+
+%todo or not todo? A\Pi_2 into A\Pi
+
+How to define a LTS such that $\simeq$ and $\sim$ are equivalent?
+
+\subsection{Weak behavioural equivalence}
+
+We denote by $\Rightarrow$ the reflexive and transitive closure of $\rightarrow$.
+
+The weak barbed congruence ($\cong$) is the greatest symmetric relation such that:
+
+\begin{enumerate}
+	\item %HERE ...
+	\item
+	\item 
+\end{enumerate}

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70010" creator="Ipe 7.0.10">
-<info created="D:20100926150628" modified="D:20100927180625"/>
+<info created="D:20100926150628" modified="D:20101016175355"/>
 <preamble>\usepackage{cmll}
 \usepackage{latexsym}</preamble>
 <ipestyle name="basic">
@@ -233,288 +233,276 @@ h
 </ipestyle>
 <page>
 <layer name="alpha"/>
+<layer name="beta"/>
 <view layers="alpha" active="alpha"/>
-<text layer="alpha" matrix="1 0 0 1 114.471 -156.652" transformations="translations" pos="144 592" stroke="black" type="label" valign="baseline" size="Huge">$!$</text>
-<path matrix="1 0 0 1 69.7688 -131.074" stroke="black" pen="heavier">
+<text layer="alpha" matrix="1 0 0 1 -44.641 -331.735" transformations="translations" pos="144 592" stroke="black" type="label" width="6.188" height="17.213" depth="0" valign="baseline" size="Huge">$!$</text>
+<path matrix="1 0 0 1 -89.3432 -306.157" stroke="black" pen="heavier">
 16 0 0 16 192 576 e
 </path>
-<path matrix="1 0 0 1 69.7688 -131.074" stroke="black" pen="heavier">
+<path matrix="1 0 0 1 -89.3432 -306.157" stroke="black" pen="heavier">
 192 560 m
 192 544 l
 </path>
-<text matrix="1 0 0 1 35.379 -129.146" transformations="translations" pos="208 544" stroke="black" type="label" valign="baseline" size="large">$!A$</text>
-<path matrix="1 0 0 0.732718 69.7688 62.3275" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 -123.733 -304.229" transformations="translations" pos="208 544" stroke="black" type="label" width="12.027" height="8.302" depth="0" valign="baseline" size="large">$!A$</text>
+<path matrix="1 0 0 0.732718 -89.3432 -112.755" stroke="black" pen="heavier">
 192 560 m
 192 544 l
 </path>
-<text matrix="1 0 0 1 35.379 -77.146" transformations="translations" pos="208 544" stroke="black" type="label" valign="baseline" size="large">$A$</text>
-<path matrix="0.375285 0 0 1 178.959 36" stroke="black">
+<text matrix="1 0 0 1 -123.733 -252.229" transformations="translations" pos="208 544" stroke="black" type="label" width="8.775" height="8.169" depth="0" valign="baseline" size="large">$A$</text>
+<path matrix="0.375285 0 0 1 19.847 -139.083" stroke="black">
 144 416 m
 182.418 416 l
 </path>
-<path matrix="0.807815 0 0 1 105.574 36" stroke="black" pen="heavier">
+<path matrix="0.514979 0 0 1 8.28559 -139.083" stroke="black" pen="heavier">
 211.12 416 m
 336 416 l
 </path>
-<path matrix="1 0 0 1 65 36" stroke="black">
+<path matrix="1 0 0 1 -35 8" stroke="black">
 336 416 m
 336 416 l
 </path>
-<path matrix="0.75 0 0 1 125 36" stroke="black" pen="heavier">
+<path matrix="0.556452 0 0 1 -6.24103 -139.083" stroke="black" pen="heavier">
 336 416 m
 336 496 l
 144 496 l
 </path>
-<path matrix="1 0 0 1 89 36" stroke="black" pen="heavier">
+<path matrix="1 0 0 1 -70.112 -139.083" stroke="black" pen="heavier">
 144 496 m
 144 416 l
 </path>
-<path matrix="1 0 0 0.882477 65 80.1886" stroke="black" pen="heavier">
+<path matrix="0.647918 0 0 0.915422 -26.6635 -107.281" stroke="black" pen="heavier">
 232 424 m
 232 376 l
 </path>
-<path matrix="1 0 0 0.999741 65 36.0973" stroke="black" pen="heavier">
+<path matrix="0.647918 0 0 1.03706 -26.6635 -153.019" stroke="black" pen="heavier">
 288 424 m
 288 376 l
 </path>
-<text matrix="1 0 0 1 65 28" transformations="translations" pos="248 392" stroke="black" type="label" valign="baseline" size="LARGE">$?\Gamma$</text>
-<text matrix="1 0 0 1 57 36" transformations="translations" pos="256 408" stroke="black" type="label" valign="baseline" size="LARGE">$\dots$</text>
-<path matrix="1 0 0 1 -12 -130" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 -94.112 -147.083" transformations="translations" pos="248 392" stroke="black" type="label" width="17.361" height="11.955" depth="0" valign="baseline" size="LARGE">$?\Gamma$</text>
+<text matrix="1 0 0 1 -102.112 -139.083" transformations="translations" pos="256 408" stroke="black" type="label" width="19.786" height="1.674" depth="0" valign="baseline" size="LARGE">$\dots$</text>
+<path matrix="1 0 0 1 -158.141 -304.942" stroke="black" pen="heavier">
 192 560 m
 192 544 l
 </path>
-<text matrix="1 0 0 1 -50.39 -132.072" transformations="translations" pos="208 544" stroke="black" type="label" valign="baseline" size="large">$?A^\perp$</text>
-<path matrix="1 0 0 1 -4 -226" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 -196.531 -307.014" transformations="translations" pos="208 544" stroke="black" type="label" width="21.388" height="9.873" depth="0" valign="baseline" size="large">$?A^\perp$</text>
+<path matrix="1 0 0 1 -150.141 -400.942" stroke="black" pen="heavier">
 192 624
 192 608
 224 608
 224 624 u
 </path>
-<text matrix="1 0 0 1 -3.441 -229.398" transformations="translations" pos="200 616" stroke="black" type="label" valign="baseline" size="large">cut</text>
-<path matrix="1 0 0 -1 -4 1006" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 -149.582 -404.34" transformations="translations" pos="200 616" stroke="black" type="label" width="16.258" height="7.353" depth="0" valign="baseline" size="large">cut</text>
+<path matrix="1 0 0 -1 -150.141 831.058" stroke="black" pen="heavier">
 184 592 m
 184 616 l
 193.333 616 l
 </path>
-<path matrix="4.60783 0 0 -0.939087 -807.249 968.866" stroke="black" pen="heavier">
+<path matrix="3.22836 0 0 -0.949425 -646.324 799.903" stroke="black" pen="heavier">
 232 592 m
 232 616 l
 222.667 616 l
 </path>
-<text matrix="1 0 0 1 24 -62" transformations="translations" pos="252 432" stroke="black" type="label" valign="baseline" size="Huge">$\leadsto$</text>
-<path matrix="1.50914 0 0 0.859134 60.8774 113.235" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 -44 -134" transformations="translations" pos="252 432" stroke="black" type="label" width="24.787" height="9.094" depth="0" valign="baseline" size="Huge">$\leadsto$</text>
+<path matrix="0.977799 0 0 0.891207 -29.3346 -73.0011" stroke="black" pen="heavier">
 39.7281 0 0 39.7281 169.4 434.6 e
 </path>
-<text matrix="1 0 0 1 148 38" transformations="translations" pos="156 440" stroke="black" type="label" valign="baseline" size="Huge">$\mathcal R$</text>
-<text matrix="1 0 0 1 25.928 -137.172" transformations="translations" pos="144 592" stroke="black" type="label" valign="baseline" size="Huge">$?_c$</text>
-<path matrix="1 0 0 1 -12 -114" stroke="black" pen="heavier">
+<text matrix="1.05473 0 0 1.05473 -40.8003 -161.165" transformations="translations" pos="156 440" stroke="black" type="label" width="21.007" height="16.938" depth="0" valign="baseline" size="Huge">$\mathcal R$</text>
+<text matrix="1 0 0 1 -120.213 -312.114" transformations="translations" pos="144 592" stroke="black" type="label" width="19.926" height="17.211" depth="3.72" valign="baseline" size="Huge">$?_c$</text>
+<path matrix="1 0 0 1 -158.141 -288.942" stroke="black" pen="heavier">
 16 0 0 16 192 576 e
 </path>
-<path matrix="1 0 0 1 -12 -114" stroke="black" pen="heavier">
+<path matrix="1 0 0 1 -158.141 -288.942" stroke="black" pen="heavier">
 216 600 m
 203.314 587.314 l
 203.314 587.314 l
 </path>
-<path matrix="1 0 0 1 -12 -114" stroke="black" pen="heavier">
+<path matrix="1 0 0 1 -158.141 -288.942" stroke="black" pen="heavier">
 168 600 m
 180.686 587.314 l
 </path>
-<path matrix="1 0 0 1 -12 -114" stroke="black" pen="heavier">
+<path matrix="1 0 0 1 -158.141 -288.942" stroke="black" pen="heavier">
 192 560 m
 192 544 l
 </path>
-<text matrix="1 0 0 1 -17.243 -120.136" transformations="translations" pos="216 584" stroke="black" type="label" valign="baseline" size="large">$?A^\perp$</text>
-<text matrix="1 0 0 1 -16.018 -119.586" transformations="translations" pos="160 584" stroke="black" type="label" valign="baseline" size="large">$?A^\perp$</text>
-<text matrix="1 0 0 1 -21.5291 -336.652" transformations="translations" pos="144 592" stroke="black" type="label" valign="baseline" size="Huge">$!$</text>
-<path matrix="1 0 0 1 -66.2312 -311.074" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 -167.384 -271.078" transformations="translations" pos="216 584" stroke="black" type="label" width="21.388" height="9.873" depth="0" valign="baseline" size="large">$?A^\perp$</text>
+<text matrix="1 0 0 1 -158.159 -270.528" transformations="translations" pos="160 584" stroke="black" type="label" width="21.388" height="9.873" depth="0" valign="baseline" size="large">$?A^\perp$</text>
+<text matrix="1 0 0 1 166.471 -332.652" transformations="translations" pos="144 592" stroke="black" type="label" width="6.188" height="17.213" depth="0" valign="baseline" size="Huge">$!$</text>
+<path matrix="1 0 0 1 121.769 -307.074" stroke="black" pen="heavier">
 16 0 0 16 192 576 e
 </path>
-<path matrix="1 0 0 1 -66.2312 -311.074" stroke="black" pen="heavier">
+<path matrix="1 0 0 1 121.769 -307.074" stroke="black" pen="heavier">
 192 560 m
 192 544 l
 </path>
-<text matrix="1 0 0 1 -100.621 -309.146" transformations="translations" pos="208 544" stroke="black" type="label" valign="baseline" size="large">$!A$</text>
-<path matrix="1 0 0 0.732718 -66.2312 -117.673" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 87.379 -301.146" transformations="translations" pos="208 544" stroke="black" type="label" width="12.027" height="8.302" depth="0" valign="baseline" size="large">$!A$</text>
+<path matrix="1 0 0 0.732718 121.769 -113.673" stroke="black" pen="heavier">
 192 560 m
 192 544 l
 </path>
-<text matrix="1 0 0 1 -100.621 -257.146" transformations="translations" pos="208 544" stroke="black" type="label" valign="baseline" size="large">$A$</text>
-<path matrix="0.375285 0 0 1 42.959 -144" stroke="black">
+<text matrix="1 0 0 1 87.379 -253.146" transformations="translations" pos="208 544" stroke="black" type="label" width="8.775" height="8.169" depth="0" valign="baseline" size="large">$A$</text>
+<path matrix="0.375285 0 0 1 230.959 -140" stroke="black">
 144 416 m
 182.418 416 l
 </path>
-<path matrix="0.807815 0 0 1 -30.426 -144" stroke="black" pen="heavier">
-211.12 416 m
-336 416 l
-</path>
-<path matrix="1 0 0 1 -71 -144" stroke="black">
+<path matrix="1 0 0 1 53 -144" stroke="black">
 336 416 m
 336 416 l
 </path>
-<path matrix="0.75 0 0 1 -11 -144" stroke="black" pen="heavier">
-336 416 m
-336 496 l
-144 496 l
-</path>
-<path matrix="1 0 0 1 -47 -144" stroke="black" pen="heavier">
+<path matrix="1 0 0 1 141 -140" stroke="black" pen="heavier">
 144 496 m
 144 416 l
 </path>
-<path matrix="1 0 0 0.882477 -71 -99.811" stroke="black" pen="heavier">
-232 424 m
-232 376 l
-</path>
-<path matrix="1 0 0 0.999741 -71 -143.903" stroke="black" pen="heavier">
-288 424 m
-288 376 l
-</path>
-<text matrix="1 0 0 1 -71 -152" transformations="translations" pos="248 392" stroke="black" type="label" valign="baseline" size="LARGE">$?\Gamma$</text>
-<text matrix="1 0 0 1 -79 -144" transformations="translations" pos="256 408" stroke="black" type="label" valign="baseline" size="LARGE">$\dots$</text>
-<path matrix="1 0 0 4.63478 -148 -2287.32" stroke="black" pen="heavier">
+<path matrix="1 0 0 4.63478 60.7055 -2284.45" stroke="black" pen="heavier">
 192 560 m
 192 544 l
 </path>
-<path matrix="1.50914 0 0 0.859134 -75.1226 -66.765" stroke="black" pen="heavier">
-39.7281 0 0 39.7281 169.4 434.6 e
-</path>
-<text matrix="1 0 0 1 12 -142" transformations="translations" pos="156 440" stroke="black" type="label" valign="baseline" size="Huge">$\mathcal R$</text>
-<text matrix="1 0 0 1 228.702 -331.301" transformations="translations" pos="144 592" stroke="black" type="label" valign="baseline" size="Huge">$!$</text>
-<path matrix="1 0 0 1 184 -305.723" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 328.702 -331.301" transformations="translations" pos="144 592" stroke="black" type="label" width="6.188" height="17.213" depth="0" valign="baseline" size="Huge">$!$</text>
+<path matrix="1 0 0 1 284 -305.723" stroke="black" pen="heavier">
 16 0 0 16 192 576 e
 </path>
-<path matrix="1 0 0 1 184 -305.723" stroke="black" pen="heavier">
+<path matrix="1 0 0 0.732718 284 -112.322" stroke="black" pen="heavier">
 192 560 m
 192 544 l
 </path>
-<text matrix="1 0 0 1 149.61 -303.795" transformations="translations" pos="208 544" stroke="black" type="label" valign="baseline" size="large">$!A$</text>
-<path matrix="1 0 0 0.732718 184 -112.322" stroke="black" pen="heavier">
-192 560 m
-192 544 l
-</path>
-<text matrix="1 0 0 1 149.61 -251.795" transformations="translations" pos="208 544" stroke="black" type="label" valign="baseline" size="large">$A$</text>
-<path matrix="0.375285 0 0 1 293.19 -138.649" stroke="black">
+<text matrix="1 0 0 1 249.61 -251.795" transformations="translations" pos="208 544" stroke="black" type="label" width="8.775" height="8.169" depth="0" valign="baseline" size="large">$A$</text>
+<path matrix="0.375285 0 0 1 393.19 -138.649" stroke="black">
 144 416 m
 182.418 416 l
 </path>
-<path matrix="0.807815 0 0 1 219.805 -138.649" stroke="black" pen="heavier">
-211.12 416 m
-336 416 l
-</path>
-<path matrix="0.75 0 0 1 239.231 -138.649" stroke="black" pen="heavier">
-336 416 m
-336 496 l
-144 496 l
-</path>
-<path matrix="1 0 0 1 203.231 -138.649" stroke="black" pen="heavier">
+<path matrix="1 0 0 1 303.231 -138.649" stroke="black" pen="heavier">
 144 496 m
 144 416 l
 </path>
-<path matrix="1 0 0 0.882477 179.231 -94.46" stroke="black" pen="heavier">
-232 424 m
-232 376 l
+<text matrix="1 0 0 1 267.231 -146.649" transformations="translations" pos="248 392" stroke="black" type="label" width="17.361" height="11.955" depth="0" valign="baseline" size="LARGE">$?\Gamma$</text>
+<text matrix="1 0 0 1 259.231 -138.649" transformations="translations" pos="256 408" stroke="black" type="label" width="19.786" height="1.674" depth="0" valign="baseline" size="LARGE">$\dots$</text>
+<path matrix="1 0 0 1 181 -412" stroke="black" pen="heavier">
+192 560 m
+192 544 l
 </path>
-<path matrix="1 0 0 0.999741 179.231 -138.552" stroke="black" pen="heavier">
-288 424 m
-288 376 l
+<text matrix="1 0 0 1 218.928 -435.172" transformations="translations" pos="144 592" stroke="black" type="label" width="19.926" height="17.211" depth="3.72" valign="baseline" size="Huge">$?_c$</text>
+<path matrix="1 0 0 1 181 -412" stroke="black" pen="heavier">
+16 0 0 16 192 576 e
 </path>
-<text matrix="1 0 0 1 179.231 -146.649" transformations="translations" pos="248 392" stroke="black" type="label" valign="baseline" size="LARGE">$?\Gamma$</text>
-<text matrix="1 0 0 1 171.231 -138.649" transformations="translations" pos="256 408" stroke="black" type="label" valign="baseline" size="LARGE">$\dots$</text>
-<text matrix="1 0 0 1 55.8412 -306.721" transformations="translations" pos="208 544" stroke="black" type="label" valign="baseline" size="large">$?A^\perp$</text>
-<path matrix="1 0 0 1 110.231 -384.649" stroke="black" pen="heavier">
+<path matrix="1 0 0 1 181 -412" stroke="black" pen="heavier">
+216 600 m
+203.314 587.314 l
+203.314 587.314 l
+</path>
+<path matrix="1 0 0 1 181 -412" stroke="black" pen="heavier">
+168 600 m
+180.686 587.314 l
+</path>
+<path matrix="1 0 0 1 237 -412" stroke="black" pen="heavier">
+192 560 m
+192 544 l
+</path>
+<text matrix="1 0 0 1 274.928 -435.172" transformations="translations" pos="144 592" stroke="black" type="label" width="19.926" height="17.211" depth="3.72" valign="baseline" size="Huge">$?_c$</text>
+<path matrix="1 0 0 1 237 -412" stroke="black" pen="heavier">
+16 0 0 16 192 576 e
+</path>
+<path matrix="1 0 0 1 237 -412" stroke="black" pen="heavier">
+216 600 m
+203.314 587.314 l
+203.314 587.314 l
+</path>
+<path matrix="1 0 0 1 237 -412" stroke="black" pen="heavier">
+168 600 m
+180.686 587.314 l
+</path>
+<text matrix="1 0 0 1 37.61 -228.073" transformations="translations" pos="208 544" stroke="black" type="label" width="21.388" height="9.873" depth="0" valign="baseline" size="large">$?A^\perp$</text>
+<path matrix="1 0 0 1 68.5867 -386.952" stroke="black" pen="heavier">
 192 624
 192 608
 224 608
 224 624 u
 </path>
-<text matrix="1 0 0 1 110.79 -388.047" transformations="translations" pos="200 616" stroke="black" type="label" valign="baseline" size="large">cut</text>
-<path matrix="1 0 0 -0.368859 110.231 457.716" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 69.1457 -390.35" transformations="translations" pos="200 616" stroke="black" type="label" width="16.258" height="7.353" depth="0" valign="baseline" size="large">cut</text>
+<path matrix="1 0 0 -0.368859 68.7055 455.236" stroke="black" pen="heavier">
 184 592 m
 184 616 l
 193.333 616 l
 </path>
-<path matrix="4.60796 0 0 -0.344892 -693.047 442.454" stroke="black" pen="heavier">
+<path matrix="2.41435 0 0 -0.344892 -246.361 441.102" stroke="black" pen="heavier">
 232 592 m
 232 616 l
 222.667 616 l
 </path>
-<path matrix="1.50914 0 0 0.859134 175.109 -61.414" stroke="black" pen="heavier">
-39.7281 0 0 39.7281 169.4 434.6 e
-</path>
-<text matrix="1 0 0 1 262.231 -136.649" transformations="translations" pos="156 440" stroke="black" type="label" valign="baseline" size="Huge">$\mathcal R$</text>
-<path matrix="1 0 0 1 73 -416" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 120.023 77.9243" transformations="translations" pos="240 120" stroke="black" type="label" width="19.786" height="1.674" depth="0" valign="baseline" size="LARGE">$\dots$</text>
+<text matrix="1 0 0 1 204 78" transformations="translations" pos="240 120" stroke="black" type="label" width="19.786" height="1.674" depth="0" valign="baseline" size="LARGE">$\dots$</text>
+<text matrix="1 0 0 1 152 34" transformations="translations" pos="240 120" stroke="black" type="label" width="19.786" height="1.674" depth="0" valign="baseline" size="LARGE">$\dots$</text>
+<path matrix="1 0 0 1 283.28 -305.707" stroke="black" pen="heavier">
 192 560 m
 192 544 l
 </path>
-<text matrix="1 0 0 1 110.928 -439.172" transformations="translations" pos="144 592" stroke="black" type="label" valign="baseline" size="Huge">$?_c$</text>
-<path matrix="1 0 0 1 73 -416" stroke="black" pen="heavier">
-16 0 0 16 192 576 e
-</path>
-<path matrix="1 0 0 1 73 -416" stroke="black" pen="heavier">
-216 600 m
-203.314 587.314 l
-203.314 587.314 l
-</path>
-<path matrix="1 0 0 1 73 -416" stroke="black" pen="heavier">
-168 600 m
-180.686 587.314 l
-</path>
-<path matrix="1 0 0 1 129 -416" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 248.891 -299.779" transformations="translations" pos="208 544" stroke="black" type="label" width="12.027" height="8.302" depth="0" valign="baseline" size="large">$!A$</text>
+<path matrix="1 0 0 4.63478 222.218 -2283.08" stroke="black" pen="heavier">
 192 560 m
 192 544 l
 </path>
-<text matrix="1 0 0 1 166.928 -439.172" transformations="translations" pos="144 592" stroke="black" type="label" valign="baseline" size="Huge">$?_c$</text>
-<path matrix="1 0 0 1 129 -416" stroke="black" pen="heavier">
-16 0 0 16 192 576 e
-</path>
-<path matrix="1 0 0 1 129 -416" stroke="black" pen="heavier">
-216 600 m
-203.314 587.314 l
-203.314 587.314 l
-</path>
-<path matrix="1 0 0 1 129 -416" stroke="black" pen="heavier">
-168 600 m
-180.686 587.314 l
-</path>
-<path matrix="1 0 0 1 8 70" stroke="black" pen="heavier">
-153 162 m
-233 114 l
-</path>
-<path matrix="1 0 0 1 8 70" stroke="black" pen="heavier">
-209 162 m
-289 114 l
-</path>
-<path matrix="1 0 0 1 8 70" stroke="black" pen="heavier">
-281 114 m
-403.231 167.351 l
-</path>
-<path matrix="1 0 0 1 8 70" stroke="black" pen="heavier">
-337 114 m
-459.231 167.351 l
-</path>
-<text matrix="1 0 0 1 -194.39 -312.073" transformations="translations" pos="208 544" stroke="black" type="label" valign="baseline" size="large">$?A^\perp$</text>
-<path matrix="1 0 0 1 -140 -390.001" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 203.122 -226.706" transformations="translations" pos="208 544" stroke="black" type="label" width="21.388" height="9.873" depth="0" valign="baseline" size="large">$?A^\perp$</text>
+<path matrix="1 0 0 1 230.099 -385.585" stroke="black" pen="heavier">
 192 624
 192 608
 224 608
 224 624 u
 </path>
-<text matrix="1 0 0 1 -139.441 -393.399" transformations="translations" pos="200 616" stroke="black" type="label" valign="baseline" size="large">cut</text>
-<path matrix="1 0 0 -0.368859 -140 452.364" stroke="black" pen="heavier">
+<text matrix="1 0 0 1 230.658 -388.983" transformations="translations" pos="200 616" stroke="black" type="label" width="16.258" height="7.353" depth="0" valign="baseline" size="large">cut</text>
+<path matrix="1 0 0 -0.368859 230.218 456.603" stroke="black" pen="heavier">
 184 592 m
 184 616 l
 193.333 616 l
 </path>
-<path matrix="4.60796 0 0 -0.344892 -943.278 437.102" stroke="black" pen="heavier">
+<path matrix="2.41435 0 0 -0.344892 -84.8495 442.469" stroke="black" pen="heavier">
 232 592 m
 232 616 l
 222.667 616 l
 </path>
-<text matrix="1 0 0 1 8 70" transformations="translations" pos="240 120" stroke="black" type="label" valign="baseline" size="LARGE">$\dots$</text>
-<text matrix="1 0 0 1 80 70" transformations="translations" pos="240 120" stroke="black" type="label" valign="baseline" size="LARGE">$\dots$</text>
-<text matrix="1 0 0 1 44 30" transformations="translations" pos="240 120" stroke="black" type="label" valign="baseline" size="LARGE">$\dots$</text>
-<path matrix="1 0 0 4.63478 102.231 -2281.97" stroke="black" pen="heavier">
-192 560 m
-192 544 l
+<path matrix="0.514979 0 0 1 219.398 -140" stroke="black" pen="heavier">
+211.12 416 m
+336 416 l
+</path>
+<path matrix="0.556452 0 0 1 204.871 -140" stroke="black" pen="heavier">
+336 416 m
+336 496 l
+144 496 l
+</path>
+<path matrix="0.977799 0 0 0.891207 181.777 -73.9186" stroke="black" pen="heavier">
+39.7281 0 0 39.7281 169.4 434.6 e
+</path>
+<text matrix="1.05473 0 0 1.05473 170.312 -162.083" transformations="translations" pos="156 440" stroke="black" type="label" width="21.007" height="16.938" depth="0" valign="baseline" size="Huge">$\mathcal R$</text>
+<path matrix="0.514979 0 0 1 381.629 -138.649" stroke="black" pen="heavier">
+211.12 416 m
+336 416 l
+</path>
+<path matrix="0.556452 0 0 1 367.102 -138.649" stroke="black" pen="heavier">
+336 416 m
+336 496 l
+144 496 l
+</path>
+<path matrix="0.977799 0 0 0.891207 344.008 -72.5676" stroke="black" pen="heavier">
+39.7281 0 0 39.7281 169.4 434.6 e
+</path>
+<text matrix="1.05473 0 0 1.05473 332.543 -160.732" transformations="translations" pos="156 440" stroke="black" type="label" width="21.007" height="16.938" depth="0" valign="baseline" size="Huge">$\mathcal R$</text>
+<text matrix="1 0 0 1 103.354 -149.355" transformations="translations" pos="248 392" stroke="black" type="label" width="17.361" height="11.955" depth="0" valign="baseline" size="LARGE">$?\Gamma$</text>
+<text matrix="1 0 0 1 95.3543 -141.355" transformations="translations" pos="256 408" stroke="black" type="label" width="19.786" height="1.674" depth="0" valign="baseline" size="LARGE">$\dots$</text>
+<path matrix="1 0 0 1 24 0" stroke="black" pen="heavier">
+313.867 279.08 m
+325 188
+325 188 s
+</path>
+<path matrix="1 0 0 1 24 0" stroke="black" pen="heavier">
+345.006 283.966 m
+381 188 l
+</path>
+<path matrix="1 0 0 1 24 0" stroke="black" pen="heavier">
+493.338 280.046 m
+448 212
+373 188 s
+</path>
+<path matrix="1 0 0 1 24 0" stroke="black" pen="heavier">
+514.803 291.353 m
+520 228
+429 188 s
 </path>
 </page>
 </ipe>
