@@ -8,8 +8,19 @@
 \usepackage{cmll}
 \usepackage{todonotes}
 \usepackage{multicol}
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+\usepackage{fullpage}
 
+\newcommand{\Nu}{\mbox{\Large $\nu $}} % dirty thing to have uppercase \nu ...
 
+\hypersetup{
+colorlinks=true, %colorise les liens
+breaklinks=true, %permet le retour à la ligne dans les liens trop longs
+urlcolor= blue, %couleur des hyperliens
+linkcolor= red, %couleur des liens internes
+citecolor=blue, %couleur des références
+} 
 
 \author{Olivier Laurent \and Daniel Hirschkoff \\ \and (transcribed by the students)}
 
@@ -18,10 +29,14 @@
 \newcommand{\ie}{\textit{i.e.}\ }
 \newcommand{\cf}{\textit{c.f.}\ }
 \newcommand{\eg}{\textit{e.g.}\ }
+\newcommand{\parc}{\ |\ }
+\newcommand{\R}{{\mathcal R}}
+\newcommand{\interp}[1]{\llbracket #1\rrbracket}
 
 \newtheorem{definition}{Definition}
 \newtheorem{prop}{Property}
 \newtheorem{theo}{Theorem}
+\newtheorem{lemma}{Lemma}
 \newtheorem{ex}{Example}
 \newtheorem{exo}{Exercise}
 \newtheorem{rmk}{Remark}
@@ -36,10 +51,10 @@ $A ::= X | X ^ \perp | A \otimes A | A \parr A$
 
 \begin{definition}
 	\begin{itemize}
-		\item $(X)^\perp := X \perp$
+		\item $(X)^\perp := X ^\perp$
 		\item $(X^\perp)^\perp := X$
 		\item $(A \otimes B) ^\perp := A^\perp \parr B^\perp$ 
-		\item $(A \parr B)^\perp := A ^\perp \parr B ^\perp$
+		\item $(A \parr B)^\perp := A ^\perp \otimes B ^\perp$
 	\end{itemize}	
 \end{definition}
 
@@ -51,7 +66,7 @@ $A ::= X | X ^ \perp | A \otimes A | A \parr A$
 
 \textbf{Rules:}
 \begin{center}
-$	\infer[ax]{\vdash A^\perp A}{} \quad
+$	\infer[ax]{\vdash A^\perp, A}{} \quad
 	\infer[cut]{\vdash \Gamma, \Delta}{\vdash A, \Gamma & \vdash A^\perp, \Delta} \quad
 	\infer[\otimes]{\vdash A \otimes B, \Gamma, \Delta}{\vdash A, \Gamma & \vdash B, \Delta} \quad
 	\infer[\parr]{\vdash A \parr B, \Gamma}{\vdash A, B, \Gamma} \quad
@@ -60,14 +75,19 @@ $
 \end{center}
 	
 \begin{ex} \label{ex:comm_par} $\vdash (A\otimes B)^\perp, (B\otimes A)$
-\todo[inline]{TODO}
+
+$$\infer[\parr]{\vdash A ^\perp \parr B^\perp, B \otimes A}
+	{\infer[ex]{\vdash A^\perp,B^\perp,B\otimes A}
+		{\infer[\otimes]{\vdash B\otimes A, B^\perp, A^\perp}
+			{\infer[ax]{\vdash B, B^\perp}{} & \infer[ax]{A, A^ \perp}{}
+			}}}$$
 \end{ex}
 
-\textbf{Difference with linear logic:}
+\textbf{Difference with classical logic:}
 There is no duplication. Formulas are used once.
 
 \begin{ex}
-	$A \vdash A \land A$, is provable in classical logic,but $\vdash A\otimes A, A ^\perp$ is not provable in MLL.
+	$A \vdash A \land A$, is provable in classical logic, but $\vdash A\otimes A, A ^\perp$ is not provable in MLL.
 \end{ex}
 
 
@@ -111,33 +131,54 @@ There is no duplication. Formulas are used once.
 	\end{figure}
 \end{ex}
 
-\begin{definition}{Proof-net}
+\begin{definition}[Proof-net]
 	A proof net is a proof structure obtained from a proof.
 \end{definition}
-
-The following proof structure is not a proof-net:
 \begin{ex}
-	\begin{figure}[h]
-	\begin{center}
-		\includegraphics{figures/pn_ax_tens.pdf}
-		\caption{Example of a proof-structure which is not a proof-net}
-	\end{center}
-	\end{figure}	
+The following proof structure is not a proof-net:
+		$$\includegraphics{figures/pn_ax_tens.pdf}$$
 \end{ex}
 
 The transformation from proof to proof-structure is then not surjective. One reason is that in proof structures, there is no difference between $\otimes$ and $\parr$.
 
 \subsection{Correctness criterion}
 
-\begin{definition}{Correction graph}
+\begin{definition}[Correction graph]
 	A correction graph of a proof structure is obtained by removing one of the two upper edges of each $\parr$-node.
 \end{definition}
 
-\begin{prop}{Correctnesss criterion (Danos-Regnier)}
+\begin{prop}[Correctnesss criterion (Danos-Regnier)]
 	A proof structure is a proof-net if and only if all its correction graphs are connected and acyclic.
 \end{prop}
 \begin{proof}
-\todo[inline]{TODO}
+	\textbf{Correction:} $\Pi \vdash \Gamma \Rightarrow {\Pi^*\over \Gamma} \in PN$
+	
+	This is the easy part, by induction on the derivation.
+	
+	\textbf{Sequentialization:} ${\mathcal R} \in PN \Rightarrow \exists \Pi \vdash \Gamma, \Pi^* = \mathcal R$
+	
+	By induction on the size of $\mathcal R$.
+	\begin{enumerate}
+			\item If there is a $\parr$ node above a conclusion:
+			$$\includegraphics{figures/sequentialization1.pdf}$$
+			
+			Then, since $\mathcal R_0$ verifies the acyclic and connected condition, there is a proof $\Pi_0$ of $\vdash A, B, \Gamma$. Then we have the proof 
+			$$\infer[\parr]{\vdash A\parr B, \Gamma}{\infer{\vdash A, B, \Gamma}{\Pi_0}}$$
+			
+			\item If there are cuts in $\mathcal R$, replace them with $\otimes$ nodes: 
+			$$\includegraphics{figures/sequentialization2.pdf}$$
+			This does not change the connected and acyclic condition.
+			
+			\item If $\mathcal R_0$ does not contain any cut, has no $\parr$ node above its conditions, and has at least one $\otimes$ node above a condition, then the splitting lemma (admitted) shows that we can separate $\mathcal R_0$ this way: 
+			
+			$$\includegraphics{figures/sequentialization3.pdf}$$
+			Then, $\mathcal R_1$ and $\mathcal R_2$ verify the conditions, and by induction hypothesis, are associated to some proofs $\Pi_1$ and $\Pi_2$, which give the following proof: $$\infer[\otimes]{\vdash \Gamma A\otimes B, \Delta}{\infer{\vdash \Gamma, A}{\Pi_1} & \infer{\vdash \Delta, B}{\Pi_2}}$$
+			
+			\item Else, there are only axiom nodes, but the connectedness condition implies that there is only one, and the corresponding proof is trivial.
+	\end{enumerate}
+	
+		
+	
 \end{proof}
 
 \subsection{Cut elimination}
@@ -157,9 +198,18 @@ The transformation from proof to proof-structure is then not surjective. One rea
 	Strong normalization, confluence.
 	\end{prop}	
 	
-	\begin{prop}{Sub-formula property}
-\todo[inline]{TODO}
+	\begin{prop}[Sub-formula property]
+	$$\includegraphics{figures/subformula.pdf}$$
 	\end{prop}	
+	
+	\begin{proof}
+		Use cut elimination.
+	\end{proof}
+	
+	\begin{rmk}
+	This implies that $\emptyset$ is not provable.
+	\end{rmk}
+	
 	
 	\subsection{Exponential connectives}
 	
@@ -169,21 +219,21 @@ The transformation from proof to proof-structure is then not surjective. One rea
 		$A \rightarrow B \rightarrow A$ is provable in intuitionistic logic, but $A \multimap B \multimap A$ is not provable in MLL.
 	\end{ex}	
 	
-	\begin{definition}{MELL rules:} MLL rules +
+	\begin{definition}[MELL rules:] MLL rules +
 	
-	$\infer[?_c]{\vdash \Gamma, ?A}{\vdash \Gamma, ?A, ?A}$ (contraction) 
-	$\infer[?_w]{\vdash \Gamma, ?A}{\vdash \Gamma}$ (weakening)
+	$\infer[\wn_c]{\vdash \Gamma, \wn A}{\vdash \Gamma, \wn A, \wn A}$ (contraction) 
+	$\infer[\wn_w]{\vdash \Gamma, \wn A}{\vdash \Gamma}$ (weakening)
 	
-	$\infer[?_d]{\vdash \Gamma, ?A}{\vdash \Gamma, A}$ (dereliction)
-	$\infer[!]{\vdash ?\Gamma, !A}{\vdash ?\Gamma, A}$(promotion)
+	$\infer[\wn_d]{\vdash \Gamma, \wn A}{\vdash \Gamma, A}$ (dereliction)
+	$\infer[\oc]{\vdash \wn\Gamma, \oc A}{\vdash \wn\Gamma, A}$(promotion)
 	\end{definition}
 	
 	\begin{exo}
 		$$\begin{array}{l l l l l}
 			LK & \overset{\lnot\lnot}{\longrightarrow} &  LJ & \longrightarrow & MELL \\
-			& & \Gamma \vdash A & & !\Gamma ^* \vdash A^* \equiv\ \vdash ?(\Gamma ^ *)^\perp, A^*
+			& & \Gamma \vdash A & & \oc \Gamma ^* \vdash A^* \equiv\ \vdash \wn(\Gamma ^ *)^\perp, A^*
 		\end{array}$$
-		where $(A \rightarrow B)* = ! A^* \multimap B$		
+		where $(A \rightarrow B)* = \oc  A^* \multimap B$		
 	\end{exo}	
 
 	\begin{figure}[h]
@@ -196,73 +246,68 @@ The transformation from proof to proof-structure is then not surjective. One rea
 	\end{center}	
 	\end{figure}	
 	
-	Note that the promotion node is not sufficient in itself to express the promotion rule (\ie the context must be of the form $?\Gamma$).
-	The solution is to add boxes (one box per $!$-node):
+	Note that the promotion node is not sufficient in itself to express the promotion rule (\ie the context must be of the form $\wn\Gamma$).
+	The solution is to add boxes (one box per $\oc $-node):
 	\begin{figure}[h]
 	\begin{center}
 		\includegraphics{figures/box.pdf}
-		\caption{Re presentation of a $!$-box.}
+		\caption{Re presentation of a $\oc $-box.}
 	\end{center}	
 	\end{figure}
 	
 	Connectedness of correction graphs is not true anymore. In fact we have:
 	
 	\begin{prop}
-		For any correction graph of a proof-net, we have: \\ $\sharp$ connected components $=1+ \sharp ?-$nodes.
+		For any correction graph of a proof-net, we have: \\ $\sharp$ connected components $=1+ \sharp \wn-$nodes.
 	\end{prop}	
 	
 	This condition is not sufficient, as shown by the following example:
 	
 	\begin{ex}
 		The correctness graphs of the following example verify the previous property ($2$ connected components), but is not a proof-net.
-		\begin{figure}
-		\begin{center}
-			\includegraphics{figures/connected.pdf}
-		\end{center}		
-		\end{figure}		
-	\end{ex}	
-	
+	$$\includegraphics[height=0.3\textheight]{figures/connected.pdf}$$
+	\end{ex}
 	
 	\begin{rmk}
 		There is no non-trivial overlapping of boxes.
 	\end{rmk}	
 	
-	This allows us to define the depth of a $!$-box by the number of box containing it.
+	This allows us to define the depth of a $\oc $-box by the number of box containing it.
 	
-	\begin{prop}{Acyclicity criterion}
-		In a proof-net, correction graphs are acyclic (where correction graphs are now obtained by removing one of the upper edges of each $\parr$-node and each $?_c$-node.
+	\begin{prop}[Acyclicity criterion]
+		In a proof-net, correction graphs are acyclic (where correction graphs are now obtained by removing one of the upper edges of each $\parr$-node and each $\wn_c$-node.
 	\end{prop}	
 	
 	These properties can be summed up in the following theorem:
 	
 	\begin{theo}
-		$\Pi \vdash_{MELL} \Gamma \Rightarrow$ $\Pi^*$ (and recursively all its boxes) has acyclic correction graphs, and $\sharp cc = \sharp ?_w +1$.
+		$\Pi \vdash_{MELL} \Gamma \Rightarrow$ $\Pi^*$ (and recursively all its boxes) has acyclic correction graphs, and $\sharp cc = \sharp \wn_w +1$.
 	\end{theo}	
 	
 	As stated before, the converse is false.
 	
-	\begin{prop}{Sequentialization}
-		If $\mathcal R$ is $?_w$-free with acyclic connected correction graphs, then $\exists \Pi, \Pi* = \mathcal R$.
+	\begin{prop}[Sequentialization]
+		If $\mathcal R$ is $\wn_w$-free with acyclic connected correction graphs, then $\exists \Pi, \Pi* = \mathcal R$.
 	\end{prop}	
 	
 	\begin{exo}
 		\begin{multicols}{2}
 		\begin{itemize}
-			\item $!(A\otimes B)\overset{\dashv}{\vdash} !A \otimes !B$
-			\item $!!A \overset{\dashv}{\vdash} !A$
-			\item $??A \overset{\dashv}{\vdash} ?A$
-			\item $!A \otimes !A\overset{\dashv}{\vdash} !A$
-			\item $!A \otimes !B\overset{\dashv}{\vdash} !A$
-			\item $?A \otimes ?A\overset{\dashv}{\vdash}?A$
-			\item $?A \parr ?A\overset{\dashv}{\vdash}?A$
-			\item $!A\overset{\dashv}{\vdash}?A$
-			\item $!A\overset{\dashv}{\vdash}A$
+			\item $\oc (A\otimes B)\overset{\dashv}{\vdash} \oc A \otimes \oc B$
+			\item $\oc \oc A \overset{\dashv}{\vdash} \oc A$
+			\item $\wn\wn A \overset{\dashv}{\vdash} \wn A$
+			\item $\oc A \otimes \oc A\overset{\dashv}{\vdash} \oc A$
+			\item $\oc A \otimes \oc B\overset{\dashv}{\vdash} \oc A$
+			\item $\wn A \otimes \wn A\overset{\dashv}{\vdash}\wn A$
+			\item $\wn A \parr \wn A\overset{\dashv}{\vdash}\wn A$
+			\item $\oc A\overset{\dashv}{\vdash}\wn A$
+			\item $\oc A\overset{\dashv}{\vdash}A$
 		\end{itemize}	
 		\end{multicols}
 	\end{exo}	
 	
-	\begin{definition}{Modality}
-		Only arity-1 connectives: $\underset{\mu}{\underbrace{!\dots ?\dots ! \dots}}A$
+	\begin{definition}[Modality]
+		Only arity-1 connectives: $\underset{\mu}{\underbrace{\oc \dots \wn \dots \oc  \dots}}A$
 		
 		$\mu \sim \nu \Leftrightarrow \forall A, \mu A \overset{\dashv}{\vdash} \nu A$
 		
@@ -275,57 +320,55 @@ The transformation from proof to proof-structure is then not surjective. One rea
 	
 	\subsection{Cut elimination}
 	\begin{rmk}
-		A cut from a $!$-node to a $?$-node of the corresponding box is impossible (since the graph of the corresponding box is connected, it would introduce a cycle).
+		A cut from a $\oc $-node to a $\wn $-node of the corresponding box is impossible (since the graph of the corresponding box is connected, it would introduce a cycle).
 		\end{rmk}		
-	The only additional cuts are of the form, and can be reduced as described by the figures~\ref{fig:ce_d}, \ref{fig:ce_w}, \ref{fig:ce_c} and \ref{fig:ce_box}
+	The only additional cuts are of the form, and can be reduced as described by the following figures:% figures~\ref{fig:ce_d}, \ref{fig:ce_w}, \ref{fig:ce_c} and \ref{fig:ce_box}
 	
-	\begin{figure}[!h]
-	\begin{center}	
-		\includegraphics[scale=0.6]{figures/ce_d.pdf}
-		\caption{Dereliction cut: open the box.}
-		\label{fig:ce_d}
-	\end{center}	
-	\end{figure}	
-	
-	\begin{figure}[!h]
-	\begin{center}
-		\includegraphics[scale=0.6]{figures/ce_c.pdf}
-		\caption{Contraction cut: duplicate the box.}
-		\label{fig:ce_c}
-		\end{center}	
-	\end{figure}	
-	\begin{figure}[!h]
-	\begin{center}
-		\includegraphics[scale=0.6]{figures/ce_w.pdf}
-		\caption{Weakening cut: remove the box.}
-		\label{fig:ce_w}
-		\end{center}	
-	\end{figure}	
-	\begin{figure}[!h]
-	\begin{center}
-		\includegraphics[scale=0.6]{figures/ce_box.pdf}
-		\caption{Box-box cut: merge the boxes.}
-		\label{fig:ce_box}
-	\end{center}	
-	\end{figure}	
+		$$\includegraphics[scale=0.55]{figures/ce_d.pdf}$$
+		$$\includegraphics[scale=0.55]{figures/ce_c.pdf}$$
+		$$\includegraphics[scale=0.55]{figures/ce_w.pdf}$$
+		$$\includegraphics[scale=0.55]{figures/ce_box.pdf}$$
 	
 	\begin{exo}
 		Check that the correction criterion is preserved through cut reduction.
 	\end{exo}	
 	
-	\begin{prop}{Local confluence}
-	\includegraphics[scale=0.5]{figures/confluence.pdf}
+	\begin{prop}[Local confluence]
+	$$\includegraphics[scale=0.5]{figures/confluence.pdf}$$
 	\end{prop}	
+		
+	\begin{rmk}
+		In fact we have confluence (but this is a hard result).
+	\end{rmk}
+		
 
-		\begin{prop}{Termination}
-		\begin{description}
-			\item[Weak normalization:] $\forall {\mathcal R}, \exists {\mathcal R_0}$ cut-free  such that ${\mathcal R} \rightarrow^* {\mathcal R_0}$.
-			\item[Strong normalization] $\forall {\mathcal R}$, each reduction chain begining by ${\mathcal R}$ is finite.
-		\end{description}		
-		\end{prop}
-		\begin{proof}{(of weak normalization)}
-		\todo[inline]{TODO}
-		\end{proof}				
+	\begin{prop}[Termination]
+	\begin{description}
+		\item[Weak normalization:] $\forall {\mathcal R}, \exists {\mathcal R_0}$ cut-free  such that ${\mathcal R} \rightarrow^* {\mathcal R_0}$.
+		\item[Strong normalization] $\forall {\mathcal R}$, each reduction chain begining by ${\mathcal R}$ is finite.
+	\end{description}		
+	\end{prop}
+	\begin{proof}[Proof of weak normalization:]
+	 There are two kinds of cuts: exponential and multiplicative cuts: 
+	 $$\includegraphics{figures/exp_cut.pdf}\qquad \includegraphics{figures/mult_cut.pdf}$$
+	 We give to an exponential cuts the measure $(|A|, |\wn -tree|)$ where $\wn -tree$ is the tree above $\wn A$ of the form: $$\includegraphics[width=0.3\textwidth]{figures/exp_tree.pdf}$$
+	 
+	 We give to multiplicative cuts the measure $(|A\parr B|, 0)$.
+	 
+	 We now want to show that there is a reduction such that the multi-order (based on the lexicographic order) of the multi-set of these measures decreases.
+	 
+	 \begin{prop}%todo ? define paths ?
+		If there are no multiplicative cuts, then the paths of the proof-net are acyclic.
+	 \end{prop}
+	 \begin{proof}
+		Assume that there is a cycle (take a smallest one). Since the depth decreases, it is constant. This cycle can not go down in a branch of $\parr$ node and go up in the other branch of the same node (or is not minimal). Then, the path is in a correction graph, which is acyclic.
+	 \end{proof}				
+	 This result allows us to define an order on cuts: a cut is smaller than another one if there is a path from the second one to the first.
+	 We consider a maximal cut of maximal depth. Reducing this cut makes the (multi-set) measure decreases.
+	 %TODO: to finish
+	 \end{proof}
+	 
+	 \include{concurrency}
 \end{document}
 
 	
